@@ -34,6 +34,8 @@ public:
 
     // a state as the list says it
     static std::string stateText(StoreState state);
+    // why something failed, in words: curl's exit code ("the download failed (7)") as what it means
+    static std::string errorText(const std::string &error);
     // "412 MB", "3.1 GB", "" for 0
     static std::string sizeText(uint64_t bytes);
 
@@ -53,6 +55,10 @@ private:
     int visibleRows() const;
     void cross();
     void triangle();
+    // Cross on a source the user added: rename it, give it another address, or remove it
+    void editSource();
+    // a source's name as the screen shows it (the name the user gave it) from the name its items carry
+    std::string sourceTitle(const std::string &name) const;
     // Select: the next source of this tab's items, round to all of them
     void nextSourceFilter();
     // Start: the on-screen keyboard for a search, an empty one clears it

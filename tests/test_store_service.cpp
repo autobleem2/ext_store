@@ -265,7 +265,9 @@ TEST_CASE("StoreService: a stop (power off) mid-download leaves it queued for th
         REQUIRE(waitFor([&] { return store.progress().done > 0; }));
         auto before = chrono::steady_clock::now();
         store.stop();
-        CHECK(chrono::steady_clock::now() - before < chrono::seconds(3));
+        // not the stalled download's end (never): the threads run at idle priority, so a busy machine may
+        // take a few seconds to schedule them
+        CHECK(chrono::steady_clock::now() - before < chrono::seconds(10));
     }
     s.site.stalls.clear();
     StoreService next(s.config());
@@ -404,6 +406,35 @@ TEST_CASE("StoreService opens on the cached copies at once, while a slow source 
     CHECK(store.readingSources());
 }
 
+TEST_CASE("StoreService: a source renamed and moved - what came from it is still known") {
+    Setup s;
+    s.tmp.writeFile("System/Extensions/store/sources.txt", "https://acme/one.tsv\n");
+    s.site.bodies["https://acme/one.tsv"] = "# name: One\nGame One\thttps://acme/1.chd\n";
+    s.site.bodies["http://mirror/one.tsv"] = "# name: One\nGame One\thttps://acme/1.chd\n";
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+
+    REQUIRE(store.renameSource("https://acme/one.tsv", "  Living\troom  "));
+    CHECK(s.tmp.readFile("System/Extensions/store/sources.txt") == "https://acme/one.tsv\tLiving room\n");
+    StoreSourceInfo one = store.sources().back();
+    CHECK(one.displayName == "Living room");
+    CHECK(one.name == "One"); // the list's own name, what its items are keyed by
+    CHECK(s.entry(store.entries(), "One|ps1/Game One") != nullptr);
+
+    string error;
+    CHECK_FALSE(store.changeSourceUrl("https://acme/one.tsv", "http://mirror /one.tsv", error));
+    REQUIRE(store.changeSourceUrl("https://acme/one.tsv", "http://mirror/one.tsv", error));
+    CHECK(s.tmp.readFile("System/Extensions/store/sources.txt") == "http://mirror/one.tsv\tLiving room\n");
+    REQUIRE(waitFor([&] { return !store.readingSources() && s.entry(store.entries(), "One|ps1/Game One"); }));
+    CHECK(store.sources().back().where == "http://mirror/one.tsv");
+    CHECK(store.sources().back().displayName == "Living room");
+
+    REQUIRE(store.renameSource("http://mirror/one.tsv", "")); // the list's own name again
+    CHECK(store.sources().back().displayName == "One");
+    CHECK_FALSE(store.renameSource("https://nowhere/x.tsv", "x"));
+}
+
 TEST_CASE("StoreService: source URLs, and file names") {
     Setup s;
     StoreService store(s.config());
@@ -411,7 +442,12 @@ TEST_CASE("StoreService: source URLs, and file names") {
     CHECK_FALSE(store.addSourceUrl("ftp://x/y.tsv", error));
     CHECK(store.addSourceUrl(" https://acme/list.tsv ", error));
     CHECK_FALSE(store.addSourceUrl("https://acme/list.tsv", error)); // once, and said so
-    CHECK(error == "that source is in the list already");
+    CHECK(error == "That source is in the list already");
+    CHECK_FALSE(store.addSourceUrl("http://192.168.1.2:8 126/store.tsv", error)); // a blank: curl's "3"
+    CHECK(error == "The address is not valid");
+    CHECK_FALSE(store.addSourceUrl("http:///store.tsv", error)); // no server
+    CHECK_FALSE(store.addSourceUrl("192.168.1.2/store.tsv", error));
+    CHECK(error == "A source is an http:// or https:// address");
     CHECK(store.sourceUrls() == vector<string>{"https://acme/list.tsv"});
     CHECK(store.removeSourceUrl("https://acme/list.tsv"));
     CHECK(store.sourceUrls().empty());

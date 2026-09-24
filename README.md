@@ -8,7 +8,8 @@ Raspberry Pi, the PC USB stick, Windows).
   - AutoBleem's own catalog on the download site (Apps, and homebrew and freeware games whose licences allow
     it);
   - any number of **TSV sources** you add: a file dropped in `System/Extensions/store/sources/`, or a URL
-    added in the Store's Sources tab (kept in `System/Extensions/store/sources.txt`).
+    added in the Store's Sources tab (kept in `System/Extensions/store/sources.txt`). Cross on a source you
+    added renames it, changes its address, switches it between http:// and https://, or removes it.
 - **Apps** are AutoBleem's multi-platform App folders. The Store downloads the package for your system and
   merges it into `Apps/<name>/`, keeping other systems' binaries and your own `pad.ini`.
 - **Games** go into `Games/<title>/`, and the launcher's scan takes it from there.

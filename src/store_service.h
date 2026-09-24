@@ -6,7 +6,8 @@
 //
 // Everything it keeps is in its state directory (System/Extensions/store/):
 //   sources/*.tsv     the user's own TSV sources, dropped on the stick
-//   sources.txt       the URLs of remote TSV sources, one per line (# comments)
+//   sources.txt       the remote TSV sources, one per line: the URL, then - after a tab - the name the user gave
+//                     it, when they did (# comments)
 //   cache/            the last good copy of our catalog and of each remote source (source-<md5 of its URL>.tsv)
 //   downloads/        the files being downloaded (<name>.part while unfinished - they resume)
 //   staging/          the installers' unpacking room
@@ -69,6 +70,8 @@ struct StoreSourceInfo {
     std::vector<std::string> problems; // the TSV's skipped lines
     std::string error;                 // why it could not be read now (a cached copy stands in when there is one)
     bool loading = false;              // being read right now (a source just added: not read yet)
+    std::string displayName;           // what the screen calls it: the name the user gave it, else `name`
+    std::string customName;            // the name the user gave it, "" = none
 };
 
 //******************
@@ -144,6 +147,14 @@ public:
     std::vector<std::string> sourceUrls() const;
     bool addSourceUrl(const std::string &url, std::string &error);
     bool removeSourceUrl(const std::string &url);
+    // the name the screen shows for a source of sources.txt ("" = the list's own again). Only what is shown
+    // changes: the items keep the list's own name inside, so what was installed or queued from it stays so
+    bool renameSource(const std::string &url, const std::string &name);
+    // another address for a source of sources.txt, its name kept; it is read again from there
+    bool changeSourceUrl(const std::string &url, const std::string &newUrl, std::string &error);
+    // an http:// or https:// address with a server and no blanks; error says why not (English - the screen
+    // translates it)
+    static bool validSourceUrl(const std::string &url, std::string &error);
 
     std::string sourcesDir() const;
     std::string sourcesFile() const;

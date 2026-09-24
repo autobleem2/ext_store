@@ -11,6 +11,7 @@
 #include <ableem/engine/md5.h>
 
 #include <algorithm>
+#include <cctype>
 #include <chrono>
 #include <fstream>
 
@@ -33,6 +34,38 @@ vector<string> readLines(const string &path) {
             lines.push_back(line);
     }
     return lines;
+}
+
+// sources.txt's lines: the URL, and - after a tab - the name the user gave the source
+struct SourceLine {
+    string url, name;
+};
+
+vector<SourceLine> readSourceLines(const string &path) {
+    vector<SourceLine> out;
+    for (const string &line : readLines(path)) {
+        const size_t tab = line.find('\t');
+        SourceLine s;
+        s.url = Strings::trim(line.substr(0, tab));
+        s.name = tab == string::npos ? "" : Strings::trim(line.substr(tab + 1));
+        if (!s.url.empty())
+            out.push_back(s);
+    }
+    return out;
+}
+
+void writeSourceLines(const string &path, const vector<SourceLine> &lines) {
+    ofstream out(path, ios::binary | ios::trunc);
+    for (const SourceLine &s : lines)
+        out << s.url << (s.name.empty() ? "" : "\t" + s.name) << "\n";
+}
+
+// a name as one line of text
+string oneLine(string s) {
+    for (char &c : s)
+        if (c == '\t' || c == '\n' || c == '\r')
+            c = ' ';
+    return Strings::trim(s);
 }
 
 // an App's folder name from our catalog's id ("app/opentyrian" -> "opentyrian"); "" for anything else
@@ -214,7 +247,7 @@ void StoreService::sourcesMain() {
             if (!sourcesToRead_.empty() && sourcesToRead_.front() == url)
                 sourcesToRead_.pop_front();
             // removed while it was being read: forgotten, not brought back
-            const vector<string> urls = readLines(sourcesFile());
+            const vector<string> urls = sourceUrls();
             if (std::find(urls.begin(), urls.end(), url) != urls.end())
                 loadedSources_[url] = source;
             readingNow_.clear();
@@ -345,7 +378,7 @@ void StoreService::loadSources() {
             lock_guard<mutex> lock(mutex_);
             if (!config_.catalogUrl.empty() && DirEntry::exists(cacheDir() + sep + "catalog.json"))
                 loadedSources_[config_.catalogUrl] = readCatalog(false);
-            for (const string &url : readLines(sourcesFile()))
+            for (const string &url : sourceUrls())
                 if (DirEntry::exists(cachedSourceFile(url)))
                     loadedSources_[url] = readRemote(url, false);
             for (const DirEntry &e : DirEntry::diru_FilesOnly(sourcesDir()))
@@ -367,7 +400,7 @@ void StoreService::loadSources() {
         const string path = sourcesDir() + sep + e.name;
         keep(path, readLocal(path));
     }
-    for (const string &url : readLines(sourcesFile())) {
+    for (const string &url : sourceUrls()) {
         if (stop_)
             return;
         reading(url);
@@ -394,12 +427,21 @@ void StoreService::loadSources() {
 void StoreService::assembleSources() {
     vector<StoreItem> items;
     vector<StoreSourceInfo> infos;
+    map<string, string> customNames;
+    for (const SourceLine &s : readSourceLines(sourcesFile()))
+        customNames[s.url] = s.name;
+    auto named = [&](StoreSourceInfo &info) {
+        auto custom = customNames.find(info.where);
+        info.customName = custom == customNames.end() ? "" : custom->second;
+        info.displayName = info.customName.empty() ? info.name : info.customName;
+    };
     auto add = [&](const string &key) {
         auto it = loadedSources_.find(key);
         if (it == loadedSources_.end())
             return false;
         StoreSourceInfo info = it->second.info;
         info.loading = key == readingNow_;
+        named(info);
         infos.push_back(info);
         items.insert(items.end(), it->second.items.begin(), it->second.items.end());
         return true;
@@ -409,17 +451,19 @@ void StoreService::assembleSources() {
         info.name = OurSourceName;
         info.where = config_.catalogUrl;
         info.remote = info.ours = info.loading = true;
+        named(info);
         infos.push_back(info);
     }
     for (const auto &source : loadedSources_)
         if (!source.second.info.remote)
             add(source.first);
-    for (const string &url : readLines(sourcesFile()))
+    for (const string &url : sourceUrls())
         if (!add(url)) {
             StoreSourceInfo info;
             info.where = url;
             info.name = url.substr(url.find_last_of('/') + 1);
             info.remote = info.loading = true;
+            named(info);
             infos.push_back(info);
         }
     items_ = items;
@@ -706,18 +750,34 @@ bool StoreService::remove(const string &key, string &error) {
 // StoreService: sources.txt
 //*******************************
 vector<string> StoreService::sourceUrls() const {
-    return readLines(sourcesFile());
+    vector<string> urls;
+    for (const SourceLine &s : readSourceLines(sourcesFile()))
+        urls.push_back(s.url);
+    return urls;
+}
+
+bool StoreService::validSourceUrl(const string &url, string &error) {
+    const size_t scheme = url.compare(0, 7, "http://") == 0 ? 7 : url.compare(0, 8, "https://") == 0 ? 8 : 0;
+    if (scheme == 0) {
+        error = "A source is an http:// or https:// address";
+        return false;
+    }
+    // a server's name (a typed "http:///x" has none), and no blank inside ("8 126") - curl would only say "3"
+    if (url.size() == scheme || url[scheme] == '/' ||
+        find_if(url.begin(), url.end(), [](unsigned char c) { return isspace(c) != 0; }) != url.end()) {
+        error = "The address is not valid";
+        return false;
+    }
+    return true;
 }
 
 bool StoreService::addSourceUrl(const string &url, string &error) {
     const string u = Strings::trim(url);
-    if (u.compare(0, 7, "http://") != 0 && u.compare(0, 8, "https://") != 0) {
-        error = "a source is an http:// or https:// address";
+    if (!validSourceUrl(u, error))
         return false;
-    }
     vector<string> urls = sourceUrls();
     if (std::find(urls.begin(), urls.end(), u) != urls.end()) {
-        error = "that source is in the list already";
+        error = "That source is in the list already";
         return false;
     }
     {
@@ -733,21 +793,66 @@ bool StoreService::addSourceUrl(const string &url, string &error) {
 }
 
 bool StoreService::removeSourceUrl(const string &url) {
-    vector<string> urls = sourceUrls();
-    auto it = std::find(urls.begin(), urls.end(), url);
-    if (it == urls.end())
+    vector<SourceLine> lines = readSourceLines(sourcesFile());
+    auto it = find_if(lines.begin(), lines.end(), [&](const SourceLine &s) { return s.url == url; });
+    if (it == lines.end())
         return false;
-    urls.erase(it);
-    {
-        ofstream out(sourcesFile(), ios::binary | ios::trunc);
-        for (const string &u : urls)
-            out << u << "\n";
-    }
+    lines.erase(it);
+    writeSourceLines(sourcesFile(), lines);
     DirEntry::removeFile(cachedSourceFile(url));
     // nothing to fetch: its items go now
     lock_guard<mutex> lock(mutex_);
     loadedSources_.erase(url);
     sourcesToRead_.erase(std::remove(sourcesToRead_.begin(), sourcesToRead_.end(), url), sourcesToRead_.end());
+    assembleSources();
+    events_.listChanged = true;
+    return true;
+}
+
+bool StoreService::renameSource(const string &url, const string &name) {
+    vector<SourceLine> lines = readSourceLines(sourcesFile());
+    auto it = find_if(lines.begin(), lines.end(), [&](const SourceLine &s) { return s.url == url; });
+    if (it == lines.end())
+        return false;
+    it->name = oneLine(name);
+    writeSourceLines(sourcesFile(), lines);
+    lock_guard<mutex> lock(mutex_);
+    assembleSources();
+    events_.listChanged = true;
+    return true;
+}
+
+bool StoreService::changeSourceUrl(const string &url, const string &newUrl, string &error) {
+    const string u = Strings::trim(newUrl);
+    if (!validSourceUrl(u, error))
+        return false;
+    vector<SourceLine> lines = readSourceLines(sourcesFile());
+    auto it = find_if(lines.begin(), lines.end(), [&](const SourceLine &s) { return s.url == url; });
+    if (it == lines.end()) {
+        error = "The address is not valid";
+        return false;
+    }
+    if (u == url)
+        return true;
+    if (find_if(lines.begin(), lines.end(), [&](const SourceLine &s) { return s.url == u; }) != lines.end()) {
+        error = "That source is in the list already";
+        return false;
+    }
+    it->url = u;
+    writeSourceLines(sourcesFile(), lines);
+    DirEntry::removeFile(cachedSourceFile(url));
+    // the new address is read on its own; until it answers the source keeps its name and items (as loading),
+    // and what it answers - items or why not - replaces them
+    lock_guard<mutex> lock(mutex_);
+    auto old = loadedSources_.find(url);
+    if (old != loadedSources_.end()) {
+        LoadedSource moved = old->second;
+        moved.info.where = u;
+        loadedSources_.erase(old);
+        loadedSources_[u] = moved;
+    }
+    sourcesToRead_.erase(std::remove(sourcesToRead_.begin(), sourcesToRead_.end(), url), sourcesToRead_.end());
+    sourcesToRead_.push_back(u);
     assembleSources();
     events_.listChanged = true;
     return true;

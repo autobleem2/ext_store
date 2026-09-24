@@ -8,7 +8,10 @@ separate downloads, repository names `ext_<name>`).
 ## Layout
 
 - `src/store_service.*` - `StoreService`, the model:
-  - the sources: our catalog, `sources/*.tsv`, and the URLs in `sources.txt`, with remote ones cached;
+  - the sources: our catalog, `sources/*.tsv`, and the URLs in `sources.txt` (a line is `URL[<TAB>name]` -
+    the name the user gave it, shown as `StoreSourceInfo::displayName`; the items keep the list's own name
+    inside, so a rename or a new address does not lose what was installed or queued from it:
+    `renameSource`/`changeSourceUrl`, `validSourceUrl` refuses a blank or no server), remote ones cached;
   - the entries and their states;
   - `installed.tsv`, and the persisted `queue.txt`;
   - one worker thread at the lowest priority that downloads (resumable, stoppable) and installs through

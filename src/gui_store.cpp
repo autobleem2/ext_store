@@ -4,6 +4,7 @@
 #include "gui_store.h"
 
 #include "gui/gui.h"
+#include "gui/screens/gui_action_menu.h"
 #include "gui/screens/gui_confirm.h"
 #include "gui/screens/gui_keyboard.h"
 
@@ -50,6 +51,31 @@ string GuiStore::stateText(StoreState state) {
     }
 }
 
+string GuiStore::errorText(const string &error) {
+    if (error == "not connected")
+        return _("Not connected");
+    const size_t open = error.rfind('(');
+    if (error.compare(0, 19, "the download failed") != 0 || open == string::npos)
+        return error;
+    switch (atoi(error.c_str() + open + 1)) {
+    case 3:
+        return _("The address is not valid");
+    case 6:
+        return _("The server was not found");
+    case 7:
+        return _("Cannot connect to the server");
+    case 22:
+        return _("The server answered with an error");
+    case 28:
+        return _("The server did not answer in time");
+    case 35:
+    case 60:
+        return _("A secure connection failed - try http://");
+    default:
+        return error;
+    }
+}
+
 string GuiStore::sizeText(uint64_t bytes) {
     if (bytes == 0)
         return "";
@@ -78,13 +104,13 @@ void GuiStore::reload() {
     lastReload = gui->platform().ticks();
     const string keep = selected < static_cast<int>(rows.size()) ? rows[selected].key : "";
     rows.clear();
-    auto entryRow = [](const StoreEntry &e) {
+    auto entryRow = [this](const StoreEntry &e) {
         Row r;
         r.key = e.key;
         r.title = e.item.title;
         string detail = stateText(e.state);
         const string size = sizeText(e.item.size());
-        for (const string &part : {e.item.version, size, e.item.source})
+        for (const string &part : {e.item.version, size, sourceTitle(e.item.source)})
             if (!part.empty())
                 detail += (detail.empty() ? "" : "  -  ") + part;
         r.detail = detail;
@@ -108,7 +134,7 @@ void GuiStore::reload() {
             if (e.state == StoreState::Queued || e.state == StoreState::Failed) {
                 Row r = entryRow(e);
                 if (e.state == StoreState::Failed && !e.error.empty())
-                    r.detail = _("Failed") + ": " + e.error;
+                    r.detail = _("Failed") + ": " + errorText(e.error);
                 rows.push_back(r);
             }
         // then what is installed - where Triangle removes it again
@@ -120,14 +146,14 @@ void GuiStore::reload() {
         for (const StoreSourceInfo &s : sources) {
             Row r;
             r.key = s.where;
-            r.title = s.name;
+            r.title = s.displayName.empty() ? s.name : s.displayName;
             r.remoteSource = s.remote && !s.ours;
             r.loading = s.loading;
             r.detail = to_string(s.items) + " " + _("items");
             if (s.loading && s.items == 0)
                 r.detail = _("Reading...");
             else if (!s.error.empty())
-                r.detail += "  -  " + s.error;
+                r.detail += "  -  " + errorText(s.error);
             else if (!s.problems.empty())
                 r.detail += "  -  " + s.problems.front();
             rows.push_back(r);
@@ -366,7 +392,7 @@ void GuiStore::render() {
     if ((tab == Tab::Apps || tab == Tab::Games) && filtered()) {
         string narrowed;
         if (!sourceFilter.empty())
-            narrowed = _("Source") + ": " + sourceFilter;
+            narrowed = _("Source") + ": " + sourceTitle(sourceFilter);
         if (!search.empty())
             narrowed += (narrowed.empty() ? "" : "   ") + _("Search") + ": \"" + search + "\"";
         const int width = gui->text().textWidth(fonts[FONT_15_BOLD], narrowed);
@@ -461,6 +487,8 @@ void GuiStore::render() {
         }
     } else if (!rows.empty() && rows[selected].action) {
         hints.push_back({{"X"}, _("Add")});
+    } else if (!rows.empty() && rows[selected].remoteSource) {
+        hints.push_back({{"X"}, _("Edit")});
     }
     hints.push_back({{"O"}, _("Back")});
     if (entry != nullptr && !entry->installedPath.empty() && entry->state != StoreState::Queued &&
@@ -519,7 +547,7 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
     fact(_("Size"), sizeText(e->item.size()));
     fact(_("Author"), e->item.author);
     fact(_("Licence"), e->item.licence);
-    fact(_("Source"), e->item.source);
+    fact(_("Source"), sourceTitle(e->item.source));
     if (!e->item.description.empty())
         for (const string &line : gui->text().wrapLines(fonts[FONT_15_BOLD], e->item.description, width)) {
             if (y > pane.y + pane.h - 30)
@@ -538,14 +566,18 @@ void GuiStore::cross() {
     if (rows[selected].action) {
         GuiKeyboard keyboard(*gui);
         keyboard.label = _("Add a source URL");
-        keyboard.result = "https://";
+        keyboard.result = "http://"; // a server on the home network is plain http; https:// is a key away
         keyboard.show();
         string error;
         if (!keyboard.cancelled && !store.addSourceUrl(keyboard.result, error)) {
             GuiConfirm message(*gui);
-            message.label = error;
+            message.label = _(error);
             message.show();
         }
+        return;
+    }
+    if (rows[selected].remoteSource) {
+        editSource();
         return;
     }
     const StoreEntry *e = selectedEntry();
@@ -566,6 +598,64 @@ void GuiStore::cross() {
     default:
         break;
     }
+}
+
+//*******************************
+// GuiStore::sourceTitle / editSource
+//*******************************
+string GuiStore::sourceTitle(const string &name) const {
+    for (const StoreSourceInfo &s : sources)
+        if (s.name == name && !s.displayName.empty())
+            return s.displayName;
+    return name;
+}
+
+void GuiStore::editSource() {
+    const Row row = rows[selected];
+    StoreSourceInfo info;
+    for (const StoreSourceInfo &s : sources)
+        if (s.where == row.key)
+            info = s;
+    // the other scheme, one press away: a home server is plain http, a site https - the usual slip
+    const bool secure = row.key.compare(0, 8, "https://") == 0;
+    const string switched = secure ? "http://" + row.key.substr(8) : "https://" + row.key.substr(7);
+    GuiActionMenu menu(*gui);
+    menu.title = row.title;
+    menu.items = {{_("Rename"), row.title},
+                  {_("Change the address"), row.key},
+                  {_("Switch to") + " " + (secure ? "http://" : "https://"), switched},
+                  {_("Remove this source"), ""}};
+    menu.show();
+    string error;
+    if (menu.result == 0) {
+        GuiKeyboard keyboard(*gui);
+        keyboard.label = _("Name of this source");
+        keyboard.result = row.title;
+        keyboard.show();
+        // empty, or the list's own name: the list's own name again
+        const string name = Strings::trim(keyboard.result);
+        if (!keyboard.cancelled)
+            store.renameSource(row.key, name == info.name ? "" : name);
+    } else if (menu.result == 1) {
+        GuiKeyboard keyboard(*gui);
+        keyboard.label = _("Address of this source");
+        keyboard.result = row.key;
+        keyboard.show();
+        if (!keyboard.cancelled && !store.changeSourceUrl(row.key, keyboard.result, error)) {
+            GuiConfirm message(*gui);
+            message.label = _(error);
+            message.show();
+        }
+    } else if (menu.result == 2) {
+        if (!store.changeSourceUrl(row.key, switched, error)) {
+            GuiConfirm message(*gui);
+            message.label = _(error);
+            message.show();
+        }
+    } else if (menu.result == 3) {
+        triangle(); // asks first
+    }
+    reload();
 }
 
 void GuiStore::triangle() {
