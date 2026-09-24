@@ -28,6 +28,7 @@ puts it in `/usr/local/bin`.
 ```
 abstored <games folder> [--port 8124] [--name "My games"] [--covers <folder with coversU/P/J.db>]
          [--rdb "<Sony - PlayStation.rdb>"] [--state <folder>] [--no-checksums]
+         [--allow-uploads [--upload-token <token>]]
 ```
 
 - Open `http://<this machine>:8124/` in a browser. The page shows the source's URL, every game served, and
@@ -42,6 +43,12 @@ abstored <games folder> [--port 8124] [--name "My games"] [--covers <folder with
   served without one. `--no-checksums` skips this, for example on a slow machine with a large library.
 - **Covers**: a picture in the game's folder, or the covers database's picture by serial (`--covers`). The
   Store also finds covers in its own databases by the serial the server reports.
+- **Uploads** (off by default: the folder is only read). `--allow-uploads` lets **AutoBleem LAN Share** (the
+  Windows app, autobleem-pc-tools) put games into the folder over the network - a disc it read, or games it
+  found on the PC. Every upload needs the token: `--upload-token` sets it, otherwise one is made once, kept in
+  `<state>/upload-token` and printed at start. A game arrives in a `.uploading` folder first and moves into
+  the games folder only when it is complete, under a free name (" (2)" when the name is taken). The folder
+  must then be writable by the user abstored runs as.
 - **Stopping**: Ctrl+C, or SIGTERM.
 
 ### As a service (systemd)
@@ -69,9 +76,13 @@ WantedBy=multi-user.target
 | `/files/<path>` | the games' files, only those the scan listed (`Range` supported: a stopped download resumes) |
 | `/cover/<game folder>` | a game's cover |
 | `/rescan` | scan now |
+| `/status.json` | what the status page shows, for a program: the games with their files, the problems, the folder's free space, whether uploads are on |
+| `/upload/<game folder>/<file>` | with `--allow-uploads` and the token (`X-AB-Token`): `PUT ?offset=N` appends to the staged file (a stopped upload goes on), `GET` says how much is staged |
+| `/upload/<game folder>` | `POST ?commit` moves the staged game into the folder and rescans; `DELETE` drops it |
 
-**Plain HTTP, for a home network.** Anyone who can reach the port can read the games it serves. Do not expose
-it to the internet, and serve only games you may share.
+**Plain HTTP, for a home network.** Anyone who can reach the port can read the games it serves, and with
+uploads on, anyone who has the token can add to them. Do not expose it to the internet, and serve only games
+you may share.
 
 ## Code
 

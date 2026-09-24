@@ -205,6 +205,47 @@ journalctl -u abstored -b          # everything since this boot
   so adding a game needs no restart. To scan at once, open `http://<this machine>:8124/rescan`.
 - After you change the unit file, run `sudo systemctl daemon-reload && sudo systemctl restart abstored`.
 
+### 5.3 Letting AutoBleem LAN Share add games (optional)
+
+**AutoBleem LAN Share** is the Windows app that reads a PS1 disc in the PC's drive, or finds games on the PC,
+and puts them on this server. It can do that in two ways:
+
+- **Through a network share**: if the games folder is already shared with Samba, give LAN Share the share's
+  path (`\\raspberrypi\games`). LAN Share copies the game there and asks the server to scan. The server itself
+  stays read only, and nothing below is needed.
+- **Over HTTP, straight to abstored**: switch uploads on here.
+
+To switch uploads on:
+
+1. Let the service account **write** to the games folder:
+
+   ```sh
+   sudo chgrp -R abstored /srv/games
+   sudo chmod -R g+rwX /srv/games
+   ```
+
+2. In the unit file, add `--allow-uploads` to the `ExecStart` line, and let the service write to the games
+   folder, which `ProtectSystem=strict` otherwise keeps read only:
+
+   ```ini
+   ExecStart=/usr/local/bin/abstored /srv/games --name "Living room" \
+       --covers /usr/local/share/abstored --state /var/cache/abstored --allow-uploads
+   ReadWritePaths=/srv/games
+   ```
+
+3. Restart it (`sudo systemctl daemon-reload && sudo systemctl restart abstored`), and read the token it made:
+
+   ```sh
+   sudo cat /var/cache/abstored/upload-token
+   ```
+
+   Type that token into LAN Share, next to the server's address. It stays the same across restarts. To make
+   a new one, delete the file and restart. To choose your own, add `--upload-token <token>` to `ExecStart`.
+
+An upload arrives in a hidden `.uploading` folder first. It moves into the games folder only when every file
+has arrived, under a free name (" (2)" when the name is taken). The status page says **uploads on** or
+**read only**.
+
 ## 6. Let the network reach it
 
 If the machine has a firewall, open port 8124 (or the port you chose) to your home network only:
