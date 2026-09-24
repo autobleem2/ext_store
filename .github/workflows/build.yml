@@ -1,0 +1,112 @@
+# ext_store CI: the Store's tests on the host, then the extension for every platform and abstored (its LAN
+# server) for the machines that serve, all in the shared image with ci/build.sh. The Store is built with the
+# launcher (AB_EXTENSION_DIRS - the launcher's docs/store-plan.md, until the SDK package exists), so the
+# launcher is checked out next to this repository: its develop for a branch build, its master for a v* tag -
+# the launcher the packages are for, whose AB_SDK_ABI the plugin then carries by construction.
+#
+# Packages: ext_store-<key>-<v>.zip (Extensions/store/, key psc|rpi|rpi64|pcusb|win) and
+# abstored-<os>-<arch>-<v>.tar.gz|.zip. A v* tag publishes them as a release; develop keeps the rolling
+# `nightly` pre-release current. Gated by AB_CI_ENABLED, like every autobleem2 repository.
+name: build
+on:
+  push:
+    branches: [develop, master]
+    tags: ['v*']
+  pull_request:
+    branches: [develop, master]
+  workflow_dispatch:
+# a container job's steps run under sh unless told otherwise, and sh has no [[ ]]
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    if: vars.AB_CI_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/autobleem2/autobleem-build:${{ startsWith(github.ref, 'refs/tags/v') && 'latest' || 'develop' }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      SCCACHE_DIR: /sccache
+      SCCACHE_CACHE_SIZE: 2G
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: ext_store
+          fetch-depth: 0
+      - uses: actions/checkout@v7
+        with:
+          repository: autobleem2/autobleem
+          ref: ${{ startsWith(github.ref, 'refs/tags/v') && 'master' || 'develop' }}
+          path: autobleem
+          submodules: recursive
+          fetch-depth: 0
+      - name: Restore sccache cache
+        uses: actions/cache@v6
+        with:
+          path: /sccache
+          key: sccache-store-${{ github.sha }}
+          restore-keys: sccache-store-
+      - name: Version
+        working-directory: ext_store
+        run: |
+          # the checkouts belong to another user than the container's; git refuses them otherwise
+          git config --global --add safe.directory '*'
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then echo "AB_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+          else echo "AB_VERSION=$(sed -n 's/^Version=//p' extension.ini | tr -d '\r')-$(date -u +%Y%m%d)-$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"; fi
+          echo "launcher: $(git -C ../autobleem describe --tags --always)"
+      - name: Tests, format and abstored for linux-x86_64 (host)
+        working-directory: ext_store
+        run: ci/build.sh native
+      - name: The console (psc)
+        working-directory: ext_store
+        run: ci/build.sh psc
+      - name: Raspberry Pi (rpi, rpi64)
+        working-directory: ext_store
+        run: ci/build.sh rpi rpi64
+      - name: The PC stick (pcusb)
+        working-directory: ext_store
+        run: ci/build.sh pcusb
+      - name: Windows (win)
+        working-directory: ext_store
+        run: ci/build.sh win
+      - uses: actions/upload-artifact@v7
+        with:
+          name: store-packages
+          path: |
+            ext_store/dist/*.zip
+            ext_store/dist/*.tar.gz
+          retention-days: 30
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions: { contents: write }
+    steps:
+      - uses: actions/download-artifact@v8
+        with: { name: store-packages, path: out }
+      - name: Attach to the release
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          prerelease=""; case "${GITHUB_REF_NAME}" in *-*) prerelease="--prerelease";; esac
+          gh release create "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" \
+            --title "AutoBleem Store ${GITHUB_REF_NAME}" --generate-notes $prerelease out/* || \
+          gh release upload "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" out/* --clobber
+
+  nightly:
+    if: github.ref == 'refs/heads/develop' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions: { contents: write }
+    steps:
+      - uses: actions/download-artifact@v8
+        with: { name: store-packages, path: out }
+      - uses: autobleem2/autobleem-build/.github/actions/nightly-release@develop
+        with:
+          files: out/*
