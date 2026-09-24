@@ -1,6 +1,6 @@
 # AutoBleem Store - Danish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 38
+# Untranslated: 0 / Total: 42
 A TSV list of downloads, on any web server=En TSV-liste med downloads på en hvilken som helst webserver
 Add=Tilføj
 Add a source URL=Tilføj en kilde-URL
@@ -21,13 +21,17 @@ Not connected=Ikke forbundet
 Not installable=Kan ikke installeres
 Nothing here yet=Intet her endnu
 Nothing is downloading=Intet hentes
+Nothing matches=Intet matcher
+Page=Side
 Queued=I kø
 Reading the sources...=Læser kilderne...
+Reading...=Læser...
 Refresh=Genindlæs
 Remove=Fjern
 Remove it from this system?=Fjern fra dette system?
 Remove this source=Fjern denne kilde
 Retry=Prøv igen
+Search=Søg
 Size=Størrelse
 Source=Kilde
 Sources=Kilder

@@ -70,7 +70,9 @@ public:
     }
 
     void run() override {
-        store.refresh();  // the sources read again, remote ones fetched, while the screen is up
+        // the sources fetched again while the screen is up - it opens on what it has (the cached copies at worst),
+        // and a refresh younger than five minutes is not repeated (Square in the screen forces one)
+        store.refreshIfOlderThan(300);
         pictures.start(); // looked for while the screen is up, and kept for the next time
         GuiStore screen(*Gui::getInstance(), store, pictures);
         screen.show();

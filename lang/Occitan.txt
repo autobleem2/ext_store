@@ -1,6 +1,6 @@
 # AutoBleem Store - Occitan translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 38
+# Untranslated: 0 / Total: 42
 A TSV list of downloads, on any web server=Una lista TSV de telecargaments, sus quin servidor web que siá
 Add=Apondre
 Add a source URL=Apondre l'URL d'una font
@@ -21,13 +21,17 @@ Not connected=Pas connectat
 Not installable=Pas installable
 Nothing here yet=Encara pas res aicí
 Nothing is downloading=Cap de telecargament en cors
+Nothing matches=Cap de resultat
+Page=Pagina
 Queued=En espèra
 Reading the sources...=Lectura de las fonts...
+Reading...=Lectura...
 Refresh=Actualizar
 Remove=Suprimir
 Remove it from this system?=Lo suprimir d'aqueste sistèma ?
 Remove this source=Suprimir aquesta font
 Retry=Tornar ensajar
+Search=Recèrca
 Size=Talha
 Source=Font
 Sources=Fonts

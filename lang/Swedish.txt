@@ -1,6 +1,6 @@
 # AutoBleem Store - Swedish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 38
+# Untranslated: 0 / Total: 42
 A TSV list of downloads, on any web server=En TSV-lista med nedladdningar, på valfri webbserver
 Add=Lägg till
 Add a source URL=Lägg till en käll-URL
@@ -21,13 +21,17 @@ Not connected=Inte ansluten
 Not installable=Kan inte installeras
 Nothing here yet=Inget här ännu
 Nothing is downloading=Inget laddas ned
+Nothing matches=Inga träffar
+Page=Sida
 Queued=I kö
 Reading the sources...=Läser källorna...
+Reading...=Läser...
 Refresh=Läs in igen
 Remove=Ta bort
 Remove it from this system?=Ta bort från det här systemet?
 Remove this source=Ta bort den här källan
 Retry=Försök igen
+Search=Sök
 Size=Storlek
 Source=Källa
 Sources=Källor

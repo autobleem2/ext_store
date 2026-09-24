@@ -144,7 +144,7 @@ TEST_CASE("StoreService reads our catalog and the user's sources, local and remo
     s.site.bodies["https://acme/list.tsv"] = "# name: Acme\nAcme Game\thttps://acme/a.pbp\n";
     StoreService store(s.config());
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
 
     vector<StoreSourceInfo> sources = store.sources();
     REQUIRE(sources.size() == 3);
@@ -170,7 +170,7 @@ TEST_CASE("StoreService installs an App, remembers it, offers an update, removes
     {
         StoreService store(s.config());
         store.start();
-        REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+        REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
         REQUIRE(store.enqueue(key));
         CHECK_FALSE(store.enqueue(key)); // once
         REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Installed; }));
@@ -186,7 +186,7 @@ TEST_CASE("StoreService installs an App, remembers it, offers an update, removes
     s.site.bodies["https://site/store/psc/catalog.json"] = s.catalog("2.2");
     StoreService again(s.config());
     again.start();
-    REQUIRE(waitFor([&] { return again.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return again.sourcesLoaded() && !again.readingSources(); }));
     const StoreEntry *e = s.entry(again.entries(), key);
     CHECK(e->state == StoreState::UpdateAvailable);
     CHECK(e->installedVersion == "2.1");
@@ -207,7 +207,7 @@ TEST_CASE("StoreService installs a two-disc game from a TSV source into one fold
     s.site.bodies["https://g/d2.chd"] = "disc two";
     StoreService store(s.config());
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
     REQUIRE(store.enqueue("G|ps1/Two Discs"));
     REQUIRE(waitFor([&] { return s.entry(store.entries(), "G|ps1/Two Discs")->state == StoreState::Installed; }));
     CHECK(fileText(s.tmp.at("Games/Two Discs/d1.chd")) == "disc one");
@@ -220,7 +220,7 @@ TEST_CASE("StoreService: a download that does not match fails, says why, and lea
     s.site.bodies["https://site/tyrian.zip"] = "tampered";
     StoreService store(s.config());
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
     REQUIRE(store.enqueue("AutoBleem|app/opentyrian"));
     REQUIRE(waitFor([&] { return s.entry(store.entries(), "AutoBleem|app/opentyrian")->state == StoreState::Failed; }));
     CHECK_FALSE(s.entry(store.entries(), "AutoBleem|app/opentyrian")->error.empty());
@@ -235,7 +235,7 @@ TEST_CASE("StoreService: paused mid-download keeps the bytes and the place in th
     const string key = "AutoBleem|app/opentyrian";
     StoreService store(s.config());
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
     REQUIRE(store.enqueue(key));
     REQUIRE(waitFor([&] { return store.progress().busy && store.progress().done > 0; }));
     store.pause(); // a game is starting
@@ -260,7 +260,7 @@ TEST_CASE("StoreService: a stop (power off) mid-download leaves it queued for th
     {
         StoreService store(s.config());
         store.start();
-        REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+        REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
         REQUIRE(store.enqueue(key));
         REQUIRE(waitFor([&] { return store.progress().done > 0; }));
         auto before = chrono::steady_clock::now();
@@ -281,7 +281,7 @@ TEST_CASE("StoreService: cancel stops the download in flight and drops it") {
     const string key = "AutoBleem|app/opentyrian";
     StoreService store(s.config());
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
     REQUIRE(store.enqueue(key));
     REQUIRE(waitFor([&] { return store.progress().done > 0; }));
     REQUIRE(store.cancel(key));
@@ -302,7 +302,7 @@ TEST_CASE("StoreService: a cancel mid-way through a two-disc game drops the disc
     const string key = "Two|ps1/Two Discs";
     StoreService store(s.config());
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
     REQUIRE(store.enqueue(key));
     REQUIRE(waitFor([&] { return DirEntry::exists(store.downloadsDir() + "/d2.chd.part"); }));
     REQUIRE(store.cancel(key));
@@ -317,11 +317,11 @@ TEST_CASE("StoreService offline: the cached catalog, and nothing downloaded unti
     {
         StoreService online(s.config(true));
         online.start();
-        REQUIRE(waitFor([&] { return online.sourcesLoaded(); }));
+        REQUIRE(waitFor([&] { return online.sourcesLoaded() && !online.readingSources(); }));
     }
     StoreService store(s.config(false));
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
     CHECK(store.entries().size() == 2); // from the cache
     CHECK(store.progress().offline);
     REQUIRE(store.enqueue("AutoBleem|app/opentyrian"));
@@ -338,7 +338,7 @@ TEST_CASE("StoreService lists a PSN package (.pkg) but never queues or fetches i
                     "NPUJ00001\tJP\tPlaceholder\thttp://example.invalid/a.pkg\t1000\n");
     StoreService store(s.config());
     store.start();
-    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
     const StoreEntry *e = s.entry(store.entries(), "nps|ps1/Placeholder");
     REQUIRE(e != nullptr);
     CHECK(e->state == StoreState::NotInstallable);
@@ -349,13 +349,69 @@ TEST_CASE("StoreService lists a PSN package (.pkg) but never queues or fetches i
         CHECK(line.find("example.invalid") == string::npos); // not one request for it
 }
 
+TEST_CASE("StoreService: a source added during a download is read at once, alone; a removed one goes at once") {
+    Setup s;
+    s.tmp.writeFile("System/Extensions/store/sources.txt", "https://acme/one.tsv\n");
+    s.site.bodies["https://acme/one.tsv"] = "# name: One\nGame One\thttps://acme/1.chd\n";
+    s.site.bodies["https://acme/two.tsv"] = "# name: Two\nGame Two\thttps://acme/2.chd\n";
+    s.site.stalls.insert("https://site/tyrian.zip"); // a download that takes its time
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue("AutoBleem|app/opentyrian"));
+    REQUIRE(waitFor([&] { return store.progress().busy; }));
+    size_t fetchesBefore;
+    {
+        lock_guard<mutex> lock(s.site.m);
+        fetchesBefore = s.site.lines.size();
+    }
+
+    string error;
+    REQUIRE(store.addSourceUrl("https://acme/two.tsv", error));
+    // listed at once, as loading, then read - while the download is still going
+    CHECK(store.sources().back().where == "https://acme/two.tsv");
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), "Two|ps1/Game Two") != nullptr; }));
+    CHECK_FALSE(store.sources().back().loading);
+    CHECK(store.progress().busy);
+    {
+        lock_guard<mutex> lock(s.site.m);
+        // only the new source was fetched - not the catalog, not the other source
+        REQUIRE(s.site.lines.size() == fetchesBefore + 1);
+        CHECK(s.site.lines.back().find("https://acme/two.tsv") != string::npos);
+    }
+
+    REQUIRE(store.removeSourceUrl("https://acme/one.tsv"));
+    CHECK(s.entry(store.entries(), "One|ps1/Game One") == nullptr); // no waiting for anything
+    CHECK(s.entry(store.entries(), "Two|ps1/Game Two") != nullptr);
+    store.cancel("AutoBleem|app/opentyrian");
+}
+
+TEST_CASE("StoreService opens on the cached copies at once, while a slow source is fetched afresh") {
+    Setup s;
+    s.tmp.makeSubDir("System/Extensions/store/cache");
+    s.tmp.writeFile("System/Extensions/store/cache/catalog.json", s.catalog("2.0"));
+    s.site.stalls.insert("https://site/store/psc/catalog.json"); // the site takes its time today
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }, 1000));
+    const StoreEntry *tyrian = s.entry(store.entries(), "AutoBleem|app/opentyrian");
+    REQUIRE(tyrian != nullptr);
+    CHECK(tyrian->item.version == "2.0"); // the cached copy
+    CHECK(store.readingSources());        // and the fresh one on its way
+    CHECK(store.sources().front().loading);
+
+    store.refreshIfOlderThan(300); // no finished refresh yet: asks for one - still just the one flag
+    CHECK(store.readingSources());
+}
+
 TEST_CASE("StoreService: source URLs, and file names") {
     Setup s;
     StoreService store(s.config());
     string error;
     CHECK_FALSE(store.addSourceUrl("ftp://x/y.tsv", error));
     CHECK(store.addSourceUrl(" https://acme/list.tsv ", error));
-    CHECK(store.addSourceUrl("https://acme/list.tsv", error)); // once
+    CHECK_FALSE(store.addSourceUrl("https://acme/list.tsv", error)); // once, and said so
+    CHECK(error == "that source is in the list already");
     CHECK(store.sourceUrls() == vector<string>{"https://acme/list.tsv"});
     CHECK(store.removeSourceUrl("https://acme/list.tsv"));
     CHECK(store.sourceUrls().empty());

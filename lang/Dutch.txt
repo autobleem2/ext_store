@@ -1,6 +1,6 @@
 # AutoBleem Store - Dutch translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 38
+# Untranslated: 0 / Total: 42
 A TSV list of downloads, on any web server=Een TSV-lijst met downloads, op elke webserver
 Add=Toevoegen
 Add a source URL=Bron-URL toevoegen
@@ -21,13 +21,17 @@ Not connected=Niet verbonden
 Not installable=Niet te installeren
 Nothing here yet=Hier is nog niets
 Nothing is downloading=Er wordt niets gedownload
+Nothing matches=Niets gevonden
+Page=Pagina
 Queued=In de wachtrij
 Reading the sources...=Bronnen worden gelezen...
+Reading...=Bezig met lezen...
 Refresh=Vernieuwen
 Remove=Verwijderen
 Remove it from this system?=Van dit systeem verwijderen?
 Remove this source=Deze bron verwijderen
 Retry=Opnieuw proberen
+Search=Zoeken
 Size=Grootte
 Source=Bron
 Sources=Bronnen

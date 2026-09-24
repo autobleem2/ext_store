@@ -8,6 +8,8 @@
 #include "core/services/downloader.h"
 #include "core/services/system.h"
 
+#include <ableem/engine/md5.h>
+
 #include <algorithm>
 #include <chrono>
 #include <fstream>
@@ -117,16 +119,26 @@ void StoreService::start() {
         return;
     stop_ = false;
     worker_ = thread([this] { workerMain(); });
+    sourcesThread_ = thread([this] { sourcesMain(); });
 }
 
 void StoreService::stop() {
     stop_ = true;
     if (worker_.joinable())
         worker_.join();
+    if (sourcesThread_.joinable())
+        sourcesThread_.join();
 }
 
 void StoreService::refresh() {
     refresh_ = true;
+}
+
+void StoreService::refreshIfOlderThan(int seconds) {
+    lock_guard<mutex> lock(mutex_);
+    if (lastRefresh_ == chrono::steady_clock::time_point() ||
+        chrono::steady_clock::now() - lastRefresh_ > chrono::seconds(seconds))
+        refresh_ = true;
 }
 
 void StoreService::pause() {
@@ -137,19 +149,23 @@ void StoreService::resume() {
     paused_ = false;
 }
 
+bool StoreService::readingSources() const {
+    if (readingSources_ || refresh_)
+        return true;
+    lock_guard<mutex> lock(mutex_);
+    return !sourcesToRead_.empty();
+}
+
 //*******************************
 // StoreService::workerMain
 //*******************************
+// the downloads - the sources are read on their own thread, so adding one never waits for a download
 void StoreService::workerMain() {
     System::lowerCurrentThreadPriority(); // never the CPU the launcher's frames or a game need
     while (!stop_) {
-        if (refresh_.exchange(false)) {
-            loadSources();
-            continue;
-        }
         const bool online = !config_.networkUp || config_.networkUp();
         string next;
-        if (!paused_ && online) {
+        if (!paused_ && online && loaded_ && refreshedOnce_) {
             lock_guard<mutex> lock(mutex_);
             if (!queue_.empty())
                 next = queue_.front();
@@ -159,6 +175,53 @@ void StoreService::workerMain() {
             continue;
         }
         work(next);
+    }
+}
+
+//*******************************
+// StoreService::sourcesMain
+//*******************************
+// every source read again on refresh(); a source added since, on its own
+void StoreService::sourcesMain() {
+    System::lowerCurrentThreadPriority();
+    while (!stop_) {
+        if (refresh_.exchange(false)) {
+            readingSources_ = true;
+            loadSources();
+            readingSources_ = false;
+            continue;
+        }
+        string url;
+        {
+            lock_guard<mutex> lock(mutex_);
+            if (!sourcesToRead_.empty())
+                url = sourcesToRead_.front();
+        }
+        if (url.empty()) {
+            this_thread::sleep_for(chrono::milliseconds(100));
+            continue;
+        }
+        readingSources_ = true;
+        {
+            lock_guard<mutex> lock(mutex_);
+            readingNow_ = url;
+            assembleSources();
+            events_.listChanged = true;
+        }
+        LoadedSource source = readRemote(url);
+        {
+            lock_guard<mutex> lock(mutex_);
+            if (!sourcesToRead_.empty() && sourcesToRead_.front() == url)
+                sourcesToRead_.pop_front();
+            // removed while it was being read: forgotten, not brought back
+            const vector<string> urls = readLines(sourcesFile());
+            if (std::find(urls.begin(), urls.end(), url) != urls.end())
+                loadedSources_[url] = source;
+            readingNow_.clear();
+            assembleSources();
+            events_.listChanged = true;
+        }
+        readingSources_ = false;
     }
 }
 
@@ -176,89 +239,192 @@ bool StoreService::fetchTo(const string &url, const string &target, string &erro
 }
 
 //*******************************
+// StoreService::readCatalog / readLocal / readRemote
+//*******************************
+// ours: the catalog on the download site, its last good copy when it cannot be fetched now
+StoreService::LoadedSource StoreService::readCatalog(bool fetch) {
+    const bool online = fetch && (!config_.networkUp || config_.networkUp());
+    LoadedSource s;
+    s.info.name = OurSourceName;
+    s.info.where = config_.catalogUrl;
+    s.info.remote = true;
+    s.info.ours = true;
+    const string cached = cacheDir() + sep + "catalog.json";
+    string fetchError;
+    if (online && !fetchTo(config_.catalogUrl, cached, fetchError))
+        s.info.error = fetchError;
+    StoreCatalog catalog;
+    string error;
+    if (DirEntry::exists(cached) && catalog.load(cached, OurSourceName, error)) {
+        s.info.items = static_cast<int>(catalog.items.size());
+        s.items = catalog.items;
+    } else if (s.info.error.empty()) {
+        s.info.error = online ? error : "not connected";
+    }
+    return s;
+}
+
+// a TSV dropped in sources/
+StoreService::LoadedSource StoreService::readLocal(const string &path) {
+    LoadedSource s;
+    s.info.where = path;
+    StoreSourceTsv tsv;
+    string error;
+    if (StoreSourceTsv::load(path, DirEntry::getFileNameWithoutExtension(DirEntry::getFileNameFromPath(path)), tsv,
+                             error)) {
+        s.info.name = tsv.name;
+        s.info.items = static_cast<int>(tsv.items.size());
+        s.info.problems = tsv.problems;
+        s.items = tsv.items;
+    } else {
+        s.info.name = DirEntry::getFileNameFromPath(path);
+        s.info.error = error;
+    }
+    return s;
+}
+
+// a URL from sources.txt, its last good copy (cache/source-<md5 of the URL>.tsv) when it cannot be fetched now
+StoreService::LoadedSource StoreService::readRemote(const string &url, bool fetch) {
+    const bool online = fetch && (!config_.networkUp || config_.networkUp());
+    LoadedSource s;
+    s.info.where = url;
+    s.info.remote = true;
+    const string cached = cachedSourceFile(url);
+    string fetchError;
+    if (online && !fetchTo(url, cached, fetchError))
+        s.info.error = fetchError;
+    StoreSourceTsv tsv;
+    string error;
+    const string fallbackName = url.substr(url.find_last_of('/') + 1);
+    if (DirEntry::exists(cached) && StoreSourceTsv::load(cached, fallbackName, tsv, error)) {
+        s.info.name = tsv.name;
+        s.info.items = static_cast<int>(tsv.items.size());
+        s.info.problems = tsv.problems;
+        s.items = tsv.items;
+    } else {
+        s.info.name = fallbackName;
+        if (s.info.error.empty())
+            s.info.error = online ? error : "not connected";
+    }
+    return s;
+}
+
+string StoreService::cachedSourceFile(const string &url) const {
+    return cacheDir() + sep + "source-" + ableem::Md5::ofString(url) + ".tsv";
+}
+
+//*******************************
 // StoreService::loadSources
 //*******************************
+// every source read again, each shown as it arrives; a source gone since (a file deleted) is forgotten
 void StoreService::loadSources() {
-    vector<StoreItem> items;
-    vector<StoreSourceInfo> infos;
-    const bool online = !config_.networkUp || config_.networkUp();
+    vector<string> where;
+    auto keep = [&](const string &key, const LoadedSource &source) {
+        where.push_back(key);
+        PLOG_INFO << "source " << source.info.name << " (" << source.info.where << "): " << source.info.items
+                  << " items" << (source.info.error.empty() ? "" : " - " + source.info.error)
+                  << (source.info.problems.empty() ? ""
+                                                   : ", " + to_string(source.info.problems.size()) + " lines skipped");
+        lock_guard<mutex> lock(mutex_);
+        loadedSources_[key] = source;
+        readingNow_.clear();
+        assembleSources();
+        events_.listChanged = true;
+    };
+    auto reading = [&](const string &key) {
+        lock_guard<mutex> lock(mutex_);
+        readingNow_ = key;
+        assembleSources();
+        events_.listChanged = true;
+    };
 
-    // ours: the catalog on the download site, its last good copy when it cannot be fetched now
-    if (!config_.catalogUrl.empty()) {
-        StoreSourceInfo info;
-        info.name = OurSourceName;
-        info.where = config_.catalogUrl;
-        info.remote = true;
-        info.ours = true;
-        const string cached = cacheDir() + sep + "catalog.json";
-        string fetchError;
-        if (online && !fetchTo(config_.catalogUrl, cached, fetchError))
-            info.error = fetchError;
-        StoreCatalog catalog;
-        string error;
-        if (DirEntry::exists(cached) && catalog.load(cached, OurSourceName, error)) {
-            info.items = static_cast<int>(catalog.items.size());
-            items.insert(items.end(), catalog.items.begin(), catalog.items.end());
-        } else if (info.error.empty()) {
-            info.error = online ? error : "not connected";
+    // the first time: the last good copies from the cache, at once - the Store opens on them while every source
+    // is fetched afresh below, each one replacing its copy as it arrives
+    if (!loaded_) {
+        {
+            lock_guard<mutex> lock(mutex_);
+            if (!config_.catalogUrl.empty() && DirEntry::exists(cacheDir() + sep + "catalog.json"))
+                loadedSources_[config_.catalogUrl] = readCatalog(false);
+            for (const string &url : readLines(sourcesFile()))
+                if (DirEntry::exists(cachedSourceFile(url)))
+                    loadedSources_[url] = readRemote(url, false);
+            for (const DirEntry &e : DirEntry::diru_FilesOnly(sourcesDir()))
+                if (ableem::toLowerCopy(DirEntry::getFileExtension(e.name)) == "tsv")
+                    loadedSources_[sourcesDir() + sep + e.name] = readLocal(sourcesDir() + sep + e.name);
+            assembleSources();
+            events_.listChanged = true;
         }
-        infos.push_back(info);
+        loaded_ = true;
     }
 
-    // the user's: every sources/*.tsv, then every URL in sources.txt
+    if (!config_.catalogUrl.empty()) {
+        reading(config_.catalogUrl);
+        keep(config_.catalogUrl, readCatalog());
+    }
     for (const DirEntry &e : DirEntry::diru_FilesOnly(sourcesDir())) {
         if (ableem::toLowerCopy(DirEntry::getFileExtension(e.name)) != "tsv")
             continue;
-        StoreSourceInfo info;
-        info.where = sourcesDir() + sep + e.name;
-        StoreSourceTsv tsv;
-        string error;
-        if (StoreSourceTsv::load(info.where, DirEntry::getFileNameWithoutExtension(e.name), tsv, error)) {
-            info.name = tsv.name;
-            info.items = static_cast<int>(tsv.items.size());
-            info.problems = tsv.problems;
-            items.insert(items.end(), tsv.items.begin(), tsv.items.end());
-        } else {
-            info.name = e.name;
-            info.error = error;
-        }
-        infos.push_back(info);
+        const string path = sourcesDir() + sep + e.name;
+        keep(path, readLocal(path));
     }
-    int n = 0;
     for (const string &url : readLines(sourcesFile())) {
-        StoreSourceInfo info;
-        info.where = url;
-        info.remote = true;
-        const string cached = cacheDir() + sep + "source-" + to_string(++n) + ".tsv";
-        string fetchError;
-        if (online && !fetchTo(url, cached, fetchError))
-            info.error = fetchError;
-        StoreSourceTsv tsv;
-        string error;
-        string fallbackName = url.substr(url.find_last_of('/') + 1);
-        if (DirEntry::exists(cached) && StoreSourceTsv::load(cached, fallbackName, tsv, error)) {
-            info.name = tsv.name;
-            info.items = static_cast<int>(tsv.items.size());
-            info.problems = tsv.problems;
-            items.insert(items.end(), tsv.items.begin(), tsv.items.end());
-        } else {
-            info.name = fallbackName;
-            if (info.error.empty())
-                info.error = online ? error : "not connected";
-        }
-        infos.push_back(info);
+        if (stop_)
+            return;
+        reading(url);
+        keep(url, readRemote(url));
     }
-    for (const StoreSourceInfo &info : infos)
-        PLOG_INFO << "source " << info.name << " (" << info.where << "): " << info.items << " items"
-                  << (info.error.empty() ? "" : " - " + info.error)
-                  << (info.problems.empty() ? "" : ", " + to_string(info.problems.size()) + " lines skipped");
 
     lock_guard<mutex> lock(mutex_);
+    for (auto it = loadedSources_.begin(); it != loadedSources_.end();)
+        it = std::find(where.begin(), where.end(), it->first) == where.end() ? loadedSources_.erase(it) : std::next(it);
+    // a URL read on its own meanwhile has just been read with the rest
+    sourcesToRead_.clear();
+    assembleSources();
+    lastRefresh_ = chrono::steady_clock::now();
+    refreshedOnce_ = true;
+    loaded_ = true;
+    events_.listChanged = true;
+}
+
+//*******************************
+// StoreService::assembleSources (mutex_ held)
+//*******************************
+// the list of sources and every item they offer, in the order the Sources tab shows them: ours, the local
+// files, then the URLs as sources.txt has them - one not read yet (just added) as a placeholder, "loading"
+void StoreService::assembleSources() {
+    vector<StoreItem> items;
+    vector<StoreSourceInfo> infos;
+    auto add = [&](const string &key) {
+        auto it = loadedSources_.find(key);
+        if (it == loadedSources_.end())
+            return false;
+        StoreSourceInfo info = it->second.info;
+        info.loading = key == readingNow_;
+        infos.push_back(info);
+        items.insert(items.end(), it->second.items.begin(), it->second.items.end());
+        return true;
+    };
+    if (!config_.catalogUrl.empty() && !add(config_.catalogUrl)) {
+        StoreSourceInfo info;
+        info.name = OurSourceName;
+        info.where = config_.catalogUrl;
+        info.remote = info.ours = info.loading = true;
+        infos.push_back(info);
+    }
+    for (const auto &source : loadedSources_)
+        if (!source.second.info.remote)
+            add(source.first);
+    for (const string &url : readLines(sourcesFile()))
+        if (!add(url)) {
+            StoreSourceInfo info;
+            info.where = url;
+            info.name = url.substr(url.find_last_of('/') + 1);
+            info.remote = info.loading = true;
+            infos.push_back(info);
+        }
     items_ = items;
     sources_ = infos;
     rebuildEntries();
-    loaded_ = true;
-    events_.listChanged = true;
 }
 
 //*******************************
@@ -550,11 +716,19 @@ bool StoreService::addSourceUrl(const string &url, string &error) {
         return false;
     }
     vector<string> urls = sourceUrls();
-    if (std::find(urls.begin(), urls.end(), u) == urls.end()) {
+    if (std::find(urls.begin(), urls.end(), u) != urls.end()) {
+        error = "that source is in the list already";
+        return false;
+    }
+    {
         ofstream out(sourcesFile(), ios::binary | ios::app);
         out << u << "\n";
     }
-    refresh();
+    // read on the sources thread, on its own - it shows at once, as loading
+    lock_guard<mutex> lock(mutex_);
+    sourcesToRead_.push_back(u);
+    assembleSources();
+    events_.listChanged = true;
     return true;
 }
 
@@ -564,10 +738,18 @@ bool StoreService::removeSourceUrl(const string &url) {
     if (it == urls.end())
         return false;
     urls.erase(it);
-    ofstream out(sourcesFile(), ios::binary | ios::trunc);
-    for (const string &u : urls)
-        out << u << "\n";
-    refresh();
+    {
+        ofstream out(sourcesFile(), ios::binary | ios::trunc);
+        for (const string &u : urls)
+            out << u << "\n";
+    }
+    DirEntry::removeFile(cachedSourceFile(url));
+    // nothing to fetch: its items go now
+    lock_guard<mutex> lock(mutex_);
+    loadedSources_.erase(url);
+    sourcesToRead_.erase(std::remove(sourcesToRead_.begin(), sourcesToRead_.end(), url), sourcesToRead_.end());
+    assembleSources();
+    events_.listChanged = true;
     return true;
 }
 

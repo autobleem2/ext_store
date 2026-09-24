@@ -12,7 +12,13 @@ separate downloads, repository names `ext_<name>`).
   - the entries and their states;
   - `installed.tsv`, and the persisted `queue.txt`;
   - one worker thread at the lowest priority that downloads (resumable, stoppable) and installs through
-    core's `AppInstaller`/`GameInstaller`.
+    core's `AppInstaller`/`GameInstaller` - it starts only after one full refresh of the sources;
+  - a **sources thread** of its own, so reading a source never waits behind a download. The first read
+    shows the cached copies at once (`cache/catalog.json`, `cache/source-<md5 of the URL>.tsv`) and then
+    fetches each source afresh, replacing its copy as it arrives (`StoreSourceInfo::loading` while it is
+    read). `addSourceUrl` fetches only the new URL; `removeSourceUrl` fetches nothing, and its items go at
+    once. Opening the screen refreshes only when the last refresh is over five minutes old
+    (`refreshIfOlderThan`); Square forces one.
   
   It has no UI. It is tested in `tests/test_store_service.cpp` against a fake site.
 - `src/store_pictures.*` - `StorePictures`: an item's picture on a thread of its own (never behind a download).
@@ -25,7 +31,11 @@ separate downloads, repository names `ext_<name>`).
   with its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the
   launcher's `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are
   the extension's (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the
-  keyless "Add a source URL" row.
+  keyless "Add a source URL" row and for a row that went (a removed source). The Apps and Games lists page with
+  L2/R2 and Left/Right, show one source at a time with Select (round to all of them), and filter by a search
+  with Start (any case, part of the title); Circle widens a narrowed list before it closes the Store. A spinner
+  turns in the line under the header while sources are read, and at the end of a source's row. Removing a
+  source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
   URL, `store_download_command`, the platform keys; `AB_STORE_CATALOG` overrides the catalog), `poll()` →
   the launcher's bubble, `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's

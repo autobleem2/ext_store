@@ -7,7 +7,7 @@
 // Everything it keeps is in its state directory (System/Extensions/store/):
 //   sources/*.tsv     the user's own TSV sources, dropped on the stick
 //   sources.txt       the URLs of remote TSV sources, one per line (# comments)
-//   cache/            the last good copy of our catalog and of each remote source
+//   cache/            the last good copy of our catalog and of each remote source (source-<md5 of its URL>.tsv)
 //   downloads/        the files being downloaded (<name>.part while unfinished - they resume)
 //   staging/          the installers' unpacking room
 //   installed.tsv     what the Store installed: key, kind, version, path - one per line
@@ -18,6 +18,7 @@
 #include <ableem/engine/store_catalog.h>
 
 #include <atomic>
+#include <chrono>
 #include <cstdint>
 #include <deque>
 #include <functional>
@@ -67,6 +68,7 @@ struct StoreSourceInfo {
     int items = 0;
     std::vector<std::string> problems; // the TSV's skipped lines
     std::string error;                 // why it could not be read now (a cached copy stands in when there is one)
+    bool loading = false;              // being read right now (a source just added: not read yet)
 };
 
 //******************
@@ -118,12 +120,16 @@ public:
     void stop();
     // the sources read again - the remote ones fetched - on the worker
     void refresh();
+    // refresh(), unless the last one finished less than `seconds` ago - what opening the screen does
+    void refreshIfOlderThan(int seconds);
     Update poll();
 
     std::vector<StoreEntry> entries() const;
     std::vector<StoreSourceInfo> sources() const;
     Progress progress() const;
     bool sourcesLoaded() const { return loaded_; }
+    // a source is being read (a refresh, or one just added) - the screen's spinner
+    bool readingSources() const;
 
     bool enqueue(const std::string &key);
     bool cancel(const std::string &key);                     // out of the queue; the one being downloaded is stopped
@@ -133,7 +139,8 @@ public:
     void resume();
     bool paused() const { return paused_; }
 
-    // sources.txt
+    // sources.txt: an added URL is read on its own (the others are not fetched again), a removed one's items go
+    // at once, nothing fetched
     std::vector<std::string> sourceUrls() const;
     bool addSourceUrl(const std::string &url, std::string &error);
     bool removeSourceUrl(const std::string &url);
@@ -156,9 +163,20 @@ private:
     struct Installed {
         std::string kind, version, path;
     };
+    struct LoadedSource {
+        StoreSourceInfo info;
+        std::vector<ableem::StoreItem> items;
+    };
 
-    void workerMain();
-    void loadSources(); // on the worker
+    void workerMain();  // the downloads
+    void sourcesMain(); // the sources
+    void loadSources(); // every source, on the sources thread
+    // fetch = false: the cached copy only (the list the Store opens on)
+    LoadedSource readCatalog(bool fetch = true);
+    LoadedSource readLocal(const std::string &path);
+    LoadedSource readRemote(const std::string &url, bool fetch = true);
+    std::string cachedSourceFile(const std::string &url) const;
+    void assembleSources(); // items_ and sources_ from loadedSources_ (mutex_ held)
     void rebuildEntries();
     void work(const std::string &key); // one queued item, on the worker
     bool fetchTo(const std::string &url, const std::string &target, std::string &error);
@@ -170,6 +188,10 @@ private:
     Config config_;
     mutable std::mutex mutex_;
     std::vector<ableem::StoreItem> items_;
+    std::map<std::string, LoadedSource> loadedSources_; // by where: the catalog's URL, a file, a source URL
+    std::deque<std::string> sourcesToRead_;             // URLs added since the last full read
+    std::string readingNow_;                            // the source being read
+    std::chrono::steady_clock::time_point lastRefresh_; // when every source was last read
     std::vector<StoreSourceInfo> sources_;
     std::vector<StoreEntry> entries_;
     std::map<std::string, Installed> installed_;
@@ -183,9 +205,12 @@ private:
     Update events_;
 
     std::thread worker_;
+    std::thread sourcesThread_;
+    std::atomic<bool> readingSources_{false};
     std::atomic<bool> stop_{false};
     std::atomic<bool> paused_{false};
     std::atomic<bool> refresh_{true};
     std::atomic<bool> loaded_{false};
-    std::string cancelKey_; // under mutex_
+    std::atomic<bool> refreshedOnce_{false}; // every source read afresh once: the downloads may start
+    std::string cancelKey_;                  // under mutex_
 };

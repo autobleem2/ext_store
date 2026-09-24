@@ -1,6 +1,6 @@
 # AutoBleem Store - Chinese_Simplified translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 38
+# Untranslated: 0 / Total: 42
 A TSV list of downloads, on any web server=任意网站上的 TSV 下载列表
 Add=添加
 Add a source URL=添加来源网址
@@ -21,13 +21,17 @@ Not connected=未连接
 Not installable=无法安装
 Nothing here yet=这里还没有内容
 Nothing is downloading=没有正在进行的下载
+Nothing matches=没有匹配项
+Page=页
 Queued=排队中
 Reading the sources...=正在读取来源...
+Reading...=正在读取...
 Refresh=刷新
 Remove=移除
 Remove it from this system?=要从此系统中移除吗？
 Remove this source=移除此来源
 Retry=重试
+Search=搜索
 Size=大小
 Source=来源
 Sources=来源

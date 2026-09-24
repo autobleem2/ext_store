@@ -1,8 +1,10 @@
 //
 // GuiStore: the AutoBleem Store's screen - four tabs (Apps, Games, Downloads, Sources), a list and the selected
-// item's details, drawn with the launcher's own classic panel in the user's theme. Each item has its picture
-// (an App's icon, a game's cover - StorePictures finds them) beside it in the list and above its details. It
-// only shows and asks: StoreService does the work, on its own thread, and goes on after the screen is closed.
+// item's details, drawn with the launcher's own classic panel in the user's theme. The Apps and Games lists
+// page with L2/R2 (and Left/Right), show one source at a time with Select, and filter by a search with Start. Each item
+// has its picture (an App's icon, a game's cover - StorePictures finds them) beside it in the list and above its
+// details. It only shows and asks: StoreService does the work, on its own thread, and goes on after the screen is
+// closed.
 //
 #pragma once
 
@@ -43,6 +45,7 @@ private:
         std::string detail;
         bool action = false; // the Sources tab's "Add a source URL"
         bool remoteSource = false;
+        bool loading = false; // a source being read: a spinner at the row's end
     };
 
     void reload(); // the rows of the tab, from the service
@@ -50,6 +53,12 @@ private:
     int visibleRows() const;
     void cross();
     void triangle();
+    // Select: the next source of this tab's items, round to all of them
+    void nextSourceFilter();
+    // Start: the on-screen keyboard for a search, an empty one clears it
+    void askSearch();
+    bool filtered() const { return !sourceFilter.empty() || !search.empty(); }
+    bool matchesFilter(const StoreEntry &e) const;
     const StoreEntry *selectedEntry() const;
     const StoreEntry *entryFor(const std::string &key) const;
     void drawDetails(const ableem::Rect &pane);
@@ -72,6 +81,8 @@ private:
     std::vector<Row> rows;
     int selected = 0;
     int firstVisible = 0;
+    std::string sourceFilter; // the one source the Apps/Games lists show, "" = all
+    std::string search;       // what a title must contain (any case), "" = anything
     uint32_t lastReload = 0;
     PanelStyle style;
 };

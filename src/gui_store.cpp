@@ -94,7 +94,8 @@ void GuiStore::reload() {
     case Tab::Apps:
     case Tab::Games:
         for (const StoreEntry &e : entries)
-            if (e.state != StoreState::Unsupported && e.item.kind == (tab == Tab::Apps ? "app" : "ps1"))
+            if (e.state != StoreState::Unsupported && e.item.kind == (tab == Tab::Apps ? "app" : "ps1") &&
+                matchesFilter(e))
                 rows.push_back(entryRow(e));
         sort(rows.begin(), rows.end(),
              [](const Row &a, const Row &b) { return lessCaseInsensitive(a.title, b.title); });
@@ -121,8 +122,11 @@ void GuiStore::reload() {
             r.key = s.where;
             r.title = s.name;
             r.remoteSource = s.remote && !s.ours;
+            r.loading = s.loading;
             r.detail = to_string(s.items) + " " + _("items");
-            if (!s.error.empty())
+            if (s.loading && s.items == 0)
+                r.detail = _("Reading...");
+            else if (!s.error.empty())
                 r.detail += "  -  " + s.error;
             else if (!s.problems.empty())
                 r.detail += "  -  " + s.problems.front();
@@ -137,8 +141,9 @@ void GuiStore::reload() {
         }
         break;
     }
-    // the same row again: by its key, or - a row without one (the Sources tab's "Add a source URL") - by its
-    // place, which a reload every half second must not take away from under the cursor
+    // the same row again: by its key, or by its place - a row without one (the Sources tab's "Add a source URL"),
+    // or one that is gone (a source removed: the cursor stays where it was, on its neighbour), which a reload
+    // every half second must not take away from under the cursor
     const int before = selected;
     selected = 0;
     bool kept = false;
@@ -147,10 +152,55 @@ void GuiStore::reload() {
             selected = static_cast<int>(i);
             kept = true;
         }
-    if (!kept && keep.empty() && !rows.empty())
+    if (!kept && !rows.empty())
         selected = min(before, static_cast<int>(rows.size()) - 1);
     firstVisible = min(firstVisible, max(0, static_cast<int>(rows.size()) - visibleRows()));
     moveSelection(0);
+}
+
+//*******************************
+// GuiStore::matchesFilter / nextSourceFilter / askSearch
+//*******************************
+bool GuiStore::matchesFilter(const StoreEntry &e) const {
+    if (!sourceFilter.empty() && e.item.source != sourceFilter)
+        return false;
+    return search.empty() || ableem::toLowerCopy(e.item.title).find(ableem::toLowerCopy(search)) != string::npos;
+}
+
+void GuiStore::nextSourceFilter() {
+    // the sources offering something for this tab, in the Sources tab's order
+    const string kind = tab == Tab::Apps ? "app" : "ps1";
+    vector<string> names;
+    for (const StoreSourceInfo &s : sources)
+        for (const StoreEntry &e : entries)
+            if (e.item.source == s.name && e.item.kind == kind && e.state != StoreState::Unsupported) {
+                if (find(names.begin(), names.end(), s.name) == names.end())
+                    names.push_back(s.name);
+                break;
+            }
+    auto it = find(names.begin(), names.end(), sourceFilter);
+    if (sourceFilter.empty())
+        sourceFilter = names.empty() ? "" : names.front();
+    else if (it == names.end() || next(it) == names.end())
+        sourceFilter.clear();
+    else
+        sourceFilter = *next(it);
+    selected = firstVisible = 0;
+    rows.clear();
+    reload();
+}
+
+void GuiStore::askSearch() {
+    GuiKeyboard keyboard(*gui);
+    keyboard.label = _("Search");
+    keyboard.result = search;
+    keyboard.show();
+    if (keyboard.cancelled)
+        return;
+    search = Strings::trim(keyboard.result);
+    selected = firstVisible = 0;
+    rows.clear();
+    reload();
 }
 
 int GuiStore::visibleRows() const {
@@ -293,10 +343,11 @@ void GuiStore::render() {
 
     // the progress (or why nothing moves) on one line under the header
     const StoreService::Progress progress = store.progress();
+    const bool reading = store.readingSources();
     string line;
     if (progress.offline)
         line = _("Not connected");
-    else if (!store.sourcesLoaded())
+    else if (!store.sourcesLoaded() || (reading && !progress.busy))
         line = _("Reading the sources...");
     else if (progress.busy) {
         line = stateText(progress.state) + ": " + progress.title;
@@ -305,8 +356,25 @@ void GuiStore::render() {
         if (progress.waiting > 0)
             line += "  (+" + to_string(progress.waiting) + " " + _("waiting") + ")";
     }
-    gui->text().renderText_WithColor(fonts[FONT_15_BOLD], line, panel.x + RowInset + 8, y + 4, style.secondary,
-                                     XALIGN_LEFT);
+    int lineX = panel.x + RowInset + 8;
+    if (reading && !progress.offline) {
+        drawSpinner(ableem::Rect(lineX, y + 2, 20, 20));
+        lineX += 28;
+    }
+    gui->text().renderText_WithColor(fonts[FONT_15_BOLD], line, lineX, y + 4, style.secondary, XALIGN_LEFT);
+    // what the list is narrowed to, at the line's right end
+    if ((tab == Tab::Apps || tab == Tab::Games) && filtered()) {
+        string narrowed;
+        if (!sourceFilter.empty())
+            narrowed = _("Source") + ": " + sourceFilter;
+        if (!search.empty())
+            narrowed += (narrowed.empty() ? "" : "   ") + _("Search") + ": \"" + search + "\"";
+        const int width = gui->text().textWidth(fonts[FONT_15_BOLD], narrowed);
+        // at the list's right end, clear of the details pane's picture
+        gui->text().renderText_WithColor(fonts[FONT_15_BOLD], narrowed,
+                                         panel.x + panel.w - PaneWidth - RowInset - width, y + 4, style.text,
+                                         XALIGN_LEFT);
+    }
     y += 30;
 
     // the list, left; the details, right (not on the Sources tab)
@@ -314,9 +382,11 @@ void GuiStore::render() {
     const int listWidth = panel.w - (pane ? PaneWidth : 0);
     const int visible = visibleRows();
     if (rows.empty()) {
-        gui->text().renderText_WithColor(fonts[FONT_22_MED],
-                                         tab == Tab::Downloads ? _("Nothing is downloading") : _("Nothing here yet"),
-                                         panel.x + RowInset + 8, y + 16, style.secondary, XALIGN_LEFT);
+        const string empty = tab == Tab::Downloads ? _("Nothing is downloading")
+                             : filtered()          ? _("Nothing matches")
+                                                   : _("Nothing here yet");
+        gui->text().renderText_WithColor(fonts[FONT_22_MED], empty, panel.x + RowInset + 8, y + 16, style.secondary,
+                                         XALIGN_LEFT);
     }
     const bool withPictures = tab != Tab::Sources;
     for (int i = firstVisible; i < firstVisible + visible && i < static_cast<int>(rows.size()); i++) {
@@ -342,6 +412,8 @@ void GuiStore::render() {
         gui->text().renderText_WithColor(fonts[FONT_15_BOLD],
                                          gui->text().elide(fonts[FONT_15_BOLD], rows[i].detail, textWidth), textX,
                                          y + 34, style.secondary, XALIGN_LEFT);
+        if (rows[i].loading)
+            drawSpinner(ableem::Rect(panel.x + listWidth - RowInset - 36, y + (RowHeight - 32) / 2, 32, 32));
         // the one downloading: how far, as a bar along the row's foot
         if (entry != nullptr && entry->state == StoreState::Downloading && progress.busy && progress.total > 0) {
             const int barWidth = textWidth;
@@ -398,6 +470,11 @@ void GuiStore::render() {
         hints.push_back({{"T"}, _("Remove this source")});
     hints.push_back({{"S"}, _("Refresh")});
     hints.push_back({{"L1", "R1"}, _("Tab")});
+    if (tab == Tab::Apps || tab == Tab::Games) {
+        hints.push_back({{"L2", "R2"}, _("Page")});
+        hints.push_back({{"Select"}, _("Source")});
+        hints.push_back({{"Start"}, _("Search")});
+    }
     style.footer(*gui, ableem::Rect(panel.x, panel.y + panel.h - FooterHeight, panel.w, FooterHeight), hints,
                  rows.empty() ? "" : to_string(selected + 1) + "/" + to_string(rows.size()), true);
 
@@ -495,7 +572,13 @@ void GuiStore::triangle() {
     if (rows.empty())
         return;
     if (rows[selected].remoteSource) {
-        store.removeSourceUrl(rows[selected].key);
+        // asked first: Triangle is one slip away from the row above or below
+        GuiConfirm confirm(*gui);
+        confirm.title = rows[selected].title;
+        confirm.label = _("Remove this source") + "?";
+        confirm.show();
+        if (confirm.result)
+            store.removeSourceUrl(rows[selected].key);
         return;
     }
     const StoreEntry *e = selectedEntry();
@@ -538,6 +621,12 @@ void GuiStore::loop() {
                 } else if (gui->input().dpadDown()) {
                     app.audio().cursor.play();
                     moveSelection(1);
+                } else if (gui->input().dpadLeft()) { // a page, as L2/R2
+                    app.audio().cursor.play();
+                    moveSelection(-visibleRows());
+                } else if (gui->input().dpadRight()) {
+                    app.audio().cursor.play();
+                    moveSelection(visibleRows());
                 }
                 break;
             case Event::Type::ButtonDown:
@@ -563,9 +652,24 @@ void GuiStore::loop() {
                 } else if (e.button == Button::R2) {
                     app.audio().cursor.play();
                     moveSelection(visibleRows());
+                } else if (e.button == Button::Select && (tab == Tab::Apps || tab == Tab::Games)) {
+                    app.audio().cursor.play();
+                    nextSourceFilter();
+                } else if (e.button == Button::Start && (tab == Tab::Apps || tab == Tab::Games)) {
+                    app.audio().cursor.play();
+                    askSearch();
                 } else if (e.button == Button::Circle) {
                     app.audio().cancel.play();
-                    menuVisible = false;
+                    // a narrowed list widens first; the Store closes from the whole list
+                    if ((tab == Tab::Apps || tab == Tab::Games) && filtered()) {
+                        sourceFilter.clear();
+                        search.clear();
+                        selected = firstVisible = 0;
+                        rows.clear();
+                        reload();
+                    } else {
+                        menuVisible = false;
+                    }
                 }
                 break;
             default:
