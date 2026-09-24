@@ -68,19 +68,19 @@ jobs:
           echo "launcher: $(git -C ../autobleem describe --tags --always)"
       - name: Tests, format and abstored for linux-x86_64 (host)
         working-directory: ext_store
-        run: ci/build.sh native
+        run: bash ci/build.sh native
       - name: The console (psc)
         working-directory: ext_store
-        run: ci/build.sh psc
+        run: bash ci/build.sh psc
       - name: Raspberry Pi (rpi, rpi64)
         working-directory: ext_store
-        run: ci/build.sh rpi rpi64
+        run: bash ci/build.sh rpi rpi64
       - name: The PC stick (pcusb)
         working-directory: ext_store
-        run: ci/build.sh pcusb
+        run: bash ci/build.sh pcusb
       - name: Windows (win)
         working-directory: ext_store
-        run: ci/build.sh win
+        run: bash ci/build.sh win
       - uses: actions/upload-artifact@v7
         with:
           name: store-packages
