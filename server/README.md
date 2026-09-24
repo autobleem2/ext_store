@@ -1,0 +1,80 @@
+# abstored - the AutoBleem Store's LAN server
+
+`abstored` serves a folder of PS1 games to the AutoBleem Store on the same network. The Store lists them with
+their covers and installs them onto the stick, the Raspberry Pi or the PC.
+
+It uses AutoBleem's own engine to find the games: the disc images, the serial read from each image, and the
+title and cover from the covers databases and the PlayStation rdb. **It only reads the games folder**: nothing
+is renamed, repaired or written there.
+
+## Building (any Linux)
+
+You need a C++14 compiler, CMake 3.14 or newer, git and pthreads. SDL and other libraries are not needed.
+
+```
+cmake -S server -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+```
+
+This fetches autobleem-core (develop) from GitHub. To use a checkout you already have, pass
+`-DAB_CORE_DIR=<path to autobleem-core>`. The program is `build/abstored`. Optionally, `cmake --install build`
+puts it in `/usr/local/bin`.
+
+## Running
+
+```
+abstored <games folder> [--port 8124] [--name "My games"] [--covers <folder with coversU/P/J.db>]
+         [--rdb "<Sony - PlayStation.rdb>"] [--state <folder>] [--no-checksums]
+```
+
+- Open `http://<this machine>:8124/` in a browser. The page shows the source's URL, every game served, and
+  every problem the scan found: a cue naming a missing file, an empty image, a game without a serial.
+- In the Store: **Sources** → **Add a source URL** → `http://<this machine>:8124/store.tsv`.
+- **The games folder** holds one folder per game. Games may sit in sub-folders at any depth, and `!` folders
+  (`!SaveStates`, `!MemCards`) are skipped. An AutoBleem stick's `Games` folder can be served as it is.
+- **The folder is scanned again** whenever something in it changes (checked every 10 s), or when you open
+  `/rescan`.
+- **Checksums**: every file's SHA-256 is worked out in the background, once, and cached in `--state` (by
+  default `~/.cache/abstored`). The Store checks each download against it. Until a file's sum is ready it is
+  served without one. `--no-checksums` skips this, for example on a slow machine with a large library.
+- **Covers**: a picture in the game's folder, or the covers database's picture by serial (`--covers`). The
+  Store also finds covers in its own databases by the serial the server reports.
+- **Stopping**: Ctrl+C, or SIGTERM.
+
+### As a service (systemd)
+
+```
+[Unit]
+Description=AutoBleem Store LAN server
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/abstored /srv/games --name "Living room"
+User=games
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## What it serves
+
+| URL | |
+|---|---|
+| `/` | the status page |
+| `/store.tsv` | the Store's source (the TSV format in the Store's README), every URL built from the address the client used |
+| `/files/<path>` | the games' files, only those the scan listed (`Range` supported: a stopped download resumes) |
+| `/cover/<game folder>` | a game's cover |
+| `/rescan` | scan now |
+
+**Plain HTTP, for a home network.** Anyone who can reach the port can read the games it serves. Do not expose
+it to the internet, and serve only games you may share.
+
+## Code
+
+- `src/lan_library.*`: the scan (read-only), the checksum cache and the TSV.
+- `src/http_server.*`: a small HTTP/1.1 server (GET and HEAD, one connection per request, Range).
+- `src/index_page.*`: the status page.
+- `src/main.cpp`: the arguments, the routes, the watcher and the hasher.
+
+Tests: `tests/test_store_server.cpp` in ext_store, which runs in the launcher's build.
