@@ -96,7 +96,7 @@ build_native() {
     banner "native: the Store's tests (build/native)"
     configure build/native -DCMAKE_BUILD_TYPE=Debug -DAB_ENABLE_CHD=ON
     ninja -C build/native -j "$JOBS" store test_store_service test_store_pictures test_store_server
-    ctest --test-dir build/native -R '^test_store_' --output-on-failure -j "$JOBS"
+    ctest --test-dir build/native -R '^test_store_(service|pictures|server)$' --output-on-failure -j "$JOBS"
 
     banner "native: clang-format"
     local cf
