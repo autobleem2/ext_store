@@ -6,7 +6,8 @@
 #
 # Packages: ext_store-<key>-<v>.zip (Extensions/store/, key psc|rpi|rpi64|pcusb|win) and
 # abstored-<os>-<arch>-<v>.tar.gz|.zip. A v* tag publishes them as a release; develop keeps the rolling
-# `nightly` pre-release current. Gated by AB_CI_ENABLED, like every autobleem2 repository.
+# `nightly` pre-release current, and both go on the download site (the `site` job: the Store page). Gated by
+# AB_CI_ENABLED, like every autobleem2 repository.
 name: build
 on:
   push:
@@ -26,6 +27,8 @@ jobs:
   build:
     if: vars.AB_CI_ENABLED == 'true'
     runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     container:
       image: ghcr.io/autobleem2/autobleem-build:${{ startsWith(github.ref, 'refs/tags/v') && 'latest' || 'develop' }}
       credentials:
@@ -53,12 +56,15 @@ jobs:
           key: sccache-store-${{ github.sha }}
           restore-keys: sccache-store-
       - name: Version
+        id: version
         working-directory: ext_store
         run: |
           # the checkouts belong to another user than the container's; git refuses them otherwise
           git config --global --add safe.directory '*'
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then echo "AB_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
-          else echo "AB_VERSION=$(sed -n 's/^Version=//p' extension.ini | tr -d '\r')-$(date -u +%Y%m%d)-$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"; fi
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then v="${GITHUB_REF_NAME#v}"
+          else v="$(sed -n 's/^Version=//p' extension.ini | tr -d '\r')-$(date -u +%Y%m%d)-$(git rev-parse --short HEAD)"; fi
+          echo "AB_VERSION=$v" >> "$GITHUB_ENV"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
           echo "launcher: $(git -C ../autobleem describe --tags --always)"
       - name: Tests, format and abstored for linux-x86_64 (host)
         working-directory: ext_store
@@ -110,3 +116,34 @@ jobs:
       - uses: autobleem2/autobleem-build/.github/actions/nightly-release@develop
         with:
           files: out/*
+
+  # the packages on the download site: autobleem-repo's extensions/store/<version>/, which its Store page shows
+  # (the Store per system, abstored in a LAN server tab) - a develop build as the development build, a v* tag
+  # as the release. On the self-hosted runner, where the site's tree is, in the build image: the way
+  # autobleem-repo's page.yml publishes, the runner being a container itself (a sibling container over the
+  # mounted docker.sock, not a container job). The publish tools come from autobleem-repo's develop, with its
+  # history - the page generator is three-way merged with the site's copy on its merge base.
+  site:
+    if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/v'))
+    needs: build
+    runs-on: [self-hosted, linux, x64]
+    env:
+      AB_REPO_DIR: /home/claude/autobleem-repo
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: autobleem2/autobleem-repo
+          ref: develop
+          path: autobleem-repo-tools
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with: { name: store-packages, path: out }
+      - name: Publish to the download site
+        run: |
+          set -euo pipefail
+          ls -l out
+          docker run --rm \
+            -v "$PWD:$PWD" -w "$PWD/autobleem-repo-tools" -v "$AB_REPO_DIR:$AB_REPO_DIR" -e REPO_DIR="$AB_REPO_DIR" \
+            -e GIT_CONFIG_COUNT=1 -e GIT_CONFIG_KEY_0=safe.directory -e GIT_CONFIG_VALUE_0='*' \
+            ghcr.io/autobleem2/autobleem-build:${{ startsWith(github.ref, 'refs/tags/v') && 'latest' || 'develop' }} \
+            bash tools/repo_publish.sh --local extension store "${{ needs.build.outputs.version }}" "$PWD"/out/*
