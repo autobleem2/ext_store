@@ -75,9 +75,11 @@ it to the internet, and serve only games you may share.
 
 ## Code
 
-- `src/lan_library.*`: the scan (read-only), the checksum cache and the TSV.
-- `src/http_server.*`: a small HTTP/1.1 server (GET and HEAD, one connection per request, Range).
-- `src/index_page.*`: the status page.
-- `src/main.cpp`: the arguments, the routes, the watcher and the hasher.
+- `src/main.cpp`: the arguments, the routes, the watcher and the hasher. That is all that is here.
+- The server itself is **autobleem-core's `ableem_lanserver`** (`lib_ableem/include/ableem/lanserver/`), shared
+  with pc-tools' LAN Share for Windows:
+  - `lan_library.*`: the scan (read-only), the checksum cache and the TSV.
+  - `http_server.*`: a small HTTP/1.1 server (GET and HEAD, one connection per request, Range).
+  - `index_page.*`: the status page.
 
-Tests: `tests/test_store_server.cpp` in ext_store, which runs in the launcher's build.
+Tests: `tests/core/test_lan_server.cpp` in autobleem-core.

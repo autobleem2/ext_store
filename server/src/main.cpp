@@ -12,9 +12,9 @@
 //
 // It only reads the games folder. Checksums are cached in --state (default ~/.cache/abstored).
 //
-#include "http_server.h"
-#include "index_page.h"
-#include "lan_library.h"
+#include <ableem/lanserver/http_server.h>
+#include <ableem/lanserver/index_page.h>
+#include <ableem/lanserver/lan_library.h>
 
 #include <ableem/engine/filesystem.h>
 #include <ableem/engine/log.h>
@@ -28,6 +28,11 @@
 #include <thread>
 
 using namespace std;
+using ableem::HttpServer;
+using ableem::IndexPageFacts;
+using ableem::LanFile;
+using ableem::LanGame;
+using ableem::LanLibrary;
 
 namespace {
 

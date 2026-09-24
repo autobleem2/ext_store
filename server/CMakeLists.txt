@@ -6,7 +6,8 @@
 # Without AB_CORE_DIR, autobleem-core (develop) is fetched from GitHub. Only its SDL-free engine is built:
 # a C++14 compiler, CMake 3.14 and pthreads are all it takes - no SDL, no other packages.
 #
-# Inside the launcher's build (ext_store is in AB_EXTENSION_DIRS) the launcher's own ableem_engine is used.
+# Inside the launcher's build (ext_store is in AB_EXTENSION_DIRS) the launcher's own lib_ableem is used -
+# its ableem_lanserver is the server; this folder is only its command line (src/main.cpp).
 cmake_minimum_required(VERSION 3.14)
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
     project(abstored C CXX)
@@ -40,16 +41,10 @@ if (NOT TARGET ableem_engine)
 endif ()
 
 find_package(Threads REQUIRED)
-# the library is its own target so the tests take the same code
-add_library(abstored_core STATIC src/lan_library.cpp src/http_server.cpp src/index_page.cpp)
-target_include_directories(abstored_core PUBLIC src)
-target_link_libraries(abstored_core PUBLIC ableem_engine Threads::Threads)
-if (WIN32)
-    target_link_libraries(abstored_core PUBLIC ws2_32)
-endif ()
-
+# the server itself - the scan, the HTTP server, the status page - is core's ableem_lanserver (lib_ableem,
+# tested there as test_lan_server); pc-tools' LAN Share is its other front end. This is the command line.
 add_executable(abstored src/main.cpp)
-target_link_libraries(abstored PRIVATE abstored_core)
+target_link_libraries(abstored PRIVATE ableem_lanserver)
 if (WIN32)
     target_link_options(abstored PRIVATE -static-libgcc -static-libstdc++)
 endif ()

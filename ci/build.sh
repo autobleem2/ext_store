@@ -7,7 +7,7 @@
 # default ../autobleem (the workflow checks it out there, with its autobleem-core submodule). Only the Store's
 # own targets are built - not the launcher's packages, not pcsx - into build/<target>/ here.
 #
-#   native   the tests (test_store_service, test_store_pictures, test_store_server) on the host, clang-format
+#   native   the tests (test_store_service, test_store_pictures, core's test_lan_server) on the host, clang-format
 #            --check over our sources, and abstored on its own for linux-x86_64 (server/CMakeLists.txt, the
 #            launcher's autobleem-core as AB_CORE_DIR)
 #   psc rpi rpi64 pcusb win
@@ -95,8 +95,8 @@ package_server() { # package_server <abstored binary> <os-arch> - dist/abstored-
 build_native() {
     banner "native: the Store's tests (build/native)"
     configure build/native -DCMAKE_BUILD_TYPE=Debug -DAB_ENABLE_CHD=ON
-    ninja -C build/native -j "$JOBS" store test_store_service test_store_pictures test_store_server
-    ctest --test-dir build/native -R '^test_store_(service|pictures|server)$' --output-on-failure -j "$JOBS"
+    ninja -C build/native -j "$JOBS" store test_store_service test_store_pictures test_lan_server
+    ctest --test-dir build/native -R '^test_(store_service|store_pictures|lan_server)$' --output-on-failure -j "$JOBS"
 
     banner "native: clang-format"
     local cf
