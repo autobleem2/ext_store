@@ -634,6 +634,15 @@ void StoreService::work(const string &key) {
         finish(result.error, true);
         return;
     }
+    if (item.kind == "ps1") {
+        // the picture the Store showed: the carousel's cover - a game no covers database knows (a homebrew, a
+        // community disc like RE1.5) would otherwise get the default one. Before gamesChanged: that starts the
+        // launcher's scan, which must find it there
+        const string cover = placeCover(result.path, pictureSource_ ? pictureSource_(key) : string(), item.image);
+        if (!cover.empty()) {
+            PLOG_INFO << item.title << ": cover " << cover;
+        }
+    }
     {
         lock_guard<mutex> lock(mutex_);
         installed_[key] = Installed{item.kind, item.version, result.path};
@@ -646,6 +655,47 @@ void StoreService::work(const string &key) {
     }
     PLOG_INFO << item.title << " installed to " << result.path;
     finish("", true);
+}
+
+//*******************************
+// StoreService::coverNameFor / placeCover
+//*******************************
+string StoreService::coverNameFor(const string &folder) {
+    vector<string> cues, images;
+    for (const DirEntry &e : DirEntry::diru_FilesOnly(folder)) {
+        const string ext = ableem::toLowerCopy(DirEntry::getFileExtension(e.name));
+        if (ext == "cue")
+            cues.push_back(e.name);
+        else if (ext == "chd" || ext == "pbp")
+            images.push_back(e.name);
+    }
+    sort(cues.begin(), cues.end());
+    sort(images.begin(), images.end());
+    // as the scanner names a disc: a cue's name without .cue, a chd's or pbp's whole name
+    if (!cues.empty())
+        return DirEntry::getFileNameWithoutExtension(cues.front()) + ".png";
+    if (!images.empty())
+        return images.front() + ".png";
+    return "";
+}
+
+string StoreService::placeCover(const string &folder, const string &picture, const string &imageUrl) {
+    for (const DirEntry &e : DirEntry::diru_FilesOnly(folder))
+        if (ableem::toLowerCopy(DirEntry::getFileExtension(e.name)) == "png")
+            return ""; // it has one: the scan's, or the game's own
+    const string name = coverNameFor(folder);
+    if (name.empty())
+        return "";
+    const string target = folder + sep + name;
+    if (!picture.empty() && DirEntry::exists(picture)) {
+        if (DirEntry::copy(picture, target))
+            return target;
+    } else if (!imageUrl.empty()) {
+        string error;
+        if (fetchTo(imageUrl, target, error))
+            return target;
+    }
+    return "";
 }
 
 //*******************************

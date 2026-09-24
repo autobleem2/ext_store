@@ -435,6 +435,43 @@ TEST_CASE("StoreService: a source renamed and moved - what came from it is still
     CHECK_FALSE(store.renameSource("https://nowhere/x.tsv", "x"));
 }
 
+TEST_CASE("StoreService gives an installed game the picture it showed, where the carousel looks") {
+    Setup s;
+    s.tmp.writeFile("System/Extensions/store/sources/g.tsv",
+                    "# name: G\ntitle\turl\timage\n"
+                    "Community Disc\thttps://site/BH2.cue\thttps://site/c.png\n"
+                    "Community Disc\thttps://site/BH2.bin\n"
+                    "Shown Game\thttps://site/shown.chd\n");
+    s.site.bodies["https://site/BH2.cue"] = "FILE \"BH2.bin\" BINARY\n";
+    s.site.bodies["https://site/BH2.bin"] = "bin";
+    s.site.bodies["https://site/c.png"] = "the source's picture";
+    s.site.bodies["https://site/shown.chd"] = "chd";
+    s.tmp.writeFile("shown.png", "the Store's picture");
+    StoreService store(s.config());
+    store.setPictureSource([&](const string &key) { return key == "G|ps1/Shown Game" ? s.tmp.at("shown.png") : ""; });
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue("G|ps1/Community Disc"));
+    REQUIRE(store.enqueue("G|ps1/Shown Game"));
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), "G|ps1/Shown Game")->state == StoreState::Installed; }));
+    // nothing found by the Store yet: the source's own picture, fetched, named after the cue
+    CHECK(s.tmp.readFile("Games/Community Disc/BH2.png") == "the source's picture");
+    // what the Store showed, named after the chd as the scanner names it
+    CHECK(s.tmp.readFile("Games/Shown Game/shown.chd.png") == "the Store's picture");
+}
+
+TEST_CASE("StoreService::placeCover leaves a folder that has a picture alone") {
+    Setup s;
+    s.tmp.makeSubDir("Games/G");
+    s.tmp.writeFile("Games/G/g.cue", "FILE \"g.bin\" BINARY\n");
+    s.tmp.writeFile("Games/G/mine.png", "mine");
+    s.tmp.writeFile("p.png", "picture");
+    StoreService store(s.config());
+    CHECK(store.placeCover(s.tmp.at("Games/G"), s.tmp.at("p.png"), "").empty());
+    CHECK_FALSE(DirEntry::exists(s.tmp.at("Games/G/g.png")));
+    CHECK(StoreService::coverNameFor(s.tmp.at("Games/G")) == "g.png");
+}
+
 TEST_CASE("StoreService: source URLs, and file names") {
     Setup s;
     StoreService store(s.config());

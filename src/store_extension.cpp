@@ -64,7 +64,9 @@ StorePictures::Config picturesFor(ExtensionHost &host, const StoreService::Confi
 class StoreExtension : public Extension {
 public:
     explicit StoreExtension(ExtensionHost &host)
-        : host(host), store(configFor(host)), pictures(picturesFor(host, configFor(host))) {
+        : host(host), pictures(picturesFor(host, configFor(host))), store(configFor(host)) {
+        // an installed game's cover: the picture the Store showed for it
+        store.setPictureSource([this](const string &key) { return pictures.path(key); });
         PLOG_INFO << "the Store, state in " << host.stateDir();
         store.start();
     }
@@ -109,14 +111,14 @@ public:
     void suspend() override { store.pause(); } // a game gets the machine: the download in flight stops
     void resume() override { store.resume(); }
     void shutdown() override {
+        store.stop(); // first: its worker asks the pictures for an installed game's cover
         pictures.stop();
-        store.stop();
     }
 
 private:
     ExtensionHost &host;
+    StorePictures pictures; // before the store: built first, gone last - the store's worker reads it
     StoreService store;
-    StorePictures pictures;
     bool shown = false;
     chrono::steady_clock::time_point holdUntil;
 };

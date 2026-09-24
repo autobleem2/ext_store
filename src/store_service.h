@@ -164,6 +164,18 @@ public:
     std::string installedFile() const;
     std::string queueFile() const;
 
+    // what the Store showed for an item (StorePictures::path - found on the pictures' own thread), "" = nothing
+    // yet: an installed game gets it as its cover. Set once, before start().
+    void setPictureSource(std::function<std::string(const std::string &key)> source) {
+        pictureSource_ = std::move(source);
+    }
+    // a game's cover where the launcher's carousel looks first: <folder>/<the first disc's name>.png - the cue's
+    // name without .cue, a chd's or pbp's whole name - unless the folder has a picture already. From the
+    // picture file given, else the item's image URL fetched. Returns the file written, "" for none.
+    std::string placeCover(const std::string &folder, const std::string &picture, const std::string &imageUrl);
+    // the name the launcher's carousel gives a game folder's cover ("" = no disc image in it)
+    static std::string coverNameFor(const std::string &folder);
+
     // the name a file is saved under: the item's, else the URL's last segment without its query
     static std::string fileNameFor(const ableem::StoreFile &file);
     static bool versionDiffers(const std::string &installed, const std::string &offered);
@@ -224,4 +236,5 @@ private:
     std::atomic<bool> loaded_{false};
     std::atomic<bool> refreshedOnce_{false}; // every source read afresh once: the downloads may start
     std::string cancelKey_;                  // under mutex_
+    std::function<std::string(const std::string &)> pictureSource_;
 };
