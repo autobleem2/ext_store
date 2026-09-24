@@ -1,6 +1,6 @@
 # AutoBleem Store - Czech translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=Seznam stahování ve formátu TSV na libovolném webovém serveru
 Add=Přidat
 Add a source URL=Přidat adresu zdroje
@@ -15,8 +15,10 @@ Games=Hry
 Install=Instalovat
 Installed=Nainstalováno
 Installing=Instaluje se
+items=položek
 Licence=Licence
 Not connected=Nepřipojeno
+Not installable=Nelze nainstalovat
 Nothing here yet=Zatím tu nic není
 Nothing is downloading=Nic se nestahuje
 Queued=Ve frontě
@@ -35,6 +37,5 @@ Tab=Záložka
 Update=Aktualizovat
 Update available=Aktualizace k dispozici
 Version=Verze
-You are responsible for what your sources contain=Za obsah svých zdrojů odpovídáte vy
-items=položek
 waiting=čeká
+You are responsible for what your sources contain=Za obsah svých zdrojů odpovídáte vy

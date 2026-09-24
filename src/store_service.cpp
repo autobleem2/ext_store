@@ -96,6 +96,15 @@ string StoreService::fileNameFor(const StoreFile &file) {
     return name.empty() ? "download" : name;
 }
 
+bool StoreService::installable(const StoreItem &item) {
+    for (const StoreFile &f : item.files) {
+        const string name = ableem::toLowerCopy(fileNameFor(f));
+        if (name.size() >= 4 && name.compare(name.size() - 4, 4, ".pkg") == 0)
+            return false;
+    }
+    return true;
+}
+
 bool StoreService::versionDiffers(const string &installed, const string &offered) {
     return !offered.empty() && Strings::trim(installed) != Strings::trim(offered);
 }
@@ -263,6 +272,8 @@ void StoreService::rebuildEntries() {
         e.key = item.source + "|" + item.id;
         if (!supported(item.kind)) {
             e.state = StoreState::Unsupported;
+        } else if (!installable(item)) {
+            e.state = StoreState::NotInstallable;
         } else {
             auto installed = installed_.find(e.key);
             if (installed != installed_.end()) {
@@ -472,7 +483,8 @@ StoreService::Progress StoreService::progress() const {
 bool StoreService::enqueue(const string &key) {
     lock_guard<mutex> lock(mutex_);
     StoreEntry *e = find(key);
-    if (e == nullptr || e->state == StoreState::Unsupported || e->state == StoreState::Queued || key == current_)
+    if (e == nullptr || e->state == StoreState::Unsupported || e->state == StoreState::NotInstallable ||
+        e->state == StoreState::Queued || key == current_)
         return false;
     queue_.push_back(key);
     failed_.erase(key);

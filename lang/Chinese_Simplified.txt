@@ -1,6 +1,6 @@
 # AutoBleem Store - Chinese_Simplified translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=任意网站上的 TSV 下载列表
 Add=添加
 Add a source URL=添加来源网址
@@ -15,8 +15,10 @@ Games=游戏
 Install=安装
 Installed=已安装
 Installing=正在安装
+items=项
 Licence=许可证
 Not connected=未连接
+Not installable=无法安装
 Nothing here yet=这里还没有内容
 Nothing is downloading=没有正在进行的下载
 Queued=排队中
@@ -35,6 +37,5 @@ Tab=标签页
 Update=更新
 Update available=有可用更新
 Version=版本
-You are responsible for what your sources contain=来源中的内容由您自行负责
-items=项
 waiting=等待中
+You are responsible for what your sources contain=来源中的内容由您自行负责

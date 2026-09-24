@@ -1,6 +1,6 @@
 # AutoBleem Store - Portuguese_BR translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=Uma lista TSV de downloads, em qualquer servidor web
 Add=Adicionar
 Add a source URL=Adicionar URL de uma fonte
@@ -15,8 +15,10 @@ Games=Jogos
 Install=Instalar
 Installed=Instalado
 Installing=Instalando
+items=itens
 Licence=Licença
 Not connected=Não conectado
+Not installable=Não instalável
 Nothing here yet=Nada aqui ainda
 Nothing is downloading=Nada sendo baixado
 Queued=Na fila
@@ -35,6 +37,5 @@ Tab=Aba
 Update=Atualizar
 Update available=Atualização disponível
 Version=Versão
-You are responsible for what your sources contain=Você é responsável pelo conteúdo das suas fontes
-items=itens
 waiting=aguardando
+You are responsible for what your sources contain=Você é responsável pelo conteúdo das suas fontes

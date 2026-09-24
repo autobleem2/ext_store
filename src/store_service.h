@@ -30,7 +30,19 @@
 //******************
 // StoreState
 //******************
-enum class StoreState { Available, Queued, Downloading, Installing, Installed, UpdateAvailable, Failed, Unsupported };
+// Unsupported: a kind this Store does not know (hidden). NotInstallable: listed, never downloaded - a PSN
+// package (.pkg) from a list in the NoPayStation layout: the Store installs disc images, not packages
+enum class StoreState {
+    Available,
+    Queued,
+    Downloading,
+    Installing,
+    Installed,
+    UpdateAvailable,
+    Failed,
+    Unsupported,
+    NotInstallable
+};
 
 //******************
 // StoreEntry
@@ -137,6 +149,8 @@ public:
     // the name a file is saved under: the item's, else the URL's last segment without its query
     static std::string fileNameFor(const ableem::StoreFile &file);
     static bool versionDiffers(const std::string &installed, const std::string &offered);
+    // an item the Store lists but will not fetch: a game made of PSN packages (.pkg)
+    static bool installable(const ableem::StoreItem &item);
 
 private:
     struct Installed {

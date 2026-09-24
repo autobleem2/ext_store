@@ -309,6 +309,25 @@ TEST_CASE("StoreService offline: the cached catalog, and nothing downloaded unti
     CHECK(s.entry(store.entries(), "AutoBleem|app/opentyrian")->state == StoreState::Queued);
 }
 
+TEST_CASE("StoreService lists a PSN package (.pkg) but never queues or fetches it") {
+    Setup s;
+    // the NoPayStation layout, made-up rows: nothing here points anywhere real
+    s.tmp.writeFile("System/Extensions/store/sources/nps.tsv",
+                    "Title ID\tRegion\tName\tPKG direct link\tFile Size\n"
+                    "NPUJ00001\tJP\tPlaceholder\thttp://example.invalid/a.pkg\t1000\n");
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    const StoreEntry *e = s.entry(store.entries(), "nps|ps1/Placeholder");
+    REQUIRE(e != nullptr);
+    CHECK(e->state == StoreState::NotInstallable);
+    CHECK_FALSE(store.enqueue(e->key));
+    this_thread::sleep_for(chrono::milliseconds(400));
+    lock_guard<mutex> lock(s.site.m);
+    for (const string &line : s.site.lines)
+        CHECK(line.find("example.invalid") == string::npos); // not one request for it
+}
+
 TEST_CASE("StoreService: source URLs, and file names") {
     Setup s;
     StoreService store(s.config());

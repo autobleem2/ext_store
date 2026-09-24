@@ -1,6 +1,6 @@
 # AutoBleem Store - Romanian translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=O listă TSV de descărcări, pe orice server web
 Add=Adaugă
 Add a source URL=Adaugă URL-ul unei surse
@@ -15,8 +15,10 @@ Games=Jocuri
 Install=Instalează
 Installed=Instalat
 Installing=Se instalează
+items=elemente
 Licence=Licență
 Not connected=Neconectat
+Not installable=Nu poate fi instalat
 Nothing here yet=Încă nimic aici
 Nothing is downloading=Nu se descarcă nimic
 Queued=În coadă
@@ -35,6 +37,5 @@ Tab=Filă
 Update=Actualizează
 Update available=Actualizare disponibilă
 Version=Versiune
-You are responsible for what your sources contain=Ești responsabil pentru conținutul surselor tale
-items=elemente
 waiting=în așteptare
+You are responsible for what your sources contain=Ești responsabil pentru conținutul surselor tale

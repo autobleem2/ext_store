@@ -1,6 +1,6 @@
 # AutoBleem Store - Polski translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=Lista pobrań TSV na dowolnym serwerze WWW
 Add=Dodaj
 Add a source URL=Dodaj adres źródła
@@ -15,8 +15,10 @@ Games=Gry
 Install=Zainstaluj
 Installed=Zainstalowane
 Installing=Instalowanie
+items=pozycji
 Licence=Licencja
 Not connected=Nie połączono
+Not installable=Nie do zainstalowania
 Nothing here yet=Na razie nic tu nie ma
 Nothing is downloading=Nic się nie pobiera
 Queued=W kolejce
@@ -35,6 +37,5 @@ Tab=Karta
 Update=Aktualizuj
 Update available=Dostępna aktualizacja
 Version=Wersja
-You are responsible for what your sources contain=Odpowiadasz za zawartość swoich źródeł
-items=pozycji
 waiting=oczekuje
+You are responsible for what your sources contain=Odpowiadasz za zawartość swoich źródeł

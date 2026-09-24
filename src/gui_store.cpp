@@ -39,6 +39,8 @@ string GuiStore::stateText(StoreState state) {
         return _("Installing");
     case StoreState::Failed:
         return _("Failed");
+    case StoreState::NotInstallable:
+        return _("Not installable");
     default:
         return "";
     }

@@ -1,6 +1,6 @@
 # AutoBleem Store - Swedish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=En TSV-lista med nedladdningar, på valfri webbserver
 Add=Lägg till
 Add a source URL=Lägg till en käll-URL
@@ -15,8 +15,10 @@ Games=Spel
 Install=Installera
 Installed=Installerad
 Installing=Installerar
+items=objekt
 Licence=Licens
 Not connected=Inte ansluten
+Not installable=Kan inte installeras
 Nothing here yet=Inget här ännu
 Nothing is downloading=Inget laddas ned
 Queued=I kö
@@ -35,6 +37,5 @@ Tab=Flik
 Update=Uppdatera
 Update available=Uppdatering tillgänglig
 Version=Version
-You are responsible for what your sources contain=Du ansvarar för innehållet i dina källor
-items=objekt
 waiting=väntar
+You are responsible for what your sources contain=Du ansvarar för innehållet i dina källor

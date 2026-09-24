@@ -1,6 +1,6 @@
 # AutoBleem Store - Turkish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=Herhangi bir web sunucusunda, TSV biçiminde indirme listesi
 Add=Ekle
 Add a source URL=Kaynak URL'si ekle
@@ -15,8 +15,10 @@ Games=Oyunlar
 Install=Yükle
 Installed=Yüklendi
 Installing=Yükleniyor
+items=öğe
 Licence=Lisans
 Not connected=Bağlı değil
+Not installable=Yüklenemez
 Nothing here yet=Burada henüz bir şey yok
 Nothing is downloading=İndirilen bir şey yok
 Queued=Sırada
@@ -35,6 +37,5 @@ Tab=Sekme
 Update=Güncelle
 Update available=Güncelleme mevcut
 Version=Sürüm
-You are responsible for what your sources contain=Kaynaklarınızın içeriğinden siz sorumlusunuz
-items=öğe
 waiting=bekliyor
+You are responsible for what your sources contain=Kaynaklarınızın içeriğinden siz sorumlusunuz

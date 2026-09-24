@@ -1,6 +1,6 @@
 # AutoBleem Store - Finnish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=TSV-luettelo latauksista millä tahansa verkkopalvelimella
 Add=Lisää
 Add a source URL=Lisää lähteen osoite
@@ -15,8 +15,10 @@ Games=Pelit
 Install=Asenna
 Installed=Asennettu
 Installing=Asennetaan
+items=kohdetta
 Licence=Lisenssi
 Not connected=Ei yhteyttä
+Not installable=Ei asennettavissa
 Nothing here yet=Täällä ei ole vielä mitään
 Nothing is downloading=Mitään ei ladata
 Queued=Jonossa
@@ -35,6 +37,5 @@ Tab=Välilehti
 Update=Päivitä
 Update available=Päivitys saatavilla
 Version=Versio
-You are responsible for what your sources contain=Olet itse vastuussa lähteidesi sisällöstä
-items=kohdetta
 waiting=odottaa
+You are responsible for what your sources contain=Olet itse vastuussa lähteidesi sisällöstä

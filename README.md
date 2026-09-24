@@ -40,6 +40,9 @@ app	Some App	https://example.org/someapp-psc-1.2.zip						1.2
 - **`size` and `sha256` are optional**: when given, a download that does not match them is refused.
 - **Formats**: zip, 7z and tar.gz archives, and plain disc images (chd, pbp, cue/bin, img). RAR is not
   supported.
+- **The NoPayStation list layout is read as well**: `Name`, `PKG direct link`, `File Size`, `Title ID`,
+  `SHA256`. Each regional release (Title ID) is an item of its own. Its links are PSN packages (`.pkg`),
+  which are not disc images: such items are listed as "Not installable" and never downloaded.
 
 **You are responsible for what your sources contain.**
 

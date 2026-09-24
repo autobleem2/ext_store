@@ -1,6 +1,6 @@
 # AutoBleem Store - Slovak translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=Zoznam sťahovaní vo formáte TSV na ľubovoľnom webovom serveri
 Add=Pridať
 Add a source URL=Pridať adresu zdroja
@@ -15,8 +15,10 @@ Games=Hry
 Install=Inštalovať
 Installed=Nainštalované
 Installing=Inštaluje sa
+items=položiek
 Licence=Licencia
 Not connected=Nepripojené
+Not installable=Nedá sa nainštalovať
 Nothing here yet=Zatiaľ tu nič nie je
 Nothing is downloading=Nič sa nesťahuje
 Queued=V poradí
@@ -35,6 +37,5 @@ Tab=Karta
 Update=Aktualizovať
 Update available=Dostupná aktualizácia
 Version=Verzia
-You are responsible for what your sources contain=Za obsah svojich zdrojov zodpovedáte vy
-items=položiek
 waiting=čaká
+You are responsible for what your sources contain=Za obsah svojich zdrojov zodpovedáte vy

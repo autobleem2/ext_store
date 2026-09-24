@@ -1,6 +1,6 @@
 # AutoBleem Store - Danish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 37
+# Untranslated: 0 / Total: 38
 A TSV list of downloads, on any web server=En TSV-liste med downloads på en hvilken som helst webserver
 Add=Tilføj
 Add a source URL=Tilføj en kilde-URL
@@ -15,8 +15,10 @@ Games=Spil
 Install=Installer
 Installed=Installeret
 Installing=Installerer
+items=elementer
 Licence=Licens
 Not connected=Ikke forbundet
+Not installable=Kan ikke installeres
 Nothing here yet=Intet her endnu
 Nothing is downloading=Intet hentes
 Queued=I kø
@@ -35,6 +37,5 @@ Tab=Fane
 Update=Opdater
 Update available=Opdatering tilgængelig
 Version=Version
-You are responsible for what your sources contain=Du er ansvarlig for indholdet af dine kilder
-items=elementer
 waiting=venter
+You are responsible for what your sources contain=Du er ansvarlig for indholdet af dine kilder
