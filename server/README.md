@@ -79,6 +79,7 @@ WantedBy=multi-user.target
 | `/status.json` | what the status page shows, for a program: the games with their files, the problems, the folder's free space, whether uploads are on |
 | `/upload/<game folder>/<file>` | with `--allow-uploads` and the token (`X-AB-Token`): `PUT ?offset=N` appends to the staged file (a stopped upload goes on), `GET` says how much is staged |
 | `/upload/<game folder>` | `POST ?commit` moves the staged game into the folder and rescans; `DELETE` drops it |
+| `/games/<game id>` | `DELETE`, with `--allow-uploads` and the token: the game taken off the server - its folder moved into `.removed/` next to the games, never deleted (move it back to restore it) |
 
 **Plain HTTP, for a home network.** Anyone who can reach the port can read the games it serves, and with
 uploads on, anyone who has the token can add to them. Do not expose it to the internet, and serve only games
