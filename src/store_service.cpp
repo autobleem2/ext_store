@@ -1,0 +1,590 @@
+//
+// StoreService - see the header.
+//
+#include "store_service.h"
+
+#include "core/main.h"
+#include "core/services/content_installer.h"
+#include "core/services/downloader.h"
+#include "core/services/system.h"
+
+#include <algorithm>
+#include <chrono>
+#include <fstream>
+
+using namespace std;
+using ableem::StoreCatalog;
+using ableem::StoreFile;
+using ableem::StoreItem;
+using ableem::StoreSourceTsv;
+
+namespace {
+const char *const OurSourceName = "AutoBleem";
+
+vector<string> readLines(const string &path) {
+    vector<string> lines;
+    ifstream in(path);
+    string line;
+    while (Strings::getlineRemoveCR(in, line)) {
+        line = Strings::trim(line);
+        if (!line.empty() && line[0] != '#')
+            lines.push_back(line);
+    }
+    return lines;
+}
+
+// an App's folder name from our catalog's id ("app/opentyrian" -> "opentyrian"); "" for anything else
+string appNameFromId(const string &id) {
+    return id.compare(0, 4, "app/") == 0 ? id.substr(4) : "";
+}
+
+bool supported(const string &kind) {
+    return kind == "app" || kind == "ps1";
+}
+} // namespace
+
+//*******************************
+// StoreService::StoreService / ~StoreService
+//*******************************
+StoreService::StoreService(Config config) : config_(std::move(config)) {
+    if (!config_.runner)
+        config_.runner = [](const string &line, const function<bool()> &cancelled) {
+            return System::runShellCommand(line, cancelled);
+        };
+    for (const string &dir : {config_.stateDir, sourcesDir(), cacheDir(), downloadsDir(), stagingDir()})
+        DirEntry::createDirs(dir);
+    readInstalled();
+    for (const string &key : readLines(queueFile()))
+        queue_.push_back(key);
+}
+
+StoreService::~StoreService() {
+    stop();
+}
+
+string StoreService::sourcesDir() const {
+    return config_.stateDir + sep + "sources";
+}
+string StoreService::sourcesFile() const {
+    return config_.stateDir + sep + "sources.txt";
+}
+string StoreService::cacheDir() const {
+    return config_.stateDir + sep + "cache";
+}
+string StoreService::downloadsDir() const {
+    return config_.stateDir + sep + "downloads";
+}
+string StoreService::stagingDir() const {
+    return config_.stateDir + sep + "staging";
+}
+string StoreService::installedFile() const {
+    return config_.stateDir + sep + "installed.tsv";
+}
+string StoreService::queueFile() const {
+    return config_.stateDir + sep + "queue.txt";
+}
+
+//*******************************
+// StoreService::fileNameFor / versionDiffers
+//*******************************
+string StoreService::fileNameFor(const StoreFile &file) {
+    if (!file.name.empty())
+        return DirEntry::getFileNameFromPath(file.name);
+    string url = file.url.substr(0, file.url.find_first_of("?#"));
+    string name = url.substr(url.find_last_of('/') + 1);
+    Strings::replaceAll(name, "%20", " ");
+    return name.empty() ? "download" : name;
+}
+
+bool StoreService::versionDiffers(const string &installed, const string &offered) {
+    return !offered.empty() && Strings::trim(installed) != Strings::trim(offered);
+}
+
+//*******************************
+// StoreService::start / stop / refresh
+//*******************************
+void StoreService::start() {
+    if (worker_.joinable())
+        return;
+    stop_ = false;
+    worker_ = thread([this] { workerMain(); });
+}
+
+void StoreService::stop() {
+    stop_ = true;
+    if (worker_.joinable())
+        worker_.join();
+}
+
+void StoreService::refresh() {
+    refresh_ = true;
+}
+
+void StoreService::pause() {
+    paused_ = true;
+}
+
+void StoreService::resume() {
+    paused_ = false;
+}
+
+//*******************************
+// StoreService::workerMain
+//*******************************
+void StoreService::workerMain() {
+    System::lowerCurrentThreadPriority(); // never the CPU the launcher's frames or a game need
+    while (!stop_) {
+        if (refresh_.exchange(false)) {
+            loadSources();
+            continue;
+        }
+        const bool online = !config_.networkUp || config_.networkUp();
+        string next;
+        if (!paused_ && online) {
+            lock_guard<mutex> lock(mutex_);
+            if (!queue_.empty())
+                next = queue_.front();
+        }
+        if (next.empty()) {
+            this_thread::sleep_for(chrono::milliseconds(250));
+            continue;
+        }
+        work(next);
+    }
+}
+
+//*******************************
+// StoreService::fetchTo
+//*******************************
+bool StoreService::fetchTo(const string &url, const string &target, string &error) {
+    Downloader downloader(config_.fetchCommand, "",
+                          [this](const string &line) { return config_.runner(line, [this] { return stop_.load(); }); });
+    DownloadRequest request;
+    request.url = url;
+    request.target = target;
+    Downloader::Result r = downloader.fetch(request, error);
+    return r == Downloader::Result::Downloaded || r == Downloader::Result::AlreadyThere;
+}
+
+//*******************************
+// StoreService::loadSources
+//*******************************
+void StoreService::loadSources() {
+    vector<StoreItem> items;
+    vector<StoreSourceInfo> infos;
+    const bool online = !config_.networkUp || config_.networkUp();
+
+    // ours: the catalog on the download site, its last good copy when it cannot be fetched now
+    if (!config_.catalogUrl.empty()) {
+        StoreSourceInfo info;
+        info.name = OurSourceName;
+        info.where = config_.catalogUrl;
+        info.remote = true;
+        info.ours = true;
+        const string cached = cacheDir() + sep + "catalog.json";
+        string fetchError;
+        if (online && !fetchTo(config_.catalogUrl, cached, fetchError))
+            info.error = fetchError;
+        StoreCatalog catalog;
+        string error;
+        if (DirEntry::exists(cached) && catalog.load(cached, OurSourceName, error)) {
+            info.items = static_cast<int>(catalog.items.size());
+            items.insert(items.end(), catalog.items.begin(), catalog.items.end());
+        } else if (info.error.empty()) {
+            info.error = online ? error : "not connected";
+        }
+        infos.push_back(info);
+    }
+
+    // the user's: every sources/*.tsv, then every URL in sources.txt
+    for (const DirEntry &e : DirEntry::diru_FilesOnly(sourcesDir())) {
+        if (ableem::toLowerCopy(DirEntry::getFileExtension(e.name)) != "tsv")
+            continue;
+        StoreSourceInfo info;
+        info.where = sourcesDir() + sep + e.name;
+        StoreSourceTsv tsv;
+        string error;
+        if (StoreSourceTsv::load(info.where, DirEntry::getFileNameWithoutExtension(e.name), tsv, error)) {
+            info.name = tsv.name;
+            info.items = static_cast<int>(tsv.items.size());
+            info.problems = tsv.problems;
+            items.insert(items.end(), tsv.items.begin(), tsv.items.end());
+        } else {
+            info.name = e.name;
+            info.error = error;
+        }
+        infos.push_back(info);
+    }
+    int n = 0;
+    for (const string &url : readLines(sourcesFile())) {
+        StoreSourceInfo info;
+        info.where = url;
+        info.remote = true;
+        const string cached = cacheDir() + sep + "source-" + to_string(++n) + ".tsv";
+        string fetchError;
+        if (online && !fetchTo(url, cached, fetchError))
+            info.error = fetchError;
+        StoreSourceTsv tsv;
+        string error;
+        string fallbackName = url.substr(url.find_last_of('/') + 1);
+        if (DirEntry::exists(cached) && StoreSourceTsv::load(cached, fallbackName, tsv, error)) {
+            info.name = tsv.name;
+            info.items = static_cast<int>(tsv.items.size());
+            info.problems = tsv.problems;
+            items.insert(items.end(), tsv.items.begin(), tsv.items.end());
+        } else {
+            info.name = fallbackName;
+            if (info.error.empty())
+                info.error = online ? error : "not connected";
+        }
+        infos.push_back(info);
+    }
+    for (const StoreSourceInfo &info : infos)
+        PLOG_INFO << "source " << info.name << " (" << info.where << "): " << info.items << " items"
+                  << (info.error.empty() ? "" : " - " + info.error)
+                  << (info.problems.empty() ? "" : ", " + to_string(info.problems.size()) + " lines skipped");
+
+    lock_guard<mutex> lock(mutex_);
+    items_ = items;
+    sources_ = infos;
+    rebuildEntries();
+    loaded_ = true;
+    events_.listChanged = true;
+}
+
+//*******************************
+// StoreService::rebuildEntries (mutex_ held)
+//*******************************
+void StoreService::rebuildEntries() {
+    vector<StoreEntry> entries;
+    for (const StoreItem &item : items_) {
+        StoreEntry e;
+        e.item = item;
+        e.key = item.source + "|" + item.id;
+        if (!supported(item.kind)) {
+            e.state = StoreState::Unsupported;
+        } else {
+            auto installed = installed_.find(e.key);
+            if (installed != installed_.end()) {
+                e.installedVersion = installed->second.version;
+                e.installedPath = installed->second.path;
+            } else if (item.kind == "app" && !appNameFromId(item.id).empty()) {
+                // an App put there by hand (or by the PC installer's pack) counts as installed too
+                const string folder = config_.appsDir + sep + appNameFromId(item.id);
+                if (DirEntry::exists(folder + sep + "app.ini")) {
+                    IniFile ini;
+                    ini.load(folder + sep + "app.ini");
+                    e.installedVersion = Strings::trim(ini.values["version"]);
+                    e.installedPath = folder;
+                }
+            }
+            if (!e.installedPath.empty())
+                e.state = versionDiffers(e.installedVersion, item.version) ? StoreState::UpdateAvailable
+                                                                           : StoreState::Installed;
+            if (find_if(queue_.begin(), queue_.end(), [&](const string &k) { return k == e.key; }) != queue_.end())
+                e.state = StoreState::Queued;
+            if (e.key == current_)
+                e.state = currentState_;
+            auto failed = failed_.find(e.key);
+            if (failed != failed_.end() && e.state != StoreState::Queued && e.key != current_) {
+                e.state = StoreState::Failed;
+                e.error = failed->second;
+            }
+        }
+        entries.push_back(e);
+    }
+    entries_ = entries;
+}
+
+StoreEntry *StoreService::find(const string &key) {
+    for (StoreEntry &e : entries_)
+        if (e.key == key)
+            return &e;
+    return nullptr;
+}
+
+//*******************************
+// StoreService::work
+//*******************************
+void StoreService::work(const string &key) {
+    StoreItem item;
+    {
+        lock_guard<mutex> lock(mutex_);
+        StoreEntry *entry = find(key);
+        if (entry == nullptr) {
+            if (!loaded_)
+                return;         // the sources are not read yet: it waits
+            queue_.pop_front(); // no source offers it any more
+            writeQueue();
+            return;
+        }
+        item = entry->item;
+        current_ = key;
+        currentState_ = StoreState::Downloading;
+        currentDone_ = 0;
+        currentTotal_ = item.size();
+        cancelKey_.clear();
+        failed_.erase(key);
+        rebuildEntries();
+        events_.listChanged = true;
+    }
+    auto finish = [this, &key](const string &error, bool dequeue) {
+        lock_guard<mutex> lock(mutex_);
+        if (dequeue && !queue_.empty() && queue_.front() == key)
+            queue_.pop_front();
+        if (!error.empty())
+            failed_[key] = error;
+        current_.clear();
+        currentPart_.clear();
+        writeQueue();
+        rebuildEntries();
+        events_.listChanged = true;
+    };
+    auto cancelled = [this, &key]() {
+        lock_guard<mutex> lock(mutex_);
+        return cancelKey_ == key;
+    };
+
+    // the files, each resumed from what an earlier attempt left
+    Downloader downloader(config_.downloadCommand, config_.downloadCommand, [this, &cancelled](const string &line) {
+        return config_.runner(line, [this, &cancelled] { return stop_.load() || paused_.load() || cancelled(); });
+    });
+    vector<string> local;
+    for (const StoreFile &file : item.files) {
+        const string target = downloadsDir() + sep + fileNameFor(file);
+        {
+            lock_guard<mutex> lock(mutex_);
+            currentPart_ = Downloader::partPath(target);
+        }
+        DownloadRequest request;
+        request.url = file.url;
+        request.target = target;
+        request.size = file.size;
+        request.sha256 = file.sha256;
+        request.resume = true;
+        string error;
+        Downloader::Result r = downloader.fetch(request, error);
+        if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere) {
+            if (cancelled()) {
+                DirEntry::removeFile(Downloader::partPath(target));
+                PLOG_INFO << item.title << ": cancelled";
+                finish("", true);
+                return;
+            }
+            if (stop_ || paused_) {
+                PLOG_INFO << item.title << ": paused - it continues later";
+                finish("", false); // still first in the queue; the .part stays
+                return;
+            }
+            PLOG_WARNING << item.title << ": " << error;
+            {
+                lock_guard<mutex> lock(mutex_);
+                events_.failed.push_back(item.title + ": " + error);
+            }
+            finish(error, true);
+            return;
+        }
+        local.push_back(target);
+        lock_guard<mutex> lock(mutex_);
+        currentDone_ += file.size;
+    }
+
+    {
+        lock_guard<mutex> lock(mutex_);
+        currentState_ = StoreState::Installing;
+        currentPart_.clear();
+        rebuildEntries();
+        events_.listChanged = true;
+    }
+    InstallResult result =
+        item.kind == "app" ? AppInstaller::install(local.front(), config_.appsDir, stagingDir(), config_.platformKeys)
+                           : GameInstaller::install(local, item.title, config_.gamesDir, stagingDir());
+    for (const string &f : local)
+        DirEntry::removeFile(f); // what the installer did not move
+    if (!result.ok) {
+        PLOG_WARNING << item.title << ": " << result.error;
+        {
+            lock_guard<mutex> lock(mutex_);
+            events_.failed.push_back(item.title + ": " + result.error);
+        }
+        finish(result.error, true);
+        return;
+    }
+    {
+        lock_guard<mutex> lock(mutex_);
+        installed_[key] = Installed{item.kind, item.version, result.path};
+        writeInstalled();
+        events_.installed.push_back(item.title);
+        if (item.kind == "app")
+            events_.appsChanged = true;
+        else
+            events_.gamesChanged = true;
+    }
+    PLOG_INFO << item.title << " installed to " << result.path;
+    finish("", true);
+}
+
+//*******************************
+// StoreService::poll / entries / sources / progress
+//*******************************
+StoreService::Update StoreService::poll() {
+    lock_guard<mutex> lock(mutex_);
+    Update update = events_;
+    events_ = Update();
+    return update;
+}
+
+vector<StoreEntry> StoreService::entries() const {
+    lock_guard<mutex> lock(mutex_);
+    return entries_;
+}
+
+vector<StoreSourceInfo> StoreService::sources() const {
+    lock_guard<mutex> lock(mutex_);
+    return sources_;
+}
+
+StoreService::Progress StoreService::progress() const {
+    lock_guard<mutex> lock(mutex_);
+    Progress p;
+    p.offline = config_.networkUp && !config_.networkUp();
+    p.waiting = static_cast<int>(queue_.size()) - (current_.empty() ? 0 : 1);
+    if (current_.empty())
+        return p;
+    p.busy = true;
+    p.state = currentState_;
+    for (const StoreEntry &e : entries_)
+        if (e.key == current_)
+            p.title = e.item.title;
+    p.total = currentTotal_;
+    p.done = currentDone_;
+    if (!currentPart_.empty()) {
+        const long long part = DirEntry::fileSize(currentPart_);
+        if (part > 0)
+            p.done += static_cast<uint64_t>(part);
+    }
+    return p;
+}
+
+//*******************************
+// StoreService::enqueue / cancel / remove
+//*******************************
+bool StoreService::enqueue(const string &key) {
+    lock_guard<mutex> lock(mutex_);
+    StoreEntry *e = find(key);
+    if (e == nullptr || e->state == StoreState::Unsupported || e->state == StoreState::Queued || key == current_)
+        return false;
+    queue_.push_back(key);
+    failed_.erase(key);
+    writeQueue();
+    rebuildEntries();
+    events_.listChanged = true;
+    return true;
+}
+
+bool StoreService::cancel(const string &key) {
+    lock_guard<mutex> lock(mutex_);
+    if (key == current_) {
+        cancelKey_ = key; // the worker stops its download and drops it
+        return true;
+    }
+    auto it = std::find(queue_.begin(), queue_.end(), key);
+    if (it == queue_.end())
+        return false;
+    queue_.erase(it);
+    writeQueue();
+    rebuildEntries();
+    events_.listChanged = true;
+    return true;
+}
+
+bool StoreService::remove(const string &key, string &error) {
+    lock_guard<mutex> lock(mutex_);
+    StoreEntry *e = find(key);
+    if (e == nullptr || e->installedPath.empty()) {
+        error = "it is not installed";
+        return false;
+    }
+    const bool app = e->item.kind == "app";
+    const bool ok =
+        app ? AppInstaller::remove(e->installedPath, error) : GameInstaller::remove(e->installedPath, error);
+    if (!ok)
+        return false;
+    installed_.erase(key);
+    writeInstalled();
+    if (app)
+        events_.appsChanged = true;
+    else
+        events_.gamesChanged = true;
+    rebuildEntries();
+    events_.listChanged = true;
+    return true;
+}
+
+//*******************************
+// StoreService: sources.txt
+//*******************************
+vector<string> StoreService::sourceUrls() const {
+    return readLines(sourcesFile());
+}
+
+bool StoreService::addSourceUrl(const string &url, string &error) {
+    const string u = Strings::trim(url);
+    if (u.compare(0, 7, "http://") != 0 && u.compare(0, 8, "https://") != 0) {
+        error = "a source is an http:// or https:// address";
+        return false;
+    }
+    vector<string> urls = sourceUrls();
+    if (std::find(urls.begin(), urls.end(), u) == urls.end()) {
+        ofstream out(sourcesFile(), ios::binary | ios::app);
+        out << u << "\n";
+    }
+    refresh();
+    return true;
+}
+
+bool StoreService::removeSourceUrl(const string &url) {
+    vector<string> urls = sourceUrls();
+    auto it = std::find(urls.begin(), urls.end(), url);
+    if (it == urls.end())
+        return false;
+    urls.erase(it);
+    ofstream out(sourcesFile(), ios::binary | ios::trunc);
+    for (const string &u : urls)
+        out << u << "\n";
+    refresh();
+    return true;
+}
+
+//*******************************
+// StoreService: installed.tsv, queue.txt
+//*******************************
+void StoreService::readInstalled() {
+    ifstream in(installedFile());
+    string line;
+    while (Strings::getlineRemoveCR(in, line)) {
+        vector<string> f;
+        size_t start = 0;
+        for (;;) {
+            size_t tab = line.find('\t', start);
+            f.push_back(line.substr(start, tab == string::npos ? string::npos : tab - start));
+            if (tab == string::npos)
+                break;
+            start = tab + 1;
+        }
+        if (f.size() >= 4 && !f[0].empty() && DirEntry::exists(f[3]))
+            installed_[f[0]] = Installed{f[1], f[2], f[3]}; // a folder deleted by hand is not installed any more
+    }
+}
+
+void StoreService::writeInstalled() const {
+    ofstream out(installedFile(), ios::binary | ios::trunc);
+    for (const auto &i : installed_)
+        out << i.first << "\t" << i.second.kind << "\t" << i.second.version << "\t" << i.second.path << "\n";
+}
+
+void StoreService::writeQueue() const {
+    ofstream out(queueFile(), ios::binary | ios::trunc);
+    for (const string &k : queue_)
+        out << k << "\n";
+}

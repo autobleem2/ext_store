@@ -1,0 +1,177 @@
+//
+// StoreService: the AutoBleem Store's model - what the sources offer (our catalog and the user's TSV sources),
+// what is installed, and the queue a worker thread downloads and installs from. No screen in here: GuiStore
+// draws it, the extension's poll() hands its progress to the launcher's bubble (docs/store-plan.md in the
+// launcher repository).
+//
+// Everything it keeps is in its state directory (System/Extensions/store/):
+//   sources/*.tsv     the user's own TSV sources, dropped on the stick
+//   sources.txt       the URLs of remote TSV sources, one per line (# comments)
+//   cache/            the last good copy of our catalog and of each remote source
+//   downloads/        the files being downloaded (<name>.part while unfinished - they resume)
+//   staging/          the installers' unpacking room
+//   installed.tsv     what the Store installed: key, kind, version, path - one per line
+//   queue.txt         what is still to be done, one key per line - a power-off only pauses it
+//
+#pragma once
+
+#include <ableem/engine/store_catalog.h>
+
+#include <atomic>
+#include <cstdint>
+#include <deque>
+#include <functional>
+#include <map>
+#include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
+
+//******************
+// StoreState
+//******************
+enum class StoreState { Available, Queued, Downloading, Installing, Installed, UpdateAvailable, Failed, Unsupported };
+
+//******************
+// StoreEntry
+//******************
+struct StoreEntry {
+    std::string key; // "<source name>|<item id>" - unique across sources
+    ableem::StoreItem item;
+    StoreState state = StoreState::Available;
+    std::string installedVersion;
+    std::string installedPath;
+    std::string error; // why the last attempt failed
+};
+
+//******************
+// StoreSourceInfo
+//******************
+struct StoreSourceInfo {
+    std::string name;  // what the items say they came from
+    std::string where; // the file, or the URL
+    bool remote = false;
+    bool ours = false; // our catalog on the download site
+    int items = 0;
+    std::vector<std::string> problems; // the TSV's skipped lines
+    std::string error;                 // why it could not be read now (a cached copy stands in when there is one)
+};
+
+//******************
+// StoreService
+//******************
+class StoreService {
+public:
+    // runs a command line, stopping it once `cancelled` says so - System::runShellCommand(line, cancelled)
+    using Runner = std::function<int(const std::string &, const std::function<bool()> &)>;
+
+    struct Config {
+        std::string stateDir;                  // System/Extensions/store
+        std::string appsDir;                   // Apps/
+        std::string gamesDir;                  // Games/
+        std::string catalogUrl;                // <repo>/store/<platform key>/catalog.json; "" = no catalog of ours
+        std::string fetchCommand;              // %u %o with a short timeout: the catalog and remote sources
+        std::string downloadCommand;           // %u %o, continuing a partial %o: the items' files
+        std::vector<std::string> platformKeys; // Env::appPlatformKeys(), for an App's check
+        Runner runner;
+        std::function<bool()> networkUp; // always up when not given
+    };
+
+    struct Progress {
+        bool busy = false; // downloading or installing
+        std::string title; // the item's
+        StoreState state = StoreState::Available;
+        uint64_t done = 0, total = 0; // bytes, of the item's files; total 0 = unknown
+        int waiting = 0;              // in the queue after this one
+        bool offline = false;
+    };
+
+    // what happened since the last poll(): for the screen and the launcher
+    struct Update {
+        bool listChanged = false;
+        bool appsChanged = false;           // an App was installed or removed: the launcher's Apps set
+        bool gamesChanged = false;          // a game was: the launcher's scan
+        std::vector<std::string> installed; // titles
+        std::vector<std::string> failed;    // "title: why"
+    };
+
+    explicit StoreService(Config config);
+    ~StoreService();
+    StoreService(const StoreService &) = delete;
+    StoreService &operator=(const StoreService &) = delete;
+
+    // the worker: reads the sources, then works the queue whenever there is a network and it is not paused
+    void start();
+    // the worker stops (an unfinished download is cancelled and kept for later) and is joined
+    void stop();
+    // the sources read again - the remote ones fetched - on the worker
+    void refresh();
+    Update poll();
+
+    std::vector<StoreEntry> entries() const;
+    std::vector<StoreSourceInfo> sources() const;
+    Progress progress() const;
+    bool sourcesLoaded() const { return loaded_; }
+
+    bool enqueue(const std::string &key);
+    bool cancel(const std::string &key);                     // out of the queue; the one being downloaded is stopped
+    bool remove(const std::string &key, std::string &error); // an installed item, uninstalled
+    // a game is starting: the download in flight is stopped (its bytes kept) until resume()
+    void pause();
+    void resume();
+    bool paused() const { return paused_; }
+
+    // sources.txt
+    std::vector<std::string> sourceUrls() const;
+    bool addSourceUrl(const std::string &url, std::string &error);
+    bool removeSourceUrl(const std::string &url);
+
+    std::string sourcesDir() const;
+    std::string sourcesFile() const;
+    std::string cacheDir() const;
+    std::string downloadsDir() const;
+    std::string stagingDir() const;
+    std::string installedFile() const;
+    std::string queueFile() const;
+
+    // the name a file is saved under: the item's, else the URL's last segment without its query
+    static std::string fileNameFor(const ableem::StoreFile &file);
+    static bool versionDiffers(const std::string &installed, const std::string &offered);
+
+private:
+    struct Installed {
+        std::string kind, version, path;
+    };
+
+    void workerMain();
+    void loadSources(); // on the worker
+    void rebuildEntries();
+    void work(const std::string &key); // one queued item, on the worker
+    bool fetchTo(const std::string &url, const std::string &target, std::string &error);
+    void readInstalled();
+    void writeInstalled() const;
+    void writeQueue() const;
+    StoreEntry *find(const std::string &key);
+
+    Config config_;
+    mutable std::mutex mutex_;
+    std::vector<ableem::StoreItem> items_;
+    std::vector<StoreSourceInfo> sources_;
+    std::vector<StoreEntry> entries_;
+    std::map<std::string, Installed> installed_;
+    std::deque<std::string> queue_;
+    std::string current_;      // the key being worked on
+    std::string currentPart_;  // its file being downloaded, for the progress
+    uint64_t currentDone_ = 0; // its files already finished
+    uint64_t currentTotal_ = 0;
+    StoreState currentState_ = StoreState::Available;
+    std::map<std::string, std::string> failed_; // key -> why, until it is queued again
+    Update events_;
+
+    std::thread worker_;
+    std::atomic<bool> stop_{false};
+    std::atomic<bool> paused_{false};
+    std::atomic<bool> refresh_{true};
+    std::atomic<bool> loaded_{false};
+    std::string cancelKey_; // under mutex_
+};
