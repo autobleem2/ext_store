@@ -7,6 +7,9 @@ It uses AutoBleem's own engine to find the games: the disc images, the serial re
 title and cover from the covers databases and the PlayStation rdb. **It only reads the games folder**: nothing
 is renamed, repaired or written there.
 
+**Setting it up on a Linux machine, step by step - the build, a systemd service, the firewall - is
+[INSTALL-linux.md](INSTALL-linux.md).**
+
 ## Building (any Linux)
 
 You need a C++14 compiler, CMake 3.14 or newer, git and pthreads. SDL and other libraries are not needed.
