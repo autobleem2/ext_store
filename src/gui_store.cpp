@@ -19,7 +19,10 @@ const int FooterHeight = PanelStyle::FooterHeight;
 const int RowHeight = 60;
 const int RowInset = PanelStyle::RowInset;
 const int PaneWidth = 400;
-const uint32_t ReloadEvery = 500; // ms: the worker's news, often enough for a progress to move
+const int Thumb = 48;              // a row's picture, square
+const int ThumbSpace = Thumb + 14; // what it takes of the row's text
+const int PanePictureHeight = 160; // the details pane's picture
+const uint32_t ReloadEvery = 500;  // ms: the worker's news, often enough for a progress to move
 } // namespace
 
 //*******************************
@@ -133,10 +136,18 @@ void GuiStore::reload() {
         }
         break;
     }
+    // the same row again: by its key, or - a row without one (the Sources tab's "Add a source URL") - by its
+    // place, which a reload every half second must not take away from under the cursor
+    const int before = selected;
     selected = 0;
+    bool kept = false;
     for (size_t i = 0; i < rows.size(); i++)
-        if (!keep.empty() && rows[i].key == keep)
+        if (!keep.empty() && rows[i].key == keep) {
             selected = static_cast<int>(i);
+            kept = true;
+        }
+    if (!kept && keep.empty() && !rows.empty())
+        selected = min(before, static_cast<int>(rows.size()) - 1);
     firstVisible = min(firstVisible, max(0, static_cast<int>(rows.size()) - visibleRows()));
     moveSelection(0);
 }
@@ -165,10 +176,47 @@ void GuiStore::moveSelection(int step) {
 const StoreEntry *GuiStore::selectedEntry() const {
     if (selected >= static_cast<int>(rows.size()))
         return nullptr;
+    return entryFor(rows[selected].key);
+}
+
+const StoreEntry *GuiStore::entryFor(const string &key) const {
+    if (key.empty())
+        return nullptr;
     for (const StoreEntry &e : entries)
-        if (e.key == rows[selected].key)
+        if (e.key == key)
             return &e;
     return nullptr;
+}
+
+//*******************************
+// GuiStore::pictureFor / drawFitted
+//*******************************
+ableem::Texture GuiStore::pictureFor(const StoreEntry &entry) {
+    StorePictures::Request request;
+    request.key = entry.key;
+    request.kind = entry.item.kind;
+    request.title = entry.item.title;
+    request.serial = entry.item.serial;
+    request.imageUrl = entry.item.image;
+    request.installedPath = entry.installedPath;
+    pictures.want(request);
+    const string file = pictures.path(entry.key);
+    if (file.empty())
+        return ableem::Texture();
+    auto it = textures.find(file);
+    if (it == textures.end())
+        it = textures.emplace(file, ableem::Texture::loadFile(renderer, file)).first;
+    return it->second;
+}
+
+void GuiStore::drawFitted(const ableem::Texture &texture, const ableem::Rect &box) {
+    const ableem::Size size = texture.size();
+    if (size.w <= 0 || size.h <= 0)
+        return;
+    const double scale = min(static_cast<double>(box.w) / size.w, static_cast<double>(box.h) / size.h);
+    const int w = static_cast<int>(size.w * scale), h = static_cast<int>(size.h * scale);
+    const ableem::Rect target(box.x + (box.w - w) / 2, box.y + (box.h - h) / 2, w, h);
+    renderer.copy(texture, nullptr, &target);
 }
 
 //*******************************
@@ -234,17 +282,40 @@ void GuiStore::render() {
                                          tab == Tab::Downloads ? _("Nothing is downloading") : _("Nothing here yet"),
                                          panel.x + RowInset + 8, y + 16, style.secondary, XALIGN_LEFT);
     }
+    const bool withPictures = tab != Tab::Sources;
     for (int i = firstVisible; i < firstVisible + visible && i < static_cast<int>(rows.size()); i++) {
         const ableem::Rect row(panel.x + 1, y, listWidth - 2, RowHeight);
         if (i == selected)
             style.selection(renderer, row);
-        const int textWidth = listWidth - 2 * RowInset - 16;
-        gui->text().renderText_WithColor(
-            fonts[FONT_22_MED], gui->text().elide(fonts[FONT_22_MED], rows[i].title, textWidth), panel.x + RowInset + 8,
-            y + 6, i == selected ? style.text : style.secondary, XALIGN_LEFT);
+        int textX = panel.x + RowInset + 8;
+        const StoreEntry *entry = entryFor(rows[i].key);
+        if (withPictures) {
+            const ableem::Rect box(textX, y + (RowHeight - Thumb) / 2, Thumb, Thumb);
+            const ableem::Texture picture = entry != nullptr ? pictureFor(*entry) : ableem::Texture();
+            if (picture.valid()) {
+                drawFitted(picture, box);
+            } else {
+                renderer.setDrawColor(style.secondary);
+                renderer.drawRect(box);
+            }
+            textX += ThumbSpace;
+        }
+        const int textWidth = listWidth - (textX - panel.x) - RowInset - 8;
+        gui->text().renderText_WithColor(fonts[FONT_22_MED],
+                                         gui->text().elide(fonts[FONT_22_MED], rows[i].title, textWidth), textX, y + 6,
+                                         i == selected ? style.text : style.secondary, XALIGN_LEFT);
         gui->text().renderText_WithColor(fonts[FONT_15_BOLD],
-                                         gui->text().elide(fonts[FONT_15_BOLD], rows[i].detail, textWidth),
-                                         panel.x + RowInset + 8, y + 34, style.secondary, XALIGN_LEFT);
+                                         gui->text().elide(fonts[FONT_15_BOLD], rows[i].detail, textWidth), textX,
+                                         y + 34, style.secondary, XALIGN_LEFT);
+        // the one downloading: how far, as a bar along the row's foot
+        if (entry != nullptr && entry->state == StoreState::Downloading && progress.busy && progress.total > 0) {
+            const int barWidth = textWidth;
+            const int done = static_cast<int>(barWidth * min<uint64_t>(progress.done, progress.total) / progress.total);
+            renderer.setDrawColor(style.secondary);
+            renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, barWidth, 3));
+            renderer.setDrawColor(style.text);
+            renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, done, 3));
+        }
         y += RowHeight;
     }
     const int markerX = panel.x + listWidth - RowInset;
@@ -311,6 +382,11 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
     Fonts &fonts = gui->assets().themeFonts;
     const int x = pane.x + 24, width = pane.w - 48;
     int y = pane.y + 20;
+    const ableem::Texture picture = pictureFor(*e);
+    if (picture.valid()) {
+        drawFitted(picture, ableem::Rect(x, y, width, PanePictureHeight));
+        y += PanePictureHeight + 14;
+    }
     for (const string &line : gui->text().wrapLines(fonts[FONT_22_MED], e->item.title, width)) {
         gui->text().renderText_WithColor(fonts[FONT_22_MED], line, x, y, style.text, XALIGN_LEFT);
         y += 30;

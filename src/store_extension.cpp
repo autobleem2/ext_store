@@ -4,6 +4,7 @@
 // the launcher's bubble, and Cross in the Extensions list shows its screen.
 //
 #include "gui_store.h"
+#include "store_pictures.h"
 #include "store_service.h"
 
 #include "core/main.h"
@@ -44,6 +45,17 @@ StoreService::Config configFor(ExtensionHost &host) {
     return c;
 }
 
+// the pictures: our covers databases and the PlayStation rdb for a game, the item's own URL for an App's icon
+StorePictures::Config picturesFor(ExtensionHost &host, const StoreService::Config &store) {
+    StorePictures::Config c;
+    c.cacheDir = host.stateDir() + sep + "cache" + sep + "pictures";
+    c.fetchCommand = store.fetchCommand;
+    c.coversDir = Env::getPathToCoversDBDir();
+    c.rdbFile = Env::getPathToPlayStationRdbFile();
+    c.networkUp = store.networkUp;
+    return c;
+}
+
 } // namespace
 
 //******************
@@ -51,14 +63,16 @@ StoreService::Config configFor(ExtensionHost &host) {
 //******************
 class StoreExtension : public Extension {
 public:
-    explicit StoreExtension(ExtensionHost &host) : host(host), store(configFor(host)) {
+    explicit StoreExtension(ExtensionHost &host)
+        : host(host), store(configFor(host)), pictures(picturesFor(host, configFor(host))) {
         PLOG_INFO << "the Store, state in " << host.stateDir();
         store.start();
     }
 
     void run() override {
-        store.refresh(); // the sources read again, remote ones fetched, while the screen is up
-        GuiStore screen(*Gui::getInstance(), store);
+        store.refresh();  // the sources read again, remote ones fetched, while the screen is up
+        pictures.start(); // looked for while the screen is up, and kept for the next time
+        GuiStore screen(*Gui::getInstance(), store, pictures);
         screen.show();
     }
 
@@ -92,11 +106,15 @@ public:
 
     void suspend() override { store.pause(); } // a game gets the machine: the download in flight stops
     void resume() override { store.resume(); }
-    void shutdown() override { store.stop(); }
+    void shutdown() override {
+        pictures.stop();
+        store.stop();
+    }
 
 private:
     ExtensionHost &host;
     StoreService store;
+    StorePictures pictures;
     bool shown = false;
     chrono::steady_clock::time_point holdUntil;
 };

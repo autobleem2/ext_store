@@ -15,9 +15,17 @@ separate downloads, repository names `ext_<name>`).
     core's `AppInstaller`/`GameInstaller`.
   
   It has no UI. It is tested in `tests/test_store_service.cpp` against a fake site.
-- `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list and the
-  detail pane, in the launcher's `PanelStyle`. It re-reads the service twice a second and never calls
-  `poll()`, whose events are the extension's (the launcher's reloads).
+- `src/store_pictures.*` - `StorePictures`: an item's picture on a thread of its own (never behind a download).
+  A game's cover comes from **our** sources only (the owner's rule): the installed folder, then the covers
+  databases by serial (the source's, or the one the PlayStation rdb gives for the title), then RetroArch's
+  local box art by the rdb's record name; the source's `image` URL only for a game none of them knows, and
+  never libretro's servers. An App's icon is the installed `app.ini`'s `Image=`, else the catalog's `image`.
+  Fetched pictures go to `cache/pictures/`. Tested in `tests/test_store_pictures.cpp`.
+- `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item
+  with its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the
+  launcher's `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are
+  the extension's (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the
+  keyless "Add a source URL" row.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
   URL, `store_download_command`, the platform keys; `AB_STORE_CATALOG` overrides the catalog), `poll()` →
   the launcher's bubble, `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
@@ -29,7 +37,7 @@ separate downloads, repository names `ext_<name>`).
 ## Building and testing
 
 - Built with the launcher: `-DAB_EXTENSION_DIRS=<this checkout>`. `ab_add_extension` builds `store` and
-  stages it in `<build>/extensions/store/`; `test_store_service` is added when the build has tests.
+  stages it in `<build>/extensions/store/`; `test_store_service` and `test_store_pictures` are added when the build has tests.
 - Format with the launcher's `.clang-format` (copied here), lint with its `.clang-tidy`
   (`tools/lint.sh <files>` from the launcher).
 - To try it on the Windows dev build:

@@ -1,15 +1,18 @@
 //
 // GuiStore: the AutoBleem Store's screen - four tabs (Apps, Games, Downloads, Sources), a list and the selected
-// item's details, drawn with the launcher's own classic panel in the user's theme. It only shows and asks:
-// StoreService does the work, on its own thread, and goes on after the screen is closed.
+// item's details, drawn with the launcher's own classic panel in the user's theme. Each item has its picture
+// (an App's icon, a game's cover - StorePictures finds them) beside it in the list and above its details. It
+// only shows and asks: StoreService does the work, on its own thread, and goes on after the screen is closed.
 //
 #pragma once
 
+#include "store_pictures.h"
 #include "store_service.h"
 
 #include "gui/gui_screen.h"
 #include "gui/panel_style.h"
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -18,7 +21,8 @@
 //******************
 class GuiStore : public GuiScreen {
 public:
-    GuiStore(ableem::GuiBase &gui, StoreService &store) : GuiScreen(gui), store(store) {}
+    GuiStore(ableem::GuiBase &gui, StoreService &store, StorePictures &pictures)
+        : GuiScreen(gui), store(store), pictures(pictures) {}
 
     void init() override;
     void render() override;
@@ -47,9 +51,16 @@ private:
     void cross();
     void triangle();
     const StoreEntry *selectedEntry() const;
+    const StoreEntry *entryFor(const std::string &key) const;
     void drawDetails(const ableem::Rect &pane);
+    // the entry's picture, asked for when not known yet; an invalid texture while there is none
+    ableem::Texture pictureFor(const StoreEntry &entry);
+    // the texture fitted into `box`, centred, its own aspect kept
+    void drawFitted(const ableem::Texture &texture, const ableem::Rect &box);
 
     StoreService &store;
+    StorePictures &pictures;
+    std::map<std::string, ableem::Texture> textures; // by file; the screen's own, gone with it
     Tab tab = Tab::Apps;
     std::vector<StoreEntry> entries;
     std::vector<StoreSourceInfo> sources;

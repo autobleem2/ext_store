@@ -377,7 +377,10 @@ void StoreService::work(const string &key) {
         Downloader::Result r = downloader.fetch(request, error);
         if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere) {
             if (cancelled()) {
+                // the whole item goes: the file in flight and the discs already finished
                 DirEntry::removeFile(Downloader::partPath(target));
+                for (const string &f : local)
+                    DirEntry::removeFile(f);
                 PLOG_INFO << item.title << ": cancelled";
                 finish("", true);
                 return;

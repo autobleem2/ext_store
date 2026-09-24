@@ -291,6 +291,27 @@ TEST_CASE("StoreService: cancel stops the download in flight and drops it") {
     CHECK(s.tmp.readFile("System/Extensions/store/queue.txt").empty());
 }
 
+TEST_CASE("StoreService: a cancel mid-way through a two-disc game drops the disc already finished too") {
+    Setup s;
+    s.tmp.writeFile("System/Extensions/store/sources/two.tsv", "# name: Two\ntitle\turl\tdisc\n"
+                                                               "Two Discs\thttps://site/d1.chd\t1\n"
+                                                               "Two Discs\thttps://site/d2.chd\t2\n");
+    s.site.bodies["https://site/d1.chd"] = "disc one";
+    s.site.bodies["https://site/d2.chd"] = "disc two, slowly";
+    s.site.stalls.insert("https://site/d2.chd");
+    const string key = "Two|ps1/Two Discs";
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return DirEntry::exists(store.downloadsDir() + "/d2.chd.part"); }));
+    REQUIRE(store.cancel(key));
+    REQUIRE(waitFor([&] { return !store.progress().busy; }));
+    CHECK(s.entry(store.entries(), key)->state == StoreState::Available);
+    CHECK_FALSE(DirEntry::exists(store.downloadsDir() + "/d1.chd"));
+    CHECK_FALSE(DirEntry::exists(store.downloadsDir() + "/d2.chd.part"));
+}
+
 TEST_CASE("StoreService offline: the cached catalog, and nothing downloaded until there is a network") {
     Setup s;
     {
