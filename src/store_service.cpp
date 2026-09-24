@@ -132,11 +132,13 @@ string StoreService::fileNameFor(const StoreFile &file) {
 }
 
 bool StoreService::installable(const StoreItem &item) {
-    for (const StoreFile &f : item.files) {
+    // temporary for testing
+  /*  for (const StoreFile &f : item.files) {
         const string name = ableem::toLowerCopy(fileNameFor(f));
         if (name.size() >= 4 && name.compare(name.size() - 4, 4, ".pkg") == 0)
             return false;
     }
+    */
     return true;
 }
 
