@@ -68,7 +68,7 @@ void StorePictures::stop() {
 }
 
 //*******************************
-// StorePictures::want / path
+// StorePictures::want / path / pending
 //*******************************
 void StorePictures::want(const Request &request) {
     lock_guard<mutex> lock(mutex_);
@@ -81,12 +81,18 @@ void StorePictures::want(const Request &request) {
     pending_.erase(remove_if(pending_.begin(), pending_.end(), [&](const Request &r) { return r.key == request.key; }),
                    pending_.end());
     pending_.push_back(request);
+    inFlight_.insert(request.key);
 }
 
 string StorePictures::path(const string &key) const {
     lock_guard<mutex> lock(mutex_);
     auto it = found_.find(key);
     return it == found_.end() ? "" : it->second;
+}
+
+bool StorePictures::pending(const string &key) const {
+    lock_guard<mutex> lock(mutex_);
+    return inFlight_.count(key) > 0;
 }
 
 //*******************************
@@ -112,6 +118,9 @@ void StorePictures::workerMain() {
         {
             lock_guard<mutex> lock(mutex_);
             found_[next.key] = file;
+            // answered - unless it was asked for again meanwhile (then it is queued once more)
+            if (none_of(pending_.begin(), pending_.end(), [&](const Request &r) { return r.key == next.key; }))
+                inFlight_.erase(next.key);
         }
         if (!file.empty())
             generation_++;

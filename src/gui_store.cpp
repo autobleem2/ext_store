@@ -8,6 +8,7 @@
 #include "gui/screens/gui_keyboard.h"
 
 #include <algorithm>
+#include <cmath>
 #include <cstdio>
 
 using namespace std;
@@ -209,6 +210,41 @@ ableem::Texture GuiStore::pictureFor(const StoreEntry &entry) {
     return it->second;
 }
 
+void GuiStore::drawPicture(const StoreEntry &entry, const ableem::Rect &box, bool frame) {
+    const ableem::Texture picture = pictureFor(entry);
+    if (picture.valid()) {
+        drawFitted(picture, box);
+        return;
+    }
+    if (pictures.pending(entry.key)) {
+        drawSpinner(box);
+    } else if (frame) {
+        renderer.setDrawColor(style.secondary);
+        renderer.drawRect(box);
+    }
+}
+
+void GuiStore::drawSpinner(const ableem::Rect &box) {
+    // twelve dots on a ring, the brightest leading, turning a dot every 70 ms - the launcher's busy spinner,
+    // at the box's size
+    const int size = min(box.w, box.h);
+    const int dot = min(8, max(3, size / 10)); // never bigger than the launcher's own (8 px dots, radius 30)
+    const int radius = min(30, max(6, size / 2 - dot - 2));
+    const int cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+    const int lead = static_cast<int>(gui->platform().ticks() / 70) % 12;
+    renderer.setBlendMode(ableem::BlendMode::Blend);
+    for (int i = 0; i < 12; i++) {
+        const int behind = (lead - i + 12) % 12;
+        const int alpha = 255 - behind * 19;
+        const double a = i * 3.14159265 / 6.0;
+        const int x = cx + static_cast<int>(radius * cos(a)) - dot / 2;
+        const int y = cy + static_cast<int>(radius * sin(a)) - dot / 2;
+        renderer.setDrawColor(
+            ableem::Color(style.text.r, style.text.g, style.text.b, static_cast<unsigned char>(alpha)));
+        renderer.fillRect(ableem::Rect(x, y, dot, dot));
+    }
+}
+
 void GuiStore::drawFitted(const ableem::Texture &texture, const ableem::Rect &box) {
     const ableem::Size size = texture.size();
     if (size.w <= 0 || size.h <= 0)
@@ -291,9 +327,8 @@ void GuiStore::render() {
         const StoreEntry *entry = entryFor(rows[i].key);
         if (withPictures) {
             const ableem::Rect box(textX, y + (RowHeight - Thumb) / 2, Thumb, Thumb);
-            const ableem::Texture picture = entry != nullptr ? pictureFor(*entry) : ableem::Texture();
-            if (picture.valid()) {
-                drawFitted(picture, box);
+            if (entry != nullptr) {
+                drawPicture(*entry, box, true);
             } else {
                 renderer.setDrawColor(style.secondary);
                 renderer.drawRect(box);
@@ -382,9 +417,9 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
     Fonts &fonts = gui->assets().themeFonts;
     const int x = pane.x + 24, width = pane.w - 48;
     int y = pane.y + 20;
-    const ableem::Texture picture = pictureFor(*e);
-    if (picture.valid()) {
-        drawFitted(picture, ableem::Rect(x, y, width, PanePictureHeight));
+    // the picture's room is kept while it is being looked for, so the facts do not jump when it arrives
+    if (pictureFor(*e).valid() || pictures.pending(e->key)) {
+        drawPicture(*e, ableem::Rect(x, y, width, PanePictureHeight), false);
         y += PanePictureHeight + 14;
     }
     for (const string &line : gui->text().wrapLines(fonts[FONT_22_MED], e->item.title, width)) {

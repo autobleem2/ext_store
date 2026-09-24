@@ -19,6 +19,7 @@
 #include <deque>
 #include <functional>
 #include <map>
+#include <set>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -69,6 +70,8 @@ public:
     void want(const Request &request);
     // the picture's file, "" while it is being looked for or when there is none
     std::string path(const std::string &key) const;
+    // being looked for right now (asked for, not answered yet) - the screen shows a spinner meanwhile
+    bool pending(const std::string &key) const;
     // changes whenever a picture was found - the screen loads new textures then
     uint64_t generation() const { return generation_; }
 
@@ -87,6 +90,7 @@ private:
     std::deque<Request> pending_;
     std::map<std::string, std::string> asked_; // key -> what it was asked with (folder, image URL, serial)
     std::map<std::string, std::string> found_; // key -> file ("" = none)
+    std::set<std::string> inFlight_;           // asked for, not answered yet
     std::atomic<uint64_t> generation_{0};
     std::atomic<bool> stop_{false};
     std::thread worker_;

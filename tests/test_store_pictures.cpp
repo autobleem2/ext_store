@@ -152,14 +152,16 @@ TEST_CASE("StorePictures: an App's icon - its app.ini's Image= once installed, e
 TEST_CASE("StorePictures: asked for on the screen's thread, found on its own") {
     Setup s;
     StorePictures pictures(s.config());
-    pictures.start();
     const uint64_t before = pictures.generation();
     StorePictures::Request r = s.game("Anything", "SCUS-94900");
     pictures.want(r);
-    pictures.want(r); // asking every frame is fine
+    CHECK(pictures.pending(r.key)); // the screen shows its spinner meanwhile
+    pictures.want(r);               // asking every frame is fine
+    pictures.start();
     for (int i = 0; i < 500 && pictures.path(r.key).empty(); i++)
         this_thread::sleep_for(chrono::milliseconds(10));
     CHECK(fileText(pictures.path(r.key)) == Png);
+    CHECK_FALSE(pictures.pending(r.key));
     CHECK(pictures.generation() > before);
 
     // a refresh brings another picture for the same item: asked for again, not kept from before

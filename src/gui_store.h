@@ -57,6 +57,11 @@ private:
     ableem::Texture pictureFor(const StoreEntry &entry);
     // the texture fitted into `box`, centred, its own aspect kept
     void drawFitted(const ableem::Texture &texture, const ableem::Rect &box);
+    // the picture's box while it is being looked for: a ring of dots turning in it, as the launcher's busy
+    // spinner, sized to the box
+    void drawSpinner(const ableem::Rect &box);
+    // the picture, the spinner while it is being looked for, or an empty frame (`frame`) when there is none
+    void drawPicture(const StoreEntry &entry, const ableem::Rect &box, bool frame);
 
     StoreService &store;
     StorePictures &pictures;
