@@ -133,7 +133,7 @@ string StoreService::fileNameFor(const StoreFile &file) {
 
 bool StoreService::installable(const StoreItem &item) {
     // temporary for testing - TODO: will be removed later
-    /* 
+    /*
     for (const StoreFile &f : item.files) {
         const string name = ableem::toLowerCopy(fileNameFor(f));
         if (name.size() >= 4 && name.compare(name.size() - 4, 4, ".pkg") == 0)
