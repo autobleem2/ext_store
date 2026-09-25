@@ -64,6 +64,7 @@ public:
     // what the databases know of a PS1 game - found with its picture
     struct GameFacts {
         std::string serial; // the disc's: the source's own, or the one a PSN Title ID maps to
+        std::string region; // "US", "EU", "JP", "ASIA": a PSN release's own (the list's), else the serial's
         std::string title;  // the databases' name for it
         std::string publisher;
         int year = 0;
@@ -100,12 +101,18 @@ public:
     // the disc serial psn_serials.tsv names for a Title ID (the first disc's for a multi-disc game), "" when it
     // names none; read on first use
     std::string discSerialFor(const std::string &titleId);
+    // the PSN release's region the list gives ("US", "EU", "JP", "ASIA"), "" when it gives none
+    std::string psnRegionFor(const std::string &titleId);
+    // a region as GameMetadata spells it (SerialScanner::serialToRegion: "US", "Europe-Aus", "Japan") or as
+    // the list does, as one of "US", "EU", "JP", "ASIA" - "" for anything else
+    static std::string regionCode(const std::string &region);
 
 private:
     void workerMain();
     std::string fetchUrl(const std::string &url);
     std::string installedPicture(const Request &request);
     std::string gameCover(const Request &request, GameFacts &facts);
+    void readPsnList();
     bool online() const;
 
     Config config_;
@@ -123,4 +130,5 @@ private:
     std::unique_ptr<ableem::ThumbnailLookup> thumbnails_;
     bool psnSerialsRead_ = false;
     std::map<std::string, std::string> psnSerials_; // Title ID -> disc serial (the worker's)
+    std::map<std::string, std::string> psnRegions_; // Title ID -> the release's region
 };

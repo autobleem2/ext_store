@@ -1,6 +1,6 @@
 # AutoBleem Store - Occitan translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 60
+# Untranslated: 0 / Total: 65
 A secure connection failed - try http://=La connexion segura a fracassat - ensajatz http://
 A source is an http:// or https:// address=Una font es una adreça http:// o https://
 A TSV list of downloads, on any web server=Una lista TSV de telecargaments, sus quin servidor web que siá
@@ -8,6 +8,7 @@ Add=Apondre
 Add a source URL=Apondre l'URL d'una font
 Address of this source=Adreça d'aquesta font
 Apps=Aplicacions
+Asia=Asia
 Author=Autor
 Back=Tornar
 Cancel=Anullar
@@ -16,12 +17,14 @@ Change the address=Cambiar l'adreça
 Downloading=Telecargament
 Downloads=Telecargaments
 Edit=Modificar
+Europe=Euròpa
 Failed=Fracàs
 Games=Jòcs
 Install=Installar
 Installed=Installat
 Installing=Installacion
 items=elements
+Japan=Japon
 Licence=Licéncia
 Name of this source=Nom d'aquesta font
 Not connected=Pas connectat
@@ -36,6 +39,7 @@ Queued=En espèra
 Reading the sources...=Lectura de las fonts...
 Reading...=Lectura...
 Refresh=Actualizar
+Region=Region
 Remove=Suprimir
 Remove it from this system?=Lo suprimir d'aqueste sistèma ?
 Remove this source=Suprimir aquesta font
@@ -57,6 +61,7 @@ The server did not answer in time=Lo servidor a pas respondut a temps
 The server was not found=Lo servidor es pas estat trobat
 Update=Metre a jorn
 Update available=Mesa a jorn disponibla
+USA=Estats Units
 Version=Version
 waiting=en espèra
 Year=Annada

@@ -1,6 +1,6 @@
 # AutoBleem Store - Danish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 60
+# Untranslated: 0 / Total: 65
 A secure connection failed - try http://=En sikker forbindelse mislykkedes - prøv http://
 A source is an http:// or https:// address=En kilde er en http://- eller https://-adresse
 A TSV list of downloads, on any web server=En TSV-liste med downloads på en hvilken som helst webserver
@@ -8,6 +8,7 @@ Add=Tilføj
 Add a source URL=Tilføj en kilde-URL
 Address of this source=Adresse på denne kilde
 Apps=Apps
+Asia=Asien
 Author=Forfatter
 Back=Tilbage
 Cancel=Annuller
@@ -16,12 +17,14 @@ Change the address=Skift adressen
 Downloading=Henter
 Downloads=Overførsler
 Edit=Rediger
+Europe=Europa
 Failed=Mislykkedes
 Games=Spil
 Install=Installer
 Installed=Installeret
 Installing=Installerer
 items=elementer
+Japan=Japan
 Licence=Licens
 Name of this source=Navn på denne kilde
 Not connected=Ikke forbundet
@@ -36,6 +39,7 @@ Queued=I kø
 Reading the sources...=Læser kilderne...
 Reading...=Læser...
 Refresh=Genindlæs
+Region=Region
 Remove=Fjern
 Remove it from this system?=Fjern fra dette system?
 Remove this source=Fjern denne kilde
@@ -57,6 +61,7 @@ The server did not answer in time=Serveren svarede ikke i tide
 The server was not found=Serveren blev ikke fundet
 Update=Opdater
 Update available=Opdatering tilgængelig
+USA=USA
 Version=Version
 waiting=venter
 Year=År

@@ -1,6 +1,6 @@
 # AutoBleem Store - Turkish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 60
+# Untranslated: 0 / Total: 65
 A secure connection failed - try http://=Güvenli bağlantı başarısız - http:// deneyin
 A source is an http:// or https:// address=Kaynak bir http:// veya https:// adresidir
 A TSV list of downloads, on any web server=Herhangi bir web sunucusunda, TSV biçiminde indirme listesi
@@ -8,6 +8,7 @@ Add=Ekle
 Add a source URL=Kaynak URL'si ekle
 Address of this source=Bu kaynağın adresi
 Apps=Uygulamalar
+Asia=Asya
 Author=Yazar
 Back=Geri
 Cancel=İptal et
@@ -16,12 +17,14 @@ Change the address=Adresi değiştir
 Downloading=İndiriliyor
 Downloads=İndirmeler
 Edit=Düzenle
+Europe=Avrupa
 Failed=Başarısız
 Games=Oyunlar
 Install=Yükle
 Installed=Yüklendi
 Installing=Yükleniyor
 items=öğe
+Japan=Japonya
 Licence=Lisans
 Name of this source=Bu kaynağın adı
 Not connected=Bağlı değil
@@ -36,6 +39,7 @@ Queued=Sırada
 Reading the sources...=Kaynaklar okunuyor...
 Reading...=Okunuyor...
 Refresh=Yenile
+Region=Bölge
 Remove=Kaldır
 Remove it from this system?=Bu sistemden kaldırılsın mı?
 Remove this source=Bu kaynağı kaldır
@@ -57,6 +61,7 @@ The server did not answer in time=Sunucu zamanında yanıt vermedi
 The server was not found=Sunucu bulunamadı
 Update=Güncelle
 Update available=Güncelleme mevcut
+USA=ABD
 Version=Sürüm
 waiting=bekliyor
 Year=Yıl

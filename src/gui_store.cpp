@@ -28,8 +28,20 @@ const uint32_t ReloadEvery = 500;  // ms: the worker's news, often enough for a 
 } // namespace
 
 //*******************************
-// GuiStore::stateText / sizeText
+// GuiStore::stateText / regionText / sizeText
 //*******************************
+string GuiStore::regionText(const string &code) {
+    if (code == "US")
+        return _("USA");
+    if (code == "EU")
+        return _("Europe");
+    if (code == "JP")
+        return _("Japan");
+    if (code == "ASIA")
+        return _("Asia");
+    return code;
+}
+
 string GuiStore::stateText(StoreState state) {
     switch (state) {
     case StoreState::Installed:
@@ -104,7 +116,10 @@ void GuiStore::reload() {
     entries = store.entries();
     sources = store.sources();
     lastReload = gui->platform().ticks();
-    const string keep = selected < static_cast<int>(rows.size()) ? rows[selected].key : "";
+    const string keep = !restoreKey.empty()                        ? restoreKey
+                        : selected < static_cast<int>(rows.size()) ? rows[selected].key
+                                                                   : "";
+    restoreKey.clear();
     rows.clear();
     auto entryRow = [this](const StoreEntry &e) {
         Row r;
@@ -296,10 +311,21 @@ void GuiStore::drawPicture(const StoreEntry &entry, const ableem::Rect &box, boo
     }
     if (pictures.pending(entry.key)) {
         drawSpinner(box);
+    } else if (entry.item.kind == "ps1" && discTexture().valid()) {
+        drawFitted(discTexture(), box); // a game none of the sources has a cover for
     } else if (frame) {
         renderer.setDrawColor(style.secondary);
         renderer.drawRect(box);
     }
+}
+
+ableem::Texture GuiStore::discTexture() {
+    if (discPicture.empty())
+        return ableem::Texture();
+    auto it = textures.find(discPicture);
+    if (it == textures.end())
+        it = textures.emplace(discPicture, ableem::Texture::loadFile(renderer, discPicture)).first;
+    return it->second;
 }
 
 void GuiStore::drawSpinner(const ableem::Rect &box) {
@@ -525,7 +551,7 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
     const int x = pane.x + 24, width = pane.w - 48;
     int y = pane.y + 20;
     // the picture's room is kept while it is being looked for, so the facts do not jump when it arrives
-    if (pictureFor(*e).valid() || pictures.pending(e->key)) {
+    if (pictureFor(*e).valid() || pictures.pending(e->key) || (e->item.kind == "ps1" && discTexture().valid())) {
         drawPicture(*e, ableem::Rect(x, y, width, PanePictureHeight), false);
         y += PanePictureHeight + 14;
     }
@@ -561,6 +587,7 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
     // a PS1 game the databases know: found with its cover (StorePictures), a PSN Title ID through its disc serial
     StorePictures::GameFacts game;
     if (e->item.kind == "ps1" && pictures.facts(e->key, game)) {
+        fact(_("Region"), regionText(game.region));
         fact(_("Year"), game.year > 0 ? to_string(game.year) : "");
         fact(_("Players"), game.players > 0 ? to_string(game.players) : "");
         fact(_("Serial"), game.serial);
@@ -740,6 +767,24 @@ void GuiStore::triangle() {
 }
 
 //*******************************
+// GuiStore::switchTab
+//*******************************
+// the tab left keeps its place; the one shown comes back to its own (the top, the first time)
+void GuiStore::switchTab(Tab to) {
+    Place &left = places[tab];
+    left.key = selected < static_cast<int>(rows.size()) ? rows[selected].key : "";
+    left.selected = selected;
+    left.firstVisible = firstVisible;
+    tab = to;
+    const Place &back = places[tab];
+    selected = back.selected;
+    firstVisible = back.firstVisible;
+    restoreKey = back.key;
+    rows.clear();
+    reload();
+}
+
+//*******************************
 // GuiStore::startHold / endHold
 //*******************************
 // the step taken now, and again and again while it is held (HoldRepeat) - a new direction replaces the old one
@@ -812,10 +857,7 @@ void GuiStore::loop() {
                 } else if (e.button == Button::L1 || e.button == Button::R1) {
                     app.audio().cursor.play();
                     const int step = e.button == Button::L1 ? 3 : 1; // four tabs, round
-                    tab = static_cast<Tab>((static_cast<int>(tab) + step) % 4);
-                    selected = firstVisible = 0;
-                    rows.clear();
-                    reload();
+                    switchTab(static_cast<Tab>((static_cast<int>(tab) + step) % 4));
                 } else if (e.button == Button::L2) {
                     startHold(HoldSource::L2, -visibleRows(), HoldRepeat::pages());
                 } else if (e.button == Button::R2) {

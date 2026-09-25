@@ -1,6 +1,6 @@
 # AutoBleem Store - Spanish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 60
+# Untranslated: 0 / Total: 65
 A secure connection failed - try http://=La conexión segura falló - prueba http://
 A source is an http:// or https:// address=Una fuente es una dirección http:// o https://
 A TSV list of downloads, on any web server=Una lista TSV de descargas, en cualquier servidor web
@@ -8,6 +8,7 @@ Add=Añadir
 Add a source URL=Añadir la URL de una fuente
 Address of this source=Dirección de esta fuente
 Apps=Aplicaciones
+Asia=Asia
 Author=Autor
 Back=Atrás
 Cancel=Cancelar
@@ -16,12 +17,14 @@ Change the address=Cambiar la dirección
 Downloading=Descargando
 Downloads=Descargas
 Edit=Editar
+Europe=Europa
 Failed=Error
 Games=Juegos
 Install=Instalar
 Installed=Instalado
 Installing=Instalando
 items=elementos
+Japan=Japón
 Licence=Licencia
 Name of this source=Nombre de esta fuente
 Not connected=No conectado
@@ -36,6 +39,7 @@ Queued=En cola
 Reading the sources...=Leyendo las fuentes...
 Reading...=Leyendo...
 Refresh=Recargar
+Region=Región
 Remove=Quitar
 Remove it from this system?=¿Quitarlo de este sistema?
 Remove this source=Quitar esta fuente
@@ -57,6 +61,7 @@ The server did not answer in time=El servidor no respondió a tiempo
 The server was not found=No se encontró el servidor
 Update=Actualizar
 Update available=Actualización disponible
+USA=EE. UU.
 Version=Versión
 waiting=en espera
 Year=Año

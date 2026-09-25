@@ -9,6 +9,7 @@
 
 #include <ableem/engine/md5.h>
 #include <ableem/engine/metadata_lookup.h>
+#include <ableem/engine/serial_scanner.h>
 #include <ableem/engine/thumbnail_lookup.h>
 
 #include <algorithm>
@@ -125,7 +126,7 @@ void StorePictures::workerMain() {
         {
             lock_guard<mutex> lock(mutex_);
             found_[next.key] = file;
-            if (!facts.serial.empty() || !facts.publisher.empty() || facts.year > 0)
+            if (!facts.serial.empty() || !facts.region.empty() || !facts.publisher.empty() || facts.year > 0)
                 facts_[next.key] = facts;
             else
                 facts_.erase(next.key);
@@ -181,14 +182,16 @@ bool StorePictures::isPsnTitleId(const string &id) {
     return true;
 }
 
-// psn_serials.tsv: a header naming its columns ("Title ID", ..., "Serial"), then one line per Title ID; a
-// multi-disc game's serials are "SLUS-00453 / SLUS-00561 / ...", the first disc's is the cover's
-string StorePictures::discSerialFor(const string &titleId) {
-    if (!psnSerialsRead_) {
-        psnSerialsRead_ = true;
+// psn_serials.tsv: a header naming its columns ("Title ID", "Region", ..., "Serial"), then one line per Title ID;
+// a multi-disc game's serials are "SLUS-00453 / SLUS-00561 / ...", the first disc's is the cover's
+void StorePictures::readPsnList() {
+    if (psnSerialsRead_)
+        return;
+    psnSerialsRead_ = true;
+    {
         ifstream in(config_.psnSerialsFile, ios::binary);
         string line;
-        int idColumn = -1, serialColumn = -1;
+        int idColumn = -1, serialColumn = -1, regionColumn = -1;
         while (Strings::getlineRemoveCR(in, line)) {
             vector<string> f;
             size_t start = 0;
@@ -206,6 +209,8 @@ string StorePictures::discSerialFor(const string &titleId) {
                         idColumn = static_cast<int>(i);
                     else if (name == "SERIAL")
                         serialColumn = static_cast<int>(i);
+                    else if (name == "REGION")
+                        regionColumn = static_cast<int>(i);
                 }
                 if (idColumn < 0 || serialColumn < 0)
                     break; // not the list we know
@@ -218,13 +223,41 @@ string StorePictures::discSerialFor(const string &titleId) {
             const string &id = f[static_cast<size_t>(idColumn)];
             if (!id.empty() && !serial.empty())
                 psnSerials_[upperCase(id)] = serial;
-        }
-        if (!psnSerials_.empty()) {
-            PLOG_INFO << "PSN Title IDs with a disc serial: " << psnSerials_.size();
+            if (!id.empty() && regionColumn >= 0 && static_cast<int>(f.size()) > regionColumn) {
+                const string region = regionCode(f[static_cast<size_t>(regionColumn)]);
+                if (!region.empty())
+                    psnRegions_[upperCase(id)] = region;
+            }
         }
     }
+    if (!psnSerials_.empty()) {
+        PLOG_INFO << "PSN Title IDs with a disc serial: " << psnSerials_.size();
+    }
+}
+
+string StorePictures::discSerialFor(const string &titleId) {
+    readPsnList();
     auto it = psnSerials_.find(upperCase(titleId));
     return it == psnSerials_.end() ? "" : it->second;
+}
+
+string StorePictures::psnRegionFor(const string &titleId) {
+    readPsnList();
+    auto it = psnRegions_.find(upperCase(titleId));
+    return it == psnRegions_.end() ? "" : it->second;
+}
+
+string StorePictures::regionCode(const string &region) {
+    const string r = upperCase(Strings::trim(region));
+    if (r == "US" || r == "USA" || r == "NTSC-U")
+        return "US";
+    if (r == "EU" || r == "EUROPE" || r == "EUROPE-AUS" || r == "PAL")
+        return "EU";
+    if (r == "JP" || r == "JAPAN" || r == "NTSC-J")
+        return "JP";
+    if (r == "ASIA")
+        return "ASIA";
+    return "";
 }
 
 bool StorePictures::online() const {
@@ -312,6 +345,11 @@ string StorePictures::gameCover(const Request &request, GameFacts &facts) {
             md.bytes = bySerial.bytes;
     }
     const string serial = !given.empty() ? given : md.serial;
+    // the region: a PSN release's own (the list's - a "diff region" serial is another release's disc), else
+    // the disc serial's
+    facts.region = isPsnTitleId(request.serial) ? psnRegionFor(request.serial) : "";
+    if (facts.region.empty() && !serial.empty())
+        facts.region = regionCode(!md.region.empty() ? md.region : ableem::SerialScanner::serialToRegion(serial));
     if (known) {
         facts.serial = serial;
         facts.title = md.title;

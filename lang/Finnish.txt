@@ -1,6 +1,6 @@
 # AutoBleem Store - Finnish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 60
+# Untranslated: 0 / Total: 65
 A secure connection failed - try http://=Suojattu yhteys epäonnistui - kokeile http://
 A source is an http:// or https:// address=Lähde on http://- tai https://-osoite
 A TSV list of downloads, on any web server=TSV-luettelo latauksista millä tahansa verkkopalvelimella
@@ -8,6 +8,7 @@ Add=Lisää
 Add a source URL=Lisää lähteen osoite
 Address of this source=Tämän lähteen osoite
 Apps=Sovellukset
+Asia=Aasia
 Author=Tekijä
 Back=Takaisin
 Cancel=Peruuta
@@ -16,12 +17,14 @@ Change the address=Vaihda osoite
 Downloading=Ladataan
 Downloads=Lataukset
 Edit=Muokkaa
+Europe=Eurooppa
 Failed=Epäonnistui
 Games=Pelit
 Install=Asenna
 Installed=Asennettu
 Installing=Asennetaan
 items=kohdetta
+Japan=Japani
 Licence=Lisenssi
 Name of this source=Tämän lähteen nimi
 Not connected=Ei yhteyttä
@@ -36,6 +39,7 @@ Queued=Jonossa
 Reading the sources...=Luetaan lähteitä...
 Reading...=Luetaan...
 Refresh=Virkistä
+Region=Alue
 Remove=Poista
 Remove it from this system?=Poistetaanko tästä järjestelmästä?
 Remove this source=Poista tämä lähde
@@ -57,6 +61,7 @@ The server did not answer in time=Palvelin ei vastannut ajoissa
 The server was not found=Palvelinta ei löytynyt
 Update=Päivitä
 Update available=Päivitys saatavilla
+USA=Yhdysvallat
 Version=Versio
 waiting=odottaa
 Year=Vuosi

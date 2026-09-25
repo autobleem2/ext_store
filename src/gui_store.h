@@ -27,6 +27,9 @@ public:
     GuiStore(ableem::GuiBase &gui, StoreService &store, StorePictures &pictures)
         : GuiScreen(gui), store(store), pictures(pictures) {}
 
+    // a game whose cover none of the sources knows is shown as this (data/disc.png); "" = an empty frame
+    std::string discPicture;
+
     void init() override;
     void render() override;
     void loop() override;
@@ -35,6 +38,8 @@ public:
 
     // a state as the list says it
     static std::string stateText(StoreState state);
+    // a region code (StorePictures::GameFacts::region) in words: "USA", "Europe", "Japan", "Asia"
+    static std::string regionText(const std::string &code);
     // why something failed, in words: curl's exit code ("the download failed (7)") as what it means
     static std::string errorText(const std::string &error);
     // "412 MB", "3.1 GB", "" for 0
@@ -78,6 +83,8 @@ private:
     void drawSpinner(const ableem::Rect &box);
     // the picture, the spinner while it is being looked for, or an empty frame (`frame`) when there is none
     void drawPicture(const StoreEntry &entry, const ableem::Rect &box, bool frame);
+    // discPicture as a texture (the screen's own, kept with the covers); invalid when there is none
+    ableem::Texture discTexture();
 
     StoreService &store;
     StorePictures &pictures;
@@ -88,6 +95,16 @@ private:
     std::vector<Row> rows;
     int selected = 0;
     int firstVisible = 0;
+    // where each tab's list was when L1/R1 left it: the same row again (by its key, else its place) on the
+    // way back, scrolled as it was
+    struct Place {
+        std::string key;
+        int selected = 0;
+        int firstVisible = 0;
+    };
+    std::map<Tab, Place> places;
+    std::string restoreKey; // the row the next reload() selects, when the rows were cleared first
+    void switchTab(Tab to);
     std::string sourceFilter; // the one source the Apps/Games lists show, "" = all
     std::string search;       // what a title must contain (any case), "" = anything
     uint32_t lastReload = 0;

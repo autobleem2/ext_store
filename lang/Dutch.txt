@@ -1,6 +1,6 @@
 # AutoBleem Store - Dutch translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 60
+# Untranslated: 0 / Total: 65
 A secure connection failed - try http://=Een beveiligde verbinding is mislukt - probeer http://
 A source is an http:// or https:// address=Een bron is een http://- of https://-adres
 A TSV list of downloads, on any web server=Een TSV-lijst met downloads, op elke webserver
@@ -8,6 +8,7 @@ Add=Toevoegen
 Add a source URL=Bron-URL toevoegen
 Address of this source=Adres van deze bron
 Apps=Apps
+Asia=Azië
 Author=Auteur
 Back=Terug
 Cancel=Annuleer
@@ -16,12 +17,14 @@ Change the address=Adres wijzigen
 Downloading=Bezig met downloaden
 Downloads=Downloads
 Edit=Bewerken
+Europe=Europa
 Failed=Mislukt
 Games=Spellen
 Install=Installeren
 Installed=Geïnstalleerd
 Installing=Bezig met installeren
 items=items
+Japan=Japan
 Licence=Licentie
 Name of this source=Naam van deze bron
 Not connected=Niet verbonden
@@ -36,6 +39,7 @@ Queued=In de wachtrij
 Reading the sources...=Bronnen worden gelezen...
 Reading...=Bezig met lezen...
 Refresh=Vernieuwen
+Region=Regio
 Remove=Verwijderen
 Remove it from this system?=Van dit systeem verwijderen?
 Remove this source=Deze bron verwijderen
@@ -57,6 +61,7 @@ The server did not answer in time=De server antwoordde niet op tijd
 The server was not found=De server is niet gevonden
 Update=Bijwerken
 Update available=Update beschikbaar
+USA=VS
 Version=Versie
 waiting=wachtend
 Year=Jaar

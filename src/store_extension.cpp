@@ -79,6 +79,7 @@ public:
         store.refreshIfOlderThan(300);
         pictures.start(); // looked for while the screen is up, and kept for the next time
         GuiStore screen(*Gui::getInstance(), store, pictures);
+        screen.discPicture = host.folder() + sep + "data" + sep + "disc.png"; // a game with no cover
         screen.show();
     }
 

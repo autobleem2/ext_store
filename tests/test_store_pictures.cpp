@@ -104,7 +104,7 @@ TEST_CASE("StorePictures: a PSN Title ID finds the cover and the facts by the di
     // the list as shipped: named columns, a multi-disc game's serials " / "-separated, a Title ID with none
     s.tmp.writeFile("psn_serials.tsv", "Title ID\tPSN Name\tRegion\tMatch Type\tRedump Title\tSerial\n"
                                        "NPUJ00001\tCrash\tUS\texact\tCrash Bandicoot\tSCUS-94900 / SCUS-94901\n"
-                                       "NPUJ00002\tNobody\tUS\tnone\t\t\n");
+                                       "NPUJ00002\tNobody\tEU\tnone\t\t\n");
     StorePictures::Config c = s.config();
     c.psnSerialsFile = s.tmp.at("psn_serials.tsv");
     StorePictures pictures(c);
@@ -123,12 +123,30 @@ TEST_CASE("StorePictures: a PSN Title ID finds the cover and the facts by the di
     CHECK(facts.publisher == "Sony");
     CHECK(facts.year == 1996);
     CHECK(facts.players == 1);
+    CHECK(facts.region == "US"); // the PSN release's, from the list
 
-    // a Title ID the list has no serial for: the title is tried, as before
+    // a Title ID the list has no serial for: the title is tried, as before - its region is still the list's
     StorePictures::GameFacts none;
     CHECK(pictures.resolve(s.game("A title nobody knows", "NPUJ00002"), &none).empty());
     CHECK(none.serial.empty());
+    CHECK(none.region == "EU");
     CHECK(pictures.resolve(s.game("Crash Bandicoot (USA)", "NPUJ00002"), &none) == file);
+}
+
+TEST_CASE("StorePictures: a disc's region follows its serial; region names become one code") {
+    Setup s;
+    StorePictures pictures(s.config());
+    StorePictures::GameFacts facts;
+    pictures.resolve(s.game("Anything", "SCUS-94900"), &facts);
+    CHECK(facts.region == "US");
+    StorePictures::GameFacts pal;
+    pictures.resolve(s.game("Some PAL game", "SLES-01234"), &pal); // unknown to the databases: the serial alone
+    CHECK(pal.region == "EU");
+    CHECK(StorePictures::regionCode("Europe-Aus") == "EU");
+    CHECK(StorePictures::regionCode("Japan") == "JP");
+    CHECK(StorePictures::regionCode(" jp ") == "JP");
+    CHECK(StorePictures::regionCode("ASIA") == "ASIA");
+    CHECK(StorePictures::regionCode("Mars").empty());
 }
 
 TEST_CASE("StorePictures: a game without a serial, known to the rdb by name - the serial it gives finds the cover") {

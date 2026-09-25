@@ -1,6 +1,6 @@
 # AutoBleem Store - Swedish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 60
+# Untranslated: 0 / Total: 65
 A secure connection failed - try http://=En säker anslutning misslyckades - prova http://
 A source is an http:// or https:// address=En källa är en http://- eller https://-adress
 A TSV list of downloads, on any web server=En TSV-lista med nedladdningar, på valfri webbserver
@@ -8,6 +8,7 @@ Add=Lägg till
 Add a source URL=Lägg till en käll-URL
 Address of this source=Adress till den här källan
 Apps=Appar
+Asia=Asien
 Author=Upphovsman
 Back=Tillbaka
 Cancel=Avbryt
@@ -16,12 +17,14 @@ Change the address=Ändra adressen
 Downloading=Laddar ned
 Downloads=Nedladdningar
 Edit=Redigera
+Europe=Europa
 Failed=Misslyckades
 Games=Spel
 Install=Installera
 Installed=Installerad
 Installing=Installerar
 items=objekt
+Japan=Japan
 Licence=Licens
 Name of this source=Namn på den här källan
 Not connected=Inte ansluten
@@ -36,6 +39,7 @@ Queued=I kö
 Reading the sources...=Läser källorna...
 Reading...=Läser...
 Refresh=Läs in igen
+Region=Region
 Remove=Ta bort
 Remove it from this system?=Ta bort från det här systemet?
 Remove this source=Ta bort den här källan
@@ -57,6 +61,7 @@ The server did not answer in time=Servern svarade inte i tid
 The server was not found=Servern hittades inte
 Update=Uppdatera
 Update available=Uppdatering tillgänglig
+USA=USA
 Version=Version
 waiting=väntar
 Year=År

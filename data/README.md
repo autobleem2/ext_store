@@ -21,4 +21,11 @@ Tab-separated, with a header; the Store reads the `Title ID` and `Serial` column
 | `Serial` | the disc serial; a multi-disc game lists each disc's, `SLUS-00453 / SLUS-00561 / ...` - the first is the cover's |
 
 Given by the owner on 2026-09-25 (1494 Title IDs, 1475 with a serial; 1289 of those have a cover in our
-covers databases). Replace the file to update it - nothing else refers to its contents.
+covers databases). Replace the file to update it - nothing else refers to its contents. `Region` is the PSN
+release's (`US`, `EU`, `JP`, `ASIA`) and is what the details pane shows for it - a `(diff region)` serial is
+another release's disc.
+
+## disc.png
+
+What the list and the details pane show for a game none of the sources has a cover for: a plain compact disc.
+Our own, drawn by `tools/make_disc_picture.py` - rerun it after changing the drawing.
