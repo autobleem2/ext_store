@@ -173,6 +173,13 @@ build_win() {
     # it binds to the launcher, not to a copy of the SDK of its own
     objdump -p "$dll" | grep 'DLL Name: autobleem-gui.exe' >/dev/null ||
         { echo "$dll does not import from autobleem-gui.exe" >&2; exit 1; }
+    # and carries the GCC runtime inside, as the launcher does: the Windows product ships neither
+    # libstdc++-6.dll nor libgcc_s_seh-1.dll (LoadLibraryEx error 126/127 on 2026-09-25 - the launcher's
+    # toolchain file linked them statically into programs only)
+    if objdump -p "$dll" | grep -E 'DLL Name: (libstdc\+\+-6|libgcc_s_seh-1)\.dll' >/dev/null; then
+        echo "$dll needs the GCC runtime DLLs, which the Windows product does not ship" >&2
+        exit 1
+    fi
     package_extension build/win win
     local exe=build/win/extensions/store-server/abstored.exe
     x86_64-w64-mingw32-strip "$exe"
