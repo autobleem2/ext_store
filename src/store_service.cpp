@@ -736,7 +736,8 @@ StoreService::Progress StoreService::progress() const {
     p.total = currentTotal_;
     p.done = currentDone_;
     if (!currentPart_.empty()) {
-        const long long part = DirEntry::fileSize(currentPart_);
+        // (live: curl still has it open - on Windows a plain stat says 0 until it is done)
+        const long long part = DirEntry::liveFileSize(currentPart_);
         if (part > 0)
             p.done += static_cast<uint64_t>(part);
     }

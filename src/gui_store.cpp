@@ -690,6 +690,24 @@ void GuiStore::triangle() {
 }
 
 //*******************************
+// GuiStore::startHold / endHold
+//*******************************
+// the step taken now, and again and again while it is held (HoldRepeat) - a new direction replaces the old one
+void GuiStore::startHold(HoldSource source, int step, HoldRepeat::Timing timing) {
+    if (holdSource == source && hold.step() == step)
+        return; // the same one still held (another axis of the d-pad moved)
+    app.audio().cursor.play();
+    moveSelection(step);
+    hold.press(step, gui->platform().ticks(), timing);
+    holdSource = source;
+}
+
+void GuiStore::endHold() {
+    hold.release();
+    holdSource = HoldSource::None;
+}
+
+//*******************************
 // GuiStore::loop
 //*******************************
 void GuiStore::loop() {
@@ -697,6 +715,14 @@ void GuiStore::loop() {
     while (menuVisible) {
         if (gui->platform().ticks() - lastReload > ReloadEvery)
             reload();
+        // a held direction's repeats - the d-pad's state is read again, since its release may have gone to a
+        // dialog shown in between
+        if (holdSource == HoldSource::Dpad && gui->input().dpadCentered())
+            endHold();
+        if (const int steps = hold.due(gui->platform().ticks())) {
+            app.audio().cursor.play();
+            moveSelection(steps);
+        }
         render();
         Event e;
         while (gui->input().poll(e)) {
@@ -705,21 +731,25 @@ void GuiStore::loop() {
             switch (e.type) {
             case Event::Type::DpadDown:
             case Event::Type::DpadUp:
-                if (gui->input().dpadUp()) {
-                    app.audio().cursor.play();
-                    moveSelection(-1);
-                } else if (gui->input().dpadDown()) {
-                    app.audio().cursor.play();
-                    moveSelection(1);
-                } else if (gui->input().dpadLeft()) { // a page, as L2/R2
-                    app.audio().cursor.play();
-                    moveSelection(-visibleRows());
-                } else if (gui->input().dpadRight()) {
-                    app.audio().cursor.play();
-                    moveSelection(visibleRows());
-                }
+                if (gui->input().dpadUp())
+                    startHold(HoldSource::Dpad, -1, HoldRepeat::rows());
+                else if (gui->input().dpadDown())
+                    startHold(HoldSource::Dpad, 1, HoldRepeat::rows());
+                else if (gui->input().dpadLeft()) // a page, as L2/R2
+                    startHold(HoldSource::Dpad, -visibleRows(), HoldRepeat::pages());
+                else if (gui->input().dpadRight())
+                    startHold(HoldSource::Dpad, visibleRows(), HoldRepeat::pages());
+                else if (holdSource == HoldSource::Dpad)
+                    endHold();
+                break;
+            case Event::Type::ButtonUp:
+                if ((e.button == Button::L2 && holdSource == HoldSource::L2) ||
+                    (e.button == Button::R2 && holdSource == HoldSource::R2))
+                    endHold();
                 break;
             case Event::Type::ButtonDown:
+                if (e.button != Button::L2 && e.button != Button::R2)
+                    endHold();
                 if (e.button == Button::Cross) {
                     cross();
                     reload();
@@ -737,11 +767,9 @@ void GuiStore::loop() {
                     rows.clear();
                     reload();
                 } else if (e.button == Button::L2) {
-                    app.audio().cursor.play();
-                    moveSelection(-visibleRows());
+                    startHold(HoldSource::L2, -visibleRows(), HoldRepeat::pages());
                 } else if (e.button == Button::R2) {
-                    app.audio().cursor.play();
-                    moveSelection(visibleRows());
+                    startHold(HoldSource::R2, visibleRows(), HoldRepeat::pages());
                 } else if (e.button == Button::Select && (tab == Tab::Apps || tab == Tab::Games)) {
                     app.audio().cursor.play();
                     nextSourceFilter();

@@ -1,10 +1,10 @@
 //
 // GuiStore: the AutoBleem Store's screen - four tabs (Apps, Games, Downloads, Sources), a list and the selected
 // item's details, drawn with the launcher's own classic panel in the user's theme. The Apps and Games lists
-// page with L2/R2 (and Left/Right), show one source at a time with Select, and filter by a search with Start. Each item
-// has its picture (an App's icon, a game's cover - StorePictures finds them) beside it in the list and above its
-// details. It only shows and asks: StoreService does the work, on its own thread, and goes on after the screen is
-// closed.
+// page with L2/R2 (and Left/Right) - held, any of them goes on moving, faster the longer - show one source at a time
+// with Select, and filter by a search with Start. Each item has its picture (an App's icon, a game's cover -
+// StorePictures finds them) beside it in the list and above its details. It only shows and asks: StoreService does the
+// work, on its own thread, and goes on after the screen is closed.
 //
 #pragma once
 
@@ -12,6 +12,7 @@
 #include "store_service.h"
 
 #include "gui/gui_screen.h"
+#include "gui/hold_repeat.h"
 #include "gui/panel_style.h"
 
 #include <map>
@@ -90,5 +91,12 @@ private:
     std::string sourceFilter; // the one source the Apps/Games lists show, "" = all
     std::string search;       // what a title must contain (any case), "" = anything
     uint32_t lastReload = 0;
+    // a held Up/Down/Left/Right or L2/R2 moving on by itself, sooner the longer it is held; which of them it
+    // is, so the release that ends it is that one's
+    enum class HoldSource { None, Dpad, L2, R2 };
+    HoldRepeat hold;
+    HoldSource holdSource = HoldSource::None;
+    void startHold(HoldSource source, int step, HoldRepeat::Timing timing);
+    void endHold();
     PanelStyle style;
 };
