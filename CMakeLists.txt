@@ -9,6 +9,12 @@ ab_add_extension(store HOST ${AB_EXTENSION_HOST}
         SOURCES src/store_extension.cpp src/store_service.cpp src/store_pictures.cpp src/gui_store.cpp
         INI ${CMAKE_CURRENT_SOURCE_DIR}/extension.ini
         LANG ${CMAKE_CURRENT_SOURCE_DIR}/lang)
+# data/ goes into the staged folder with the plugin (psn_serials.tsv - data/README.md); the package takes the
+# folder whole
+add_custom_command(TARGET store POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/extensions/store/data"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/data/psn_serials.tsv"
+                "${CMAKE_BINARY_DIR}/extensions/store/data/psn_serials.tsv")
 
 # abstored, the LAN server (server/README.md): its own program, built here with the launcher's engine for the
 # tests and our own packages; it also builds on its own, on any Linux (server/CMakeLists.txt). Not for the

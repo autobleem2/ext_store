@@ -1,6 +1,6 @@
 # AutoBleem Store - Czech translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 56
+# Untranslated: 0 / Total: 60
 A secure connection failed - try http://=Zabezpečené spojení selhalo - zkuste http://
 A source is an http:// or https:// address=Zdroj je adresa http:// nebo https://
 A TSV list of downloads, on any web server=Seznam stahování ve formátu TSV na libovolném webovém serveru
@@ -30,6 +30,8 @@ Nothing here yet=Zatím tu nic není
 Nothing is downloading=Nic se nestahuje
 Nothing matches=Nic neodpovídá
 Page=Strana
+Players=Hráči
+Publisher=Vydavatel
 Queued=Ve frontě
 Reading the sources...=Načítání zdrojů...
 Reading...=Načítání...
@@ -40,6 +42,7 @@ Remove this source=Odebrat tento zdroj
 Rename=Přejmenovat
 Retry=Zkusit znovu
 Search=Hledat
+Serial=Sériové číslo
 Size=Velikost
 Source=Zdroj
 Sources=Zdroje
@@ -56,4 +59,5 @@ Update=Aktualizovat
 Update available=Aktualizace k dispozici
 Version=Verze
 waiting=čeká
+Year=Rok
 You are responsible for what your sources contain=Za obsah svých zdrojů odpovídáte vy

@@ -1,6 +1,6 @@
 # AutoBleem Store - Portuguese_BR translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 56
+# Untranslated: 0 / Total: 60
 A secure connection failed - try http://=A conexão segura falhou - tente http://
 A source is an http:// or https:// address=Uma fonte é um endereço http:// ou https://
 A TSV list of downloads, on any web server=Uma lista TSV de downloads, em qualquer servidor web
@@ -30,6 +30,8 @@ Nothing here yet=Nada aqui ainda
 Nothing is downloading=Nada sendo baixado
 Nothing matches=Nenhum resultado
 Page=Página
+Players=Jogadores
+Publisher=Distribuidora
 Queued=Na fila
 Reading the sources...=Lendo as fontes...
 Reading...=Lendo...
@@ -40,6 +42,7 @@ Remove this source=Remover esta fonte
 Rename=Renomear
 Retry=Tentar novamente
 Search=Pesquisar
+Serial=Número de série
 Size=Tamanho
 Source=Fonte
 Sources=Fontes
@@ -56,4 +59,5 @@ Update=Atualizar
 Update available=Atualização disponível
 Version=Versão
 waiting=aguardando
+Year=Ano
 You are responsible for what your sources contain=Você é responsável pelo conteúdo das suas fontes

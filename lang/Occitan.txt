@@ -1,6 +1,6 @@
 # AutoBleem Store - Occitan translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 56
+# Untranslated: 0 / Total: 60
 A secure connection failed - try http://=La connexion segura a fracassat - ensajatz http://
 A source is an http:// or https:// address=Una font es una adreça http:// o https://
 A TSV list of downloads, on any web server=Una lista TSV de telecargaments, sus quin servidor web que siá
@@ -30,6 +30,8 @@ Nothing here yet=Encara pas res aicí
 Nothing is downloading=Cap de telecargament en cors
 Nothing matches=Cap de resultat
 Page=Pagina
+Players=Jogaires
+Publisher=Editor
 Queued=En espèra
 Reading the sources...=Lectura de las fonts...
 Reading...=Lectura...
@@ -40,6 +42,7 @@ Remove this source=Suprimir aquesta font
 Rename=Renomenar
 Retry=Tornar ensajar
 Search=Recèrca
+Serial=Numèro de seria
 Size=Talha
 Source=Font
 Sources=Fonts
@@ -56,4 +59,5 @@ Update=Metre a jorn
 Update available=Mesa a jorn disponibla
 Version=Version
 waiting=en espèra
+Year=Annada
 You are responsible for what your sources contain=Sètz responsable del contengut de vòstras fonts

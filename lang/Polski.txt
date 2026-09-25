@@ -1,6 +1,6 @@
 # AutoBleem Store - Polski translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 56
+# Untranslated: 0 / Total: 60
 A secure connection failed - try http://=Bezpieczne połączenie nie powiodło się - spróbuj http://
 A source is an http:// or https:// address=Źródło to adres http:// lub https://
 A TSV list of downloads, on any web server=Lista pobrań TSV na dowolnym serwerze WWW
@@ -30,6 +30,8 @@ Nothing here yet=Na razie nic tu nie ma
 Nothing is downloading=Nic się nie pobiera
 Nothing matches=Brak wyników
 Page=Strona
+Players=Gracze
+Publisher=Wydawca
 Queued=W kolejce
 Reading the sources...=Wczytywanie źródeł...
 Reading...=Wczytywanie...
@@ -40,6 +42,7 @@ Remove this source=Usuń to źródło
 Rename=Zmień nazwę
 Retry=Ponów
 Search=Szukaj
+Serial=Numer seryjny
 Size=Rozmiar
 Source=Źródło
 Sources=Źródła
@@ -56,4 +59,5 @@ Update=Aktualizuj
 Update available=Dostępna aktualizacja
 Version=Wersja
 waiting=oczekuje
+Year=Rok
 You are responsible for what your sources contain=Odpowiadasz za zawartość swoich źródeł

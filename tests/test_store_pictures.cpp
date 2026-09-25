@@ -99,6 +99,38 @@ TEST_CASE("StorePictures: a game's cover from the covers database, by its serial
     CHECK(s.fetches.empty());
 }
 
+TEST_CASE("StorePictures: a PSN Title ID finds the cover and the facts by the disc serial psn_serials.tsv names") {
+    Setup s;
+    // the list as shipped: named columns, a multi-disc game's serials " / "-separated, a Title ID with none
+    s.tmp.writeFile("psn_serials.tsv", "Title ID\tPSN Name\tRegion\tMatch Type\tRedump Title\tSerial\n"
+                                       "NPUJ00001\tCrash\tUS\texact\tCrash Bandicoot\tSCUS-94900 / SCUS-94901\n"
+                                       "NPUJ00002\tNobody\tUS\tnone\t\t\n");
+    StorePictures::Config c = s.config();
+    c.psnSerialsFile = s.tmp.at("psn_serials.tsv");
+    StorePictures pictures(c);
+    CHECK(StorePictures::isPsnTitleId("NPUJ00001"));
+    CHECK_FALSE(StorePictures::isPsnTitleId("SCUS-94900"));
+    CHECK_FALSE(StorePictures::isPsnTitleId("NPUJ0001"));
+    CHECK(pictures.discSerialFor("npuj00001") == "SCUS-94900"); // the first disc's
+    CHECK(pictures.discSerialFor("NPUJ00002").empty());
+    CHECK(pictures.discSerialFor("NPUJ99999").empty());
+
+    StorePictures::GameFacts facts;
+    const string file = pictures.resolve(s.game("A title nobody knows", "NPUJ00001"), &facts);
+    REQUIRE_FALSE(file.empty());
+    CHECK(fileText(file) == Png);
+    CHECK(facts.serial == "SCUS-94900");
+    CHECK(facts.publisher == "Sony");
+    CHECK(facts.year == 1996);
+    CHECK(facts.players == 1);
+
+    // a Title ID the list has no serial for: the title is tried, as before
+    StorePictures::GameFacts none;
+    CHECK(pictures.resolve(s.game("A title nobody knows", "NPUJ00002"), &none).empty());
+    CHECK(none.serial.empty());
+    CHECK(pictures.resolve(s.game("Crash Bandicoot (USA)", "NPUJ00002"), &none) == file);
+}
+
 TEST_CASE("StorePictures: a game without a serial, known to the rdb by name - the serial it gives finds the cover") {
     Setup s;
     StorePictures pictures(s.config());

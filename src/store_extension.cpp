@@ -52,6 +52,8 @@ StorePictures::Config picturesFor(ExtensionHost &host, const StoreService::Confi
     c.fetchCommand = store.fetchCommand;
     c.coversDir = Env::getPathToCoversDBDir();
     c.rdbFile = Env::getPathToPlayStationRdbFile();
+    // a PSN Title ID's disc serial (data/README.md)
+    c.psnSerialsFile = host.folder() + sep + "data" + sep + "psn_serials.tsv";
     c.networkUp = store.networkUp;
     return c;
 }

@@ -529,27 +529,73 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
         drawPicture(*e, ableem::Rect(x, y, width, PanePictureHeight), false);
         y += PanePictureHeight + 14;
     }
-    for (const string &line : gui->text().wrapLines(fonts[FONT_22_MED], e->item.title, width)) {
+    // the title on two lines at most, the second elided - a long PSN name must leave room for the facts
+    vector<string> titleLines = gui->text().wrapLines(fonts[FONT_22_MED], e->item.title, width);
+    if (titleLines.size() > 2) {
+        string rest;
+        for (size_t i = 1; i < titleLines.size(); i++)
+            rest += (rest.empty() ? "" : " ") + titleLines[i];
+        titleLines.resize(2);
+        titleLines[1] = gui->text().elide(fonts[FONT_22_MED], rest, width);
+    }
+    for (const string &line : titleLines) {
         gui->text().renderText_WithColor(fonts[FONT_22_MED], line, x, y, style.text, XALIGN_LEFT);
         y += 30;
     }
     y += 8;
+    // the facts: a label over its value, two to a row where both are short, a row of their own where not - and
+    // none drawn past the pane's foot (a row that would not fit is left out, not drawn over the footer)
+    struct Fact {
+        string label, value;
+    };
+    vector<Fact> facts;
     auto fact = [&](const string &label, const string &value) {
-        if (value.empty())
-            return;
-        gui->text().renderText_WithColor(fonts[FONT_15_BOLD], label, x, y, style.secondary, XALIGN_LEFT);
-        gui->text().renderText_WithColor(fonts[FONT_20_BOLD], gui->text().elide(fonts[FONT_20_BOLD], value, width), x,
-                                         y + 18, style.text, XALIGN_LEFT);
-        y += 50;
+        if (!value.empty())
+            facts.push_back(Fact{label, value});
     };
     fact(_("Status"), stateText(e->state));
+    fact(_("Size"), sizeText(e->item.size()));
     fact(_("Version"), e->installedVersion.empty() || e->installedVersion == e->item.version
                            ? e->item.version
                            : e->installedVersion + " -> " + e->item.version);
-    fact(_("Size"), sizeText(e->item.size()));
+    // a PS1 game the databases know: found with its cover (StorePictures), a PSN Title ID through its disc serial
+    StorePictures::GameFacts game;
+    if (e->item.kind == "ps1" && pictures.facts(e->key, game)) {
+        fact(_("Year"), game.year > 0 ? to_string(game.year) : "");
+        fact(_("Players"), game.players > 0 ? to_string(game.players) : "");
+        fact(_("Serial"), game.serial);
+        fact(_("Publisher"), game.publisher);
+    }
     fact(_("Author"), e->item.author);
     fact(_("Licence"), e->item.licence);
     fact(_("Source"), sourceTitle(e->item.source));
+    const int FactHeight = 48, ColumnGap = 16;
+    const int half = (width - ColumnGap) / 2;
+    const int foot = pane.y + pane.h - 8;
+    int column = 0; // 1: the row's right half is free
+    for (const Fact &f : facts) {
+        const bool short_ = fonts[FONT_20_BOLD].width(f.value) <= half && fonts[FONT_15_BOLD].width(f.label) <= half;
+        if (!short_ && column == 1) { // a long one starts a row of its own
+            y += FactHeight;
+            column = 0;
+        }
+        if (y + FactHeight > foot)
+            break;
+        const int fx = x + column * (half + ColumnGap);
+        const int fw = short_ ? half : width;
+        gui->text().renderText_WithColor(fonts[FONT_15_BOLD], gui->text().elide(fonts[FONT_15_BOLD], f.label, fw), fx,
+                                         y, style.secondary, XALIGN_LEFT);
+        gui->text().renderText_WithColor(fonts[FONT_20_BOLD], gui->text().elide(fonts[FONT_20_BOLD], f.value, fw), fx,
+                                         y + 18, style.text, XALIGN_LEFT);
+        if (short_ && column == 0) {
+            column = 1;
+        } else {
+            y += FactHeight;
+            column = 0;
+        }
+    }
+    if (column == 1)
+        y += FactHeight;
     if (!e->item.description.empty())
         for (const string &line : gui->text().wrapLines(fonts[FONT_15_BOLD], e->item.description, width)) {
             if (y > pane.y + pane.h - 30)

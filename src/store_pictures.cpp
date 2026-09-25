@@ -26,6 +26,12 @@ bool isPicture(const string &name) {
            DirEntry::matchExtension(name, "jpeg");
 }
 
+string upperCase(string s) {
+    for (char &c : s)
+        c = static_cast<char>(toupper(static_cast<unsigned char>(c)));
+    return s;
+}
+
 // a serial as a file name: letters, digits and '-' only
 string serialFileName(const string &serial) {
     string name;
@@ -114,10 +120,15 @@ void StorePictures::workerMain() {
             this_thread::sleep_for(chrono::milliseconds(100));
             continue;
         }
-        const string file = resolve(next);
+        GameFacts facts;
+        const string file = resolve(next, &facts);
         {
             lock_guard<mutex> lock(mutex_);
             found_[next.key] = file;
+            if (!facts.serial.empty() || !facts.publisher.empty() || facts.year > 0)
+                facts_[next.key] = facts;
+            else
+                facts_.erase(next.key);
             // answered - unless it was asked for again meanwhile (then it is queued once more)
             if (none_of(pending_.begin(), pending_.end(), [&](const Request &r) { return r.key == next.key; }))
                 inFlight_.erase(next.key);
@@ -130,13 +141,90 @@ void StorePictures::workerMain() {
 //*******************************
 // StorePictures::resolve
 //*******************************
-string StorePictures::resolve(const Request &request) {
+string StorePictures::resolve(const Request &request, GameFacts *facts) {
+    GameFacts found;
     string file = installedPicture(request);
-    if (file.empty() && request.kind == "ps1")
-        file = gameCover(request);
+    // a game's facts are wanted even when its folder has a picture already
+    if (request.kind == "ps1") {
+        const string cover = gameCover(request, found);
+        if (file.empty())
+            file = cover;
+    }
     if (file.empty() && !request.imageUrl.empty())
         file = fetchUrl(request.imageUrl);
+    if (facts != nullptr)
+        *facts = found;
     return file;
+}
+
+bool StorePictures::facts(const string &key, GameFacts &out) const {
+    lock_guard<mutex> lock(mutex_);
+    auto it = facts_.find(key);
+    if (it == facts_.end())
+        return false;
+    out = it->second;
+    return true;
+}
+
+//*******************************
+// StorePictures::isPsnTitleId / discSerialFor
+//*******************************
+bool StorePictures::isPsnTitleId(const string &id) {
+    if (id.size() != 9 || id[0] != 'N')
+        return false;
+    for (size_t i = 1; i < 4; i++)
+        if (!isupper(static_cast<unsigned char>(id[i])))
+            return false;
+    for (size_t i = 4; i < 9; i++)
+        if (!isdigit(static_cast<unsigned char>(id[i])))
+            return false;
+    return true;
+}
+
+// psn_serials.tsv: a header naming its columns ("Title ID", ..., "Serial"), then one line per Title ID; a
+// multi-disc game's serials are "SLUS-00453 / SLUS-00561 / ...", the first disc's is the cover's
+string StorePictures::discSerialFor(const string &titleId) {
+    if (!psnSerialsRead_) {
+        psnSerialsRead_ = true;
+        ifstream in(config_.psnSerialsFile, ios::binary);
+        string line;
+        int idColumn = -1, serialColumn = -1;
+        while (Strings::getlineRemoveCR(in, line)) {
+            vector<string> f;
+            size_t start = 0;
+            for (;;) {
+                const size_t tab = line.find('\t', start);
+                f.push_back(Strings::trim(line.substr(start, tab == string::npos ? string::npos : tab - start)));
+                if (tab == string::npos)
+                    break;
+                start = tab + 1;
+            }
+            if (idColumn < 0) {
+                for (size_t i = 0; i < f.size(); i++) {
+                    const string name = upperCase(f[i]);
+                    if (name == "TITLE ID")
+                        idColumn = static_cast<int>(i);
+                    else if (name == "SERIAL")
+                        serialColumn = static_cast<int>(i);
+                }
+                if (idColumn < 0 || serialColumn < 0)
+                    break; // not the list we know
+                continue;
+            }
+            if (static_cast<int>(f.size()) <= max(idColumn, serialColumn))
+                continue;
+            const string &serials = f[static_cast<size_t>(serialColumn)];
+            const string serial = upperCase(Strings::trim(serials.substr(0, serials.find('/'))));
+            const string &id = f[static_cast<size_t>(idColumn)];
+            if (!id.empty() && !serial.empty())
+                psnSerials_[upperCase(id)] = serial;
+        }
+        if (!psnSerials_.empty()) {
+            PLOG_INFO << "PSN Title IDs with a disc serial: " << psnSerials_.size();
+        }
+    }
+    auto it = psnSerials_.find(upperCase(titleId));
+    return it == psnSerials_.end() ? "" : it->second;
 }
 
 bool StorePictures::online() const {
@@ -204,12 +292,14 @@ string StorePictures::installedPicture(const Request &request) {
 //*******************************
 // the covers databases' PNG by serial - the serial the source gives, or the one the rdb (or a covers db) knows
 // the title by - then RetroArch's box art on this machine under the rdb's record name
-string StorePictures::gameCover(const Request &request) {
+string StorePictures::gameCover(const Request &request, GameFacts &facts) {
     if (!metadata_)
         metadata_ = make_unique<ableem::MetadataLookup>(config_.coversDir, config_.rdbFile);
 
+    // a PSN Title ID is looked for by the disc serial it maps to - or by the title, when it maps to none
+    const string given = isPsnTitleId(request.serial) ? discSerialFor(request.serial) : request.serial;
     ableem::GameMetadata md;
-    bool known = !request.serial.empty() && metadata_->findBySerial(request.serial, md);
+    bool known = !given.empty() && metadata_->findBySerial(given, md);
     if (!known)
         for (const string &title : {request.title, ableem::MetadataLookup::cleanTitle(request.title)})
             if (!title.empty() && metadata_->findByTitle(title, md)) {
@@ -221,7 +311,16 @@ string StorePictures::gameCover(const Request &request) {
         if (metadata_->findBySerial(md.serial, bySerial))
             md.bytes = bySerial.bytes;
     }
-    const string serial = !request.serial.empty() ? request.serial : md.serial;
+    const string serial = !given.empty() ? given : md.serial;
+    if (known) {
+        facts.serial = serial;
+        facts.title = md.title;
+        facts.publisher = md.publisher;
+        facts.year = md.year;
+        facts.players = md.players;
+    } else if (!given.empty()) {
+        facts.serial = given; // at least what the disc is, from the list
+    }
     if (!md.bytes.empty()) {
         const string target = config_.cacheDir + sep + serialFileName(serial.empty() ? md.title : serial);
         if (!DirEntry::exists(target)) {

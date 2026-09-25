@@ -1,6 +1,6 @@
 # AutoBleem Store - Turkish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 56
+# Untranslated: 0 / Total: 60
 A secure connection failed - try http://=Güvenli bağlantı başarısız - http:// deneyin
 A source is an http:// or https:// address=Kaynak bir http:// veya https:// adresidir
 A TSV list of downloads, on any web server=Herhangi bir web sunucusunda, TSV biçiminde indirme listesi
@@ -30,6 +30,8 @@ Nothing here yet=Burada henüz bir şey yok
 Nothing is downloading=İndirilen bir şey yok
 Nothing matches=Eşleşme yok
 Page=Sayfa
+Players=Oyuncular
+Publisher=Yayıncı
 Queued=Sırada
 Reading the sources...=Kaynaklar okunuyor...
 Reading...=Okunuyor...
@@ -40,6 +42,7 @@ Remove this source=Bu kaynağı kaldır
 Rename=Yeniden Adlandır
 Retry=Yeniden dene
 Search=Ara
+Serial=Seri numarası
 Size=Boyut
 Source=Kaynak
 Sources=Kaynaklar
@@ -56,4 +59,5 @@ Update=Güncelle
 Update available=Güncelleme mevcut
 Version=Sürüm
 waiting=bekliyor
+Year=Yıl
 You are responsible for what your sources contain=Kaynaklarınızın içeriğinden siz sorumlusunuz

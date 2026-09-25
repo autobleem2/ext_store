@@ -1,6 +1,6 @@
 # AutoBleem Store - Slovak translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 56
+# Untranslated: 0 / Total: 60
 A secure connection failed - try http://=Zabezpečené spojenie zlyhalo - skúste http://
 A source is an http:// or https:// address=Zdroj je adresa http:// alebo https://
 A TSV list of downloads, on any web server=Zoznam sťahovaní vo formáte TSV na ľubovoľnom webovom serveri
@@ -30,6 +30,8 @@ Nothing here yet=Zatiaľ tu nič nie je
 Nothing is downloading=Nič sa nesťahuje
 Nothing matches=Nič sa nenašlo
 Page=Strana
+Players=Hráči
+Publisher=Vydavateľ
 Queued=V poradí
 Reading the sources...=Načítavajú sa zdroje...
 Reading...=Načítava sa...
@@ -40,6 +42,7 @@ Remove this source=Odstrániť tento zdroj
 Rename=Premenovať
 Retry=Skúsiť znova
 Search=Hľadať
+Serial=Sériové číslo
 Size=Veľkosť
 Source=Zdroj
 Sources=Zdroje
@@ -56,4 +59,5 @@ Update=Aktualizovať
 Update available=Dostupná aktualizácia
 Version=Verzia
 waiting=čaká
+Year=Rok
 You are responsible for what your sources contain=Za obsah svojich zdrojov zodpovedáte vy

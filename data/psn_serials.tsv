@@ -1,0 +1,1495 @@
+Title ID	PSN Name	Region	Match Type	Redump Title	Serial
+NPUF30001	GaiaSeed	US	fuzzy:0.88(diff region)	GaiaSeed: Project Seed Trap	SLPS-00624
+NPUF30002	Cho Aniki	US	none		
+NPUF30003	Magical Drop F	US	fuzzy:0.95(diff region)	Magical Drop	SLPS-00201
+NPUF30004	Arcade Hits: Outlaws of the Lost Dynasty	US	fuzzy:0.92(diff region)	Arcade Hits: Suiko Enbu: Outlaws of the Lost Dynasty	SLPM-87145
+NPUF30005	Tall Unlimited	US	exact(other region)	Tall Unlimited	SLPM-87116 / SLPS-02366
+NPUF30006	Arcade Hits: Shienryu	US	fuzzy:0.98(diff region)	Arcade Hits: Shienryuu	SLPM-87228
+NPUF30017	Money Idol Exchanger	US	exact(other region)	Money Idol Exchanger	SLPS-00963 / SLPS-02644
+NPUF30018	Arcade Hits: Sonic Wings Special	US	exact(other region)	Arcade Hits: Sonic Wings Special	SLPM-87137
+NPUF30019	Dezaemon Plus!	US	exact(other region)	Dezaemon Plus	SLPS-00335
+NPUF30020	Blockids	US	exact	Blockids	SLUS-01496
+NPUF30021	Galaxy Fight	US	exact(other region)	Galaxy Fight	SLES-00197
+NPUF30022	Mega Man	US	fuzzy:0.95	Mega Man 8 | Mega Man X4 | Mega Man X5 | Mega Man X6 (Rev 1)	SLUS-00453 / SLUS-00561 / SLUS-01334 / SLUS-01395
+NPUF30023	Mega Man 2	US	fuzzy:0.95	Mega Man 8 | Mega Man X4 | Mega Man X5 | Mega Man X6 (Rev 1)	SLUS-00453 / SLUS-00561 / SLUS-01334 / SLUS-01395
+NPUF30024	Mega Man 3	US	fuzzy:0.95(diff region)	Mega Man X3	SLES-00503
+NPUF30025	Yakiniku Bugyou	US	exact(other region)	Yakiniku Bugyou (Best of the Best)	SLPS-03519
+NPUF30026	Rapid Angel	US	fuzzy:0.90(diff region)	Kaisoku Tenshi: The Rapid Angel	SLPS-01553
+NPUF30027	Kyuiin	US	exact(other region)	Kyuiin	SLPS-00214
+NPUF30028	Cyberbots: Fullmetal Madness	US	exact(other region)	Cyberbots: Fullmetal Madness	SLPS-01011
+NPUF30029	Mega Man 4	US	fuzzy:0.95	Mega Man X4	SLUS-00561
+NPUF30030	Dezaemon Kids!	US	exact(other region)	Dezaemon Kids!	SLPS-01503
+NPUF30031	Arcade Hits: Magical Drop	US	exact(other region)	Arcade Hits: Magical Drop	SLPM-87173
+NPUF30033	ART CAMION SUGOROKUDEN	US	exact(other region)	Art Camion: Sugorokuden	SLPS-02710
+NPUF30034	FINGER★FLASHING	US	exact(other region)	Finger Flashing	SLPS-02158
+NPUF30035	LUP★SALAD	US	fuzzy:0.90(diff region)	Lup Salad: Lupupu Cube [Natsu-cole Series Vol.3] | Lupupu Cube: Lup Salad	SLPM-87124 / SLPS-00416
+NPUF30036	MAKERUNA MAKENDO2	US	fuzzy:0.94(diff region)	Makeruna! Makendou 2	SLPS-00128
+NPUF30037	VEHICLE CAVALIER	US	exact(other region)	Vehicle Cavalier	SLPS-00232
+NPUF30038	ZANAC×ZANAC	US	fuzzy:0.95(diff region)	Zanac x Zanac	SLPM-80626 / SLPS-03354
+NPUF30039	Zero Kara no Mahjong ~Mahjong Tamago-gumi 2~	US	fuzzy:0.82(diff region)	0 kara no Mahjong: Mahjong Youchien Tamago-gumi	SLPS-01311 / SLPS-02546
+NPUF30040	Mahjong Youchien Tamago-gumi	US	fuzzy:0.93(diff region)	0 kara no Mahjong: Mahjong Youchien Tamago-gumi	SLPS-01311 / SLPS-02546
+NPUF30041	Zero Kara No Shogi~Shogi Youchien Ayumi-gumi~	US	fuzzy:0.94(diff region)	0 Kara no Shogi: Shogi Youchien Ayumi-Gumi	SLPS-02044
+NPUF30042	Evergreen Avenue	US	exact(other region)	Evergreen Avenue	SLPS-03278
+NPUF30043	Favorite Dear ~Enkan no Monogatari~	US	exact(other region)	Favorite Dear: Enkan no Monogatari | Favorite Dear: Enkan no Monogatari [Best Edition]	SLPS-03286 / SLPS-03566
+NPUF30044	Favorite Dear ~Jyunpaku no Yogensha~	US	fuzzy:0.99(diff region)	Favorite Dear: Junpaku no Yogensha	SLPS-02754
+NPUF30045	First Queen IV	US	fuzzy:0.90(diff region)	First Queen IV: Varcia Senki	SLPS-00604
+NPUF30047	Motto Trump Shiyouyo!	US	fuzzy:0.80(diff region)	Trump Shiyou yo!	SLPS-01440 / SLPS-02225 / SLPS-02612
+NPUF30048	Oz no Mahoutsukai ~Another World~ RungRung	US	fuzzy:0.99(diff region)	Oz no Mahoutsukai: Another World: Rung Rung	SLPS-02335
+NPUF30049	Sentimental Graffiti	US	exact(other region)	Sentimental Graffiti	SLPS-03184
+NPUF30050	Trump Shiyouyo! Fukkoku-ban	US	fuzzy:0.68(diff region)	Trump Shiyou yo!	SLPS-01440 / SLPS-02225 / SLPS-02612
+NPUF30051	Mahjong Uranai Fortuna-Tsuki no Megami Tachi	US	exact(other region)	Mahjong Uranai Fortuna: Tsuki no Megami-tachi	SLPS-03123
+NPUF30053	Double Dragon	US	exact(other region)	Double Dragon	SLPS-00191
+NPUF30054	Hyper Crazy Climber	US	exact(other region)	Hyper Crazy Climber	SLPS-00248
+NPUF30055	Lucifer Ring	US	exact(other region)	Lucifer Ring	SLPS-01784
+NPUF30056	Wolf Fang	US	fuzzy:0.90(diff region)	Wolf Fang: Kuuga 2001 | Wolf Fang: Kuuga 2001 [Maruan Series 7]	SLPS-00254 / SLPS-03073
+NPUF30059	The Firemen 2: Pete & Danny	US	exact(other region)	The Firemen 2: Pete & Danny	SLPS-00148 / SLPS-02090
+NPUF30060	Sarara's Little Shop	US	fuzzy:0.63	Stuart Little 2 (Proto)	SCUS-94669
+NPUF30061	Tokyo 23-Ku Seifuku Wars	US	exact(other region)	Tokyo 23-ku Seifuku Wars	SLPS-01259
+NPUF30062	NEO PLANET	US	exact(other region)	Neo Planet	SLPS-00323
+NPUF30063	Heroine Dream 2	US	exact(other region)	Heroine Dream 2 | Heroine Dream 2 [The Best Buy]	SLPS-01376 / SLPS-02933
+NPUF30064	Heroine Dream	US	exact(other region)	Heroine Dream | Heroine Dream [Mouichido Kimi ni Eitai...Loved Series vol.2]	SLPS-00470 / SLPS-00471 / SLPS-02264
+NPUF30065	Dragon Beat Legend of Pinball	US	fuzzy:0.98(diff region)	Dragonbeat: Legend of Pinball	SLPS-01067
+NPUI00571	Vib-Ribbon	US	exact(other region)	Vib-Ribbon	PAPX-90101 / PAPX-90102 / SCES-02873 / SCPS-18012 / SCPS-45469 / SCPS-91213 / SCPS-91308
+NPUI94103	Jumping Flash!	US	exact	Jumping Flash!	SCUS-94103
+NPUI94108	Jumping Flash! 2	US	exact	Jumping Flash! 2	SCUS-94108
+NPUI94154	Crash Bandicoot 2: Cortex Strikes Back	US	exact	Crash Bandicoot 2: Cortex Strikes Back	SCUS-94154
+NPUI94167	Jet Moto 2	US	fuzzy:0.95	Jet Moto | Jet Moto 3 | Jet Moto 3 (Demo)	SCUS-94309 / SCUS-94384 / SCUS-94555
+NPUI94199	Bloody Roar	US	exact	Bloody Roar	SCUS-94199
+NPUI94227	MediEvil	US	exact	MediEvil | MediEvil (Demo)	SCUS-94227 / SCUS-94291
+NPUI94228	Spyro the Dragon	US	exact	Spyro the Dragon | Spyro the Dragon (Demo 1) | Spyro the Dragon (Demo 2)	SCUS-94228 / SCUS-94290 / SCUS-94439
+NPUI94240	Syphon Filter	US	exact	Syphon Filter (Demo) | Syphon Filter (Rev 1)	SCUS-94240 / SCUS-94362
+NPUI94244	Crash Bandicoot 3: Warped	US	exact(other region)	Crash Bandicoot 3: Warped	SCES-01420
+NPUI94251	Cool Boarders 3	US	exact	Cool Boarders 3 | Cool Boarders 3 (Demo)	SCUS-94251 / SCUS-94374
+NPUI94301	WipEout	US	exact	WipEout	SCUS-94301
+NPUI94302	Destruction Derby	US	exact	Destruction Derby	SCUS-94302
+NPUI94304	Twisted Metal	US	exact	Twisted Metal	SCUS-94304
+NPUI94305	Warhawk	US	fuzzy:0.88	Warhawk: The Red Mercury Missions	SCUS-94305
+NPUI94306	Twisted Metal 2	US	exact	Twisted Metal 2	SCUS-94306
+NPUI94308	Rally Cross	US	exact	Rally Cross	SCUS-94308
+NPUI94309	Jet Moto	US	exact	Jet Moto	SCUS-94309
+NPUI94356	Cool Boarders	US	exact	Cool Boarders	SCUS-94356
+NPUI94358	Cool Boarders 2	US	exact	Cool Boarders 2	SCUS-94358
+NPUI94425	Spyro 2: Ripto’s Rage	US	exact	Spyro 2: Ripto's Rage! | Spyro 2: Ripto's Rage! (Demo)	SCUS-94425 / SCUS-94460
+NPUI94426	Crash Team Racing	US	fuzzy:0.93	CTR: Crash Team Racing | CTR: Crash Team Racing (Demo)	SCUS-94426 / SCUS-94459
+NPUI94448	Um Jammer Lammy	US	exact	Um Jammer Lammy | Um Jammer Lammy (Demo)	SCUS-94398 / SCUS-94448
+NPUI94451	Syphon Filter 2	US	exact	Syphon Filter 2 | Syphon Filter 2 (Disc 1) | Syphon Filter 2 (Disc 2)	PSRM-017100 / SCUS-94393 / SCUS-94451 / SCUS-94492
+NPUI94467	Spyro 3: Year of the Dragon	US	fuzzy:0.96	Spyro: Year of the Dragon (Demo) | Spyro: Year of the Dragon (Rev 1)	SCUS-94467 / SCUS-94615
+NPUI94476	Hot Shots Golf 2	US	exact	Hot Shots Golf 2 | Hot Shots Golf 2 (Demo)	SCUS-94476 / SCUS-94495 / SCUS-94776
+NPUI94484	WildArms: 2nd Ignition	US	fuzzy:0.98(diff region)	Wild Arms 2nd Ignition (Disc 1) | Wild Arms 2nd Ignition (Disc 2) | Wild Arms: 2nd Ignition | Wild Arms: 2nd Ignition (Disc 1) | Wild Arms: 2nd Ignition (Disc 2)	PCPX-96161 / PCPX-96171 / SCPS-10089 / SCPS-10090 / SCPS-45429 / SCPS-45430 / SCPS-91208 / SCPS-91209 / SCPS-91321 / SCPS-91322
+NPUI94491	Legend Of Dragoon	US	fuzzy:0.95	Legend of Dragoon, The (Disc 1) | Legend of Dragoon, The (Disc 2) | Legend of Dragoon, The (Disc 3) | Legend of Dragoon, The (Disc 4)	SCUS-94491 / SCUS-94584 / SCUS-94585 / SCUS-94586
+NPUI94508	2Xtreme	US	exact	2Xtreme	SCUS-94508
+NPUI94608	WildArms	US	fuzzy:0.94	Wild Arms	SCUS-94608
+NPUI94640	Syphon Filter 3	US	exact	Syphon Filter 3 | Syphon Filter 3 (Demo)	SCUS-94640 / SCUS-94661
+NPUI94900	Crash Bandicoot	US	exact	Crash Bandicoot	SCUS-94900
+NPUJ00005	Rayman	US	exact	Rayman | Rayman (Playable Game Preview)	SLUS-00005 / SLUS-90001
+NPUJ00006	Tekken	US	exact	Tekken	SLUS-00006
+NPUJ00008	Cyber Sled	US	fuzzy:0.63(diff region)	Cyber Org	SCPS-45381 / SLPS-01910
+NPUJ00027	Blood Omen: Legacy of Kain	US	exact	Blood Omen: Legacy of Kain	SLUS-00027
+NPUJ00029	Magic Carpet	US	exact	Magic Carpet	SLUS-00029
+NPUJ00036	Darkstalkers	US	fuzzy:0.95	Darkstalkers 3	SLUS-00745
+NPUJ00042	Gex	US	exact	Gex (Rev 1)	SLUS-00042
+NPUJ00061	Soviet Strike	US	exact	Soviet Strike	SLUS-00061
+NPUJ00067	Castlevania: Symphony of the Night	US	exact	Castlevania: Symphony of the Night	SLUS-00067
+NPUJ00089	TNN Motor Sports Hardcore 4×4	US	fuzzy:0.97	TNN Motor Sports HardCore 4X4	SLUS-00089
+NPUJ00113	Sim City 2000	US	fuzzy:0.96	SimCity 2000	SLUS-00113
+NPUJ00152	Tomb Raider	US	exact	Tomb Raider	SLUS-00152
+NPUJ00157	Hi-Octane: The Track Fights Back	US	exact	Hi-Octane: The Track Fights Back!	SLUS-00157
+NPUJ00190	Oddworld: Abe’s Oddysee	US	exact	Oddworld: Abe's Oddysee | Oddworld: Abe's Oddysee (Demo)	SLUS-00190 / SLUS-90004
+NPUJ00195	Romance of the Three Kingdoms IV	US	fuzzy:0.91	Romance of the Three Kingdoms IV: Wall of Fire | Romance of the Three Kingdoms VI: Awakening of the Dragon	SLUS-00195 / SLUS-00918
+NPUJ00197	Street Fighter Alpha: Warriors’ Dreams	US	exact	Street Fighter Alpha: Warriors' Dreams	SLUS-00197
+NPUJ00200	Extreme Pinball	US	exact	Extreme Pinball	SLUS-00200
+NPUJ00213	Tekken 2	US	exact	Tekken 2	SLUS-00213
+NPUJ00215	Namco Museum Vol. 1	US	exact	Namco Museum Vol. 1 (Rev 1)	SLUS-00215
+NPUJ00216	Namco Museum Vol. 2	US	exact	Namco Museum Vol. 2	SLUS-00216
+NPUJ00232	Pandemonium	US	exact	Pandemonium! (Rev 1)	SLUS-00232
+NPUJ00238	International Track & Field	US	exact	International Track & Field	SLUS-00238
+NPUJ00258	Street Fighter Alpha 2	US	exact	Street Fighter Alpha 2	SLUS-00258
+NPUJ00270	Wing Commander IV	US	fuzzy:0.90	Wing Commander IV: The Price of Freedom (Disc 1) | Wing Commander IV: The Price of Freedom (Disc 2) | Wing Commander IV: The Price of Freedom (Disc 3) | Wing Commander IV: The Price of Freedom (Disc 4)	SLUS-00270 / SLUS-00271 / SLUS-00272 / SLUS-00273
+NPUJ00275	Theme Hospital	US	exact	Theme Hospital	SLUS-00275
+NPUJ00277	Populous: The Beginning	US	exact	Populous: The Beginning	SLUS-00277
+NPUJ00292	Suikoden	US	exact	Suikoden (Rev 1)	SLUS-00292
+NPUJ00297	Star Wars: Dark Forces	US	exact	Star Wars: Dark Forces	SLUS-00297
+NPUJ00298	Herc’s Adventures	US	exact	Herc's Adventures	SLUS-00298
+NPUJ00313	Gunship	US	exact	Gunship	SLUS-00313
+NPUJ00340	Tecmo’s Deception: Invitation to Darkness	US	exact	Tecmo's Deception: Invitation to Darkness	SLUS-00340
+NPUJ00341	Perfect Weapon	US	exact	Perfect Weapon	SLUS-00341
+NPUJ00377	Ten Pin Alley	US	exact	Ten Pin Alley	SLUS-00377
+NPUJ00379	Command & Conquer	US	exact	Command & Conquer (Disc 1) (GDI) | Command & Conquer (Disc 2) (NOD)	SLUS-00379 / SLUS-00410
+NPUJ00382	Reloaded	US	fuzzy:0.94(diff region)	Re-Loaded	SLES-00537
+NPUJ00398	Namco Museum Vol. 3	US	exact	Namco Museum Vol. 3	SLUS-00398
+NPUJ00416	Namco Museum Vol. 4	US	exact	Namco Museum Vol. 4	SLUS-00416
+NPUJ00417	Namco Museum Vol. 5	US	exact	Namco Museum Vol. 5	SLUS-00417
+NPUJ00431	Command & Conquer: Red Alert	US	exact	Command & Conquer: Red Alert (Disc 1) (Allies) | Command & Conquer: Red Alert (Disc 2) (Soviet)	SLUS-00431 / SLUS-00485
+NPUJ00433	Fighting Force	US	exact	Fighting Force (Rev 2)	SLUS-00433
+NPUJ00437	Tomb Raider 2	US	exact(other region)	Tomb Raider 2	SLPM-80168 / SLPS-01200 / SLPS-91119 / SLPS-91434
+NPUJ00439	Pac-Man World 20th Anniversary	US	exact	Pac-Man World: 20th Anniversary	SLUS-00439
+NPUJ00440	Reel Fishing	US	exact	Reel Fishing	SLPS-00427 / SLUS-00440
+NPUJ00453	Mega Man 8	US	exact	Mega Man 8	SLUS-00453
+NPUJ00461	Xevious 3D/G+	US	exact(other region)	Xevious 3D/G+	SLPS-00750
+NPUJ00462	Mass Destruction	US	exact	Mass Destruction	SLUS-00462
+NPUJ00469	ONE	US	exact	One	SLUS-00469
+NPUJ00518	Nuclear Strike	US	exact	Nuclear Strike | Nuclear Strike (Demo)	SLUS-00518 / SLUS-80518 / SLUS-90006
+NPUJ00553	Alundra	US	exact	Alundra	SLUS-00553
+NPUJ00561	Mega Man X4	US	exact	Mega Man X4	SLUS-00561
+NPUJ00585	Klonoa: Door to Phantomile	US	exact	Klonoa: Door to Phantomile	SLUS-00585
+NPUJ00594	Metal Gear Solid	US	exact	Metal Gear Solid | Metal Gear Solid (Disc 1) | Metal Gear Solid (Disc 1) (Rev 1) | Metal Gear Solid (Disc 2)	SLUS-00594 / SLUS-00776 / SLUS-80594 / SLUS-90035
+NPUJ00598	Gex: Enter the Gecko	US	exact	Gex: Enter the Gecko (Beta)	SLUS-00598
+NPUJ00603	Mega Man Legends	US	exact	Mega Man Legends	SLUS-00603
+NPUJ00637	N2O	US	fuzzy:0.88	N2O: Nitrous Oxide	SLES-00809 / SLUS-00637
+NPUJ00659	Backstreet Billiards	US	exact	Backstreet Billiards	SLUS-00659
+NPUJ00662	Parasite Eve	US	exact	Parasite Eve (Disc 1) | Parasite Eve (Disc 2)	SLUS-00662 / SLUS-00668
+NPUJ00664	Xenogears	US	exact	Xenogears (Disc 1) | Xenogears (Disc 2)	SLUS-00664 / SLUS-00669
+NPUJ00665	Command & Conquer: Red Alert Retaliation	US	exact	Command & Conquer: Red Alert: Retaliation (Disc 1) (Allies) | Command & Conquer: Red Alert: Retaliation (Disc 2) (Soviet)	SLUS-00665 / SLUS-00667
+NPUJ00691	Tomb Raider 3: Adventures of Lara Croft	US	fuzzy:0.95	Tomb Raider III: Adventures of Lara Croft	SLUS-00691
+NPUJ00693	Dead In The Water	US	exact	Dead in the Water	SLUS-00693
+NPUJ00707	Silent Hill	US	exact	Silent Hill | Silent Hill (Demo 1) | Silent Hill (Demo 2)	SLUS-00707 / SLUS-80707 / SLUS-90050
+NPUJ00708	Legacy of Kain: Soul Reaver	US	exact	Legacy of Kain: Soul Reaver	SLUS-00708
+NPUJ00710	Oddworld: Abe’s Exoddus	US	exact	Oddworld: Abe's Exoddus (Disc 1) | Oddworld: Abe's Exoddus (Disc 2)	SLUS-00710 / SLUS-00731
+NPUJ00717	MotorHead	US	exact	Motorhead	SLUS-00717
+NPUJ00732	Destrega	US	exact	Destrega	SLUS-00732
+NPUJ00739	Future Cop L.A.P.D.	US	exact	Future Cop: L.A.P.D. | Future Cop: L.A.P.D. (Demo)	SLUS-00739 / SLUS-90034
+NPUJ00745	Darkstalkers 3	US	exact	Darkstalkers 3	SLUS-00745
+NPUJ00747	Resident Evil: Director’s Cut	US	exact	Resident Evil: Director's Cut	SLUS-00551
+NPUJ00748	Resident Evil 2 [Dual Shock Version]	US	exact	Resident Evil 2 | Resident Evil 2 (Demo) | Resident Evil 2 (Disc 1) | Resident Evil 2 (Disc 2)	SLUS-00421 / SLUS-00592 / SLUS-80421 / SLUS-90009
+NPUJ00753	R-Types	US	exact	R-Types	SLUS-00753
+NPUJ00754	Bust-A-Move 4	US	exact	Bust-A-Move 4	SLUS-00754
+NPUJ00797	R4: Ridge Racer Type 4	US	exact	R4: Ridge Racer Type 4	SLUS-00797
+NPUJ00806	Gex: Deep Cover Gecko	US	exact(other region)	Gex: Deep Cover Gecko | Gex: Deep Cover Gecko (Demo)	SLED-01954 / SLES-01299 / SLES-01908
+NPUJ00807	Centipede	US	exact	Centipede	SLUS-00807
+NPUJ00820	Echo Night	US	exact	Echo Night	SLUS-00820
+NPUJ00821	Street Fighter Alpha 3	US	exact	Street Fighter Alpha 3	SLUS-00821
+NPUJ00823	Bomberman Fantasy Race	US	exact	Bomberman Fantasy Race	SLUS-00823
+NPUJ00843	Reel Fishing II	US	exact	Reel Fishing II	SLUS-00843
+NPUJ00863	Shadow Tower	US	exact	Shadow Tower	SLUS-00863
+NPUJ00877	R-Type Delta	US	exact	R-Type Delta	SLUS-00877
+NPUJ00879	Final Fantasy V	US	exact(other region)	Final Fantasy V	SCPS-45214 / SLPM-86081 / SLPS-01949
+NPUJ00885	Tomb Raider: The Last Revelation	US	exact	Tomb Raider: The Last Revelation	SLUS-00885
+NPUJ00889	Pong	US	exact(other region)	Pong	SLES-02020
+NPUJ00892	Final Fantasy VIII	US	exact	Final Fantasy VIII (Disc 1) | Final Fantasy VIII (Disc 2) | Final Fantasy VIII (Disc 3) | Final Fantasy VIII (Disc 4)	SLUS-00892 / SLUS-00908 / SLUS-00909 / SLUS-00910
+NPUJ00893	Toy Story 2: Buzz Lightyear To The Rescue!	US	fuzzy:0.92	Disney-Pixar Toy Story 2: Buzz Lightyear to the Rescue!	SLUS-00893
+NPUJ00896	The Misadventures of Tron Bonne	US	fuzzy:0.95	Misadventures of Tron Bonne, The	SLUS-00896
+NPUJ00900	Final Fantasy VI	US	exact(other region)	Final Fantasy VI | Final Fantasy VI (Bonus Disc: Final Fantasy X Demo)	SCED-50642 / SCES-03828 / SCPS-45387 / SLPM-86198 / SLPS-01950
+NPUJ00922	Dino Crisis	US	exact	Dino Crisis | Dino Crisis (Demo)	SLUS-00922 / SLUS-90066
+NPUJ00923	Resident Evil 3: Nemesis	US	exact	Resident Evil 3: Nemesis | Resident Evil 3: Nemesis (Demo)	SLUS-00923 / SLUS-90064
+NPUJ00947	Tom Clancy’s Rainbow Six	US	exact	Tom Clancy's Rainbow Six	SLUS-00947
+NPUJ00957	Metal Gear Solid VR Missions	US	exact	Metal Gear Solid: VR Missions | Metal Gear Solid: VR Missions (Demo)	SLUS-00957 / SLUS-90062
+NPUJ00958	Suikoden II	US	exact	Suikoden II	SLUS-00958
+NPUJ00974	Medal of Honor	US	exact	Medal of Honor	SLUS-00974
+NPUJ00980	TNN Motor Sports Hardcore TR	US	fuzzy:0.98	TNN Motorsports HardCore TR	SLUS-00980
+NPUJ00992	Missile Command	US	exact	Missile Command	SLUS-00992
+NPUJ01011	Front Mission 3	US	exact	Front Mission 3	SLUS-01011
+NPUJ01013	Legend of Mana	US	exact	Legend of Mana	SLUS-01013
+NPUJ01019	Threads of Fate	US	exact	Threads of Fate	SLUS-01019
+NPUJ01029	Hercules	US	fuzzy:0.88	Disney's Hercules Action Game | Disney's Hercules Action Game (Rerelease)	SLUS-00529 / SLUS-01029
+NPUJ01040	Vagrant Story	US	exact	Vagrant Story	SLUS-01040
+NPUJ01041	Chrono Cross	US	exact	Chrono Cross (Disc 1) | Chrono Cross (Disc 2)	SLUS-01041 / SLUS-01080
+NPUJ01042	Parasite Eve II	US	exact	Parasite Eve II (Disc 1) | Parasite Eve II (Disc 2)	SLUS-01042 / SLUS-01055
+NPUJ01069	Sim Theme Park	US	fuzzy:0.96	SimTheme Park	SLUS-01069
+NPUJ01070	Vanguard Bandits	US	exact	Vanguard Bandits	SLUS-01070
+NPUJ01084	Championship Bass	US	exact	Championship Bass	SLUS-01084
+NPUJ01093	Sno-Cross Championship Racing	US	fuzzy:0.98	SnoCross Championship Racing	SLUS-01093
+NPUJ01111	Mr. Driller	US	exact	Mr. Driller	SLUS-01111
+NPUJ01115	Harvest Moon: Back To Nature	US	exact	Harvest Moon: Back to Nature | Harvest Moon: Back to Nature (Demo)	SLUS-01115 / SLUS-81115
+NPUJ01131	Spec Ops: Stealth Patrol	US	exact	Spec Ops: Stealth Patrol	SLUS-01131
+NPUJ01140	Mega Man Legends 2	US	exact	Mega Man Legends 2 | Mega Man Legends 2 (Demo)	SLUS-01140 / SLUS-90078
+NPUJ01142	Strider 1&2	US	fuzzy:0.95	Strider | Strider 2	SLUS-01142 / SLUS-01163
+NPUJ01158	Persona 2: Eternal Punishment	US	exact	Persona 2: Eternal Punishment | Persona 2: Eternal Punishment (Bonus Disc)	SLUS-01158 / SLUS-01339
+NPUJ01189	Bomberman Party Edition	US	exact	Bomberman: Party Edition	SLUS-01189
+NPUJ01195	Hogs of War	US	exact	Hogs of War	SLUS-01195
+NPUJ01201	Alone in the Dark: The New Nightmare	US	exact	Alone in the Dark: The New Nightmare (Disc 1) | Alone in the Dark: The New Nightmare (Disc 2)	SLUS-01201 / SLUS-01377
+NPUJ01212	Metal Slug X	US	exact	Metal Slug X	SLUS-01212
+NPUJ01214	Toy Story Racer	US	fuzzy:0.91	Disney-Pixar Toy Story Racer	SLUS-01214
+NPUJ01224	Arc the Lad	US	exact(other region)	Arc the Lad | Arc the Lad [PSOne Books]	SCPS-10008 / SCPS-91004 / SCPS-91302
+NPUJ01235	Rayman 2: The Great Escape	US	exact	Rayman 2: The Great Escape | Rayman 2: The Great Escape (Demo)	SLUS-01235 / SLUS-90095
+NPUJ01251	Final Fantasy IX	US	exact	Final Fantasy IX (Disc 1) (Rev 1) | Final Fantasy IX (Disc 2) (Rev 1) | Final Fantasy IX (Disc 3) (Rev 1) | Final Fantasy IX (Disc 4) (Rev 1)	SLUS-01251 / SLUS-01295 / SLUS-01296 / SLUS-01297
+NPUJ01252	Arc the Lad II	US	exact(other region)	Arc the Lad II	SCPS-10026 / SCPS-91071 / SCPS-91310
+NPUJ01253	Arc the Lad III	US	exact(other region)	Arc the Lad III | Arc the Lad III (Disc 1) | Arc the Lad III (Disc 2)	PAPX-90093 / PAPX-90099 / PCPX-96176 / SCPS-10106 / SCPS-10107 / SCPS-45438 / SCPS-45439 / SCPS-91228 / SCPS-91229 / SCPS-91316 / SCPS-91317
+NPUJ01255	Arc Arena: Monster Tournament	US	fuzzy:0.92	Arc the Lad Collection: Arc Arena: Monster Tournament	SLUS-01255
+NPUJ01270	Medal of Honor Underground	US	exact	Medal of Honor: Underground	SLUS-01270
+NPUJ01279	Dino Crisis 2	US	exact	Dino Crisis 2 | Dino Crisis 2 (Demo)	SLUS-01279 / SLUS-90087
+NPUJ01286	Disney’s The Little Mermaid II	US	exact	Disney's The Little Mermaid II	SLUS-01286
+NPUJ01288	Bowling	US	exact	Bowling	SLUS-01288
+NPUJ01291	Racing	US	exact	Racing	SLUS-01291
+NPUJ01299	Spec Ops: Ranger Elite	US	exact	Spec Ops: Ranger Elite	SLUS-01299
+NPUJ01301	Ford Racing	US	exact	Ford Racing	SLUS-01301
+NPUJ01302	Starfighter Sanvein	US	exact	Starfighter Sanvein	SLUS-01302
+NPUJ01307	Star Sweep	US	fuzzy:0.92	Puzzle Star Sweep	SLUS-01307
+NPUJ01308	Space Shot	US	exact	Space Shot	SLUS-01308
+NPUJ01309	Boxing	US	exact	Boxing	SLUS-01309
+NPUJ01324	Breath of Fire 4	US	fuzzy:0.95	Breath of Fire IV | Breath of Fire IV (Beta)	SLPS-02728 / SLUS-01324
+NPUJ01332	The King of Fighters ’99	US	exact(other region)	The King of Fighters '99 | The King of Fighters '99 [SNK Best Collection] [Reprint]	SCPS-45489 / SLPM-86462 / SLPM-86784 / SLPS-03450
+NPUJ01334	Mega Man X5	US	exact	Mega Man X5	SLUS-01334
+NPUJ01335	Battle Hunter	US	exact	Battle Hunter	SLUS-01335
+NPUJ01342	Crossroad Crisis	US	exact	Crossroad Crisis	SLUS-01342
+NPUJ01363	Chrono Trigger	US	exact(other region)	Chrono Trigger	SCPS-45446 / SLPM-87374 / SLPS-02430 / SLPS-91446
+NPUJ01371	Putter Golf	US	exact	Putter Golf	SLUS-01371
+NPUJ01374	Virtual Pool 3	US	exact	Virtual Pool 3	SLUS-01374
+NPUJ01379	Card Games	US	exact	Card Games	SLUS-01379
+NPUJ01381	Saiyuki: Journey West	US	exact	Saiyuki: Journey West	SLUS-01381
+NPUJ01384	Castlevania Chronicles	US	exact	Castlevania Chronicles	SLUS-01384
+NPUJ01400	Chess	US	exact	Chess	SLUS-01400
+NPUJ01412	Kickboxing	US	exact	Kickboxing	SLUS-01412
+NPUJ01420	Spec Ops: Covert Assault	US	exact	Spec Ops: Covert Assault	SLUS-01420
+NPUJ01431	All-Star Slammin D-Ball	US	exact	All-Star Slammin' D-Ball	SLUS-01431
+NPUJ01447	Spec Ops: Airborne Commando	US	exact	Spec Ops: Airborne Commando	SLUS-01447
+NPUJ01450	Street Racquetball	US	exact	Street Racquetball	SLUS-01450
+NPUJ01470	Aces of the Air	US	exact	Aces of the Air	SLUS-01470
+NPUJ01490	Monster Bass!	US	exact	Monster Bass	SLUS-01490
+NPUJ01495	Sorcerer’s Maze	US	exact	Sorcerer's Maze	SLUS-01495
+NPUJ01499	Turnabout	US	exact	Turnabout	SLUS-01499
+NPUJ01506	XS Moto	US	exact	XS Moto	SLUS-01506
+NPUJ01509	Jigsaw Madness	US	exact	Jigsaw Madness	SLUS-01509
+NPUJ01520	XS Junior League Soccer	US	exact	XS Junior League Soccer	SLUS-01520
+NPUJ01525	Mobile Light Force	US	exact	Mobile Light Force	SLUS-01525
+NPUJ01538	A Bug’s Life	US	fuzzy:0.92(diff region)	Disney/Pixar A Bug's Life	SLPM-86330
+NPUJ01541	Final Fantasy Origins	US	exact	Final Fantasy Origins	SLUS-01541
+NPUJ01552	Dirt Jockey	US	fuzzy:0.90(diff region)	G1 Jockey [Koei the Best] | GI Jockey	SLPM-80409 / SLPM-86195 / SLPM-86213 / SLPM-86858
+NPUJ01554	XS Junior League Football	US	exact	XS Junior League Football	SLUS-01554
+NPUJ01560	XS Junior League Dodgeball	US	exact	XS Junior League Dodgeball	SLUS-01560
+NPUJ01566	XS Airboat Racing	US	exact	XS Airboat Racing	SLUS-01566
+NPUJ94163	Final Fantasy VII	US	exact	Final Fantasy VII (Disc 1) | Final Fantasy VII (Disc 2) | Final Fantasy VII (Disc 3) | Final Fantasy VII (Interactive Sampler CD) | Final Fantasy VII (Square Soft on PlayStation Previews)	SCUS-94163 / SCUS-94164 / SCUS-94165 / SCUS-94179 / SCUS-94961
+NPUJ94182	Armored Core	US	exact	Armored Core | Armored Core (Reprint)	SCUS-94182 / SLUS-01323
+NPUJ94221	Final Fantasy Tactics	US	exact	Final Fantasy Tactics	SCUS-94221
+NPUJ94236	Tomba	US	exact	Tomba! | Tomba! (Demo)	SCUS-94236 / SCUS-94255 / SLPS-01144
+NPUJ94424	Bloody Roar 2	US	fuzzy:0.95	Bloody Roar | Bloody Roar II	SCUS-94199 / SCUS-94424
+NPUJ94454	Tomba! 2	US	fuzzy:0.95	Tomba! | Tomba! (Demo)	SCUS-94236 / SCUS-94255 / SLPS-01144
+NPUJ94457	Grandia	US	exact	Grandia (Disc 1) | Grandia (Disc 2)	SCUS-94457 / SCUS-94465
+NPUJ94571	The Emperor’s New Groove	US	fuzzy:0.93	Disney's The Emperor's New Groove	SCUS-94571
+NPUJ94602	Myst	US	exact	Myst	SCUS-94602
+NPUJ94635	Monsters, Inc. Scream Team	US	fuzzy:0.92	Disney-Pixar Monsters, Inc.: Scream Team	SCUS-94635
+NPUJ94643	Peter Pan: Return to Never Land	US	fuzzy:0.93	Disney's Peter Pan: Return to Never Land | Peter Pan in Disney's Return to Never Land	SCUS-94643 / SLUS-01583
+NPUJ94646	Disney’s Lilo & Stitch: Trouble in Paradise	US	exact(other region)	Disney's Lilo & Stitch: Trouble in Paradise	SCES-03871
+NPJI00001	Arc the Lad	JP	exact	Arc the Lad | Arc the Lad [PSOne Books]	SCPS-10008 / SCPS-91004 / SCPS-91302
+NPJI00002	Minna no Golf 2	JP	exact	Minna no Golf 2	SCPS-10093 / SCPS-45421 / SCPS-91197
+NPJI00003	Jumping Flash!	JP	exact	Jumping Flash!	SCPM-85001 / SCPS-10022
+NPJI00006	GLOBAL FORCE～New Battle Nation	JP	fuzzy:0.60(diff region)	Global Domination | Global Domination (Beta 2)	SLES-01419 / SLES-01422 / SLES-01423 / SLES-01424 / SLES-01425 / SLUS-00721
+NPJI00007	Ore no Shikabane o Koete Yuke	JP	exact	Ore no Shikabane o Koete Yuke	PCPX-96160 / SCPS-10074 / SCPS-91130 / SCPS-91198
+NPJI00008	Gekisou TomaRunner	JP	exact	Gekisou Tomarunner	PCPX-96164 / SCPS-10087
+NPJI00009	Wild Arms	JP	exact	Wild Arms	PCPX-96034 / SCPS-10028 / SCPS-45027 / SCPS-91038 / SCPS-91306
+NPJI00010	Intelligent Qube	JP	fuzzy:0.95	I.Q: Intelligent Qube	PCPX-96058 / SCPS-10029 / SCPS-45036 / SCPS-91068
+NPJI00011	Motor Toon Grand Prix USA Edition	JP	exact	Motor Toon Grand Prix: USA Edition	SCPS-91027
+NPJI00012	Crash Bandicoot	JP	exact	Crash Bandicoot	PAPX-90010 / SCPS-10031 / SCPS-45026 / SCPS-91057 / SCPS-91304
+NPJI00013	Ganbare Morikawa-kun 2nd Pet in TV	JP	exact	Ganbare Morikawa-kun 2nd Pet in TV	SCPS-45070
+NPJI00014	Rally Cross	JP	exact	Rally Cross	SIPS-60022
+NPJI00015	Gunners Heaven	JP	exact	Gunners Heaven	SCPS-10006
+NPJI00017	Philosoma	JP	exact	Philosoma	SCPS-10009
+NPJI00018	Arc The Lad II	JP	exact	Arc the Lad II	SCPS-10026 / SCPS-91071 / SCPS-91310
+NPJI00019	XI [sai]	JP	exact	XI [Sai] | XI [sГЎi]	PAPX-90032 / PAPX-90037 / PAPX-90039 / SCPS-10051 / SCPS-45268 / SCPS-91166 / SCPS-91303
+NPJI00020	Jet Moto	JP	exact(other region)	Jet Moto	SCUS-94309
+NPJI00021	Jumping Flash! 2: Aloha Danshaku Ooyowari no Kan	JP	fuzzy:0.95	Jumping Flash! 2: Aloha Danshaku Ooyowari no Maki	SCPS-10021 / SCPS-45052
+NPJI00022	Panekit	JP	fuzzy:0.87	Panekit: Infinitive Crafting Toy Case	SCPS-10096
+NPJI00023	Depth	JP	exact	Depth	SCPS-18003
+NPJI00024	Destruction Derby	JP	exact	Destruction Derby	SIPS-60001
+NPJI00025	Robbit Mon Dieu	JP	exact	Robbit mon Dieu	PAPX-90098 / SCPS-10103
+NPJI00026	Bealphareth	JP	exact	Bealphareth	SCPS-10138
+NPJI00027	MediEvil: Yomigaetta Gallowmere no Yuusha	JP	exact	MediEvil: Yomigaetta Gallowmere no Yuusha	SCPS-10081
+NPJI00028	Tiny Bullets	JP	exact	Tiny Bullets	SCPS-10130
+NPJI00029	Twisted Metal EX	JP	fuzzy:0.95	Twisted Metal	SIPS-60007
+NPJI00030	Um Jammer Lammy	JP	exact	Um Jammer Lammy | Um Jammer Lammy [PSOne Books]	PCPX-96150 / SCPS-18011 / SCPS-45391 / SCPS-91226 / SCPS-91325
+NPJI00031	My Hot Cooking	JP	none		
+NPJI00032	Ape Escape!	JP	exact(other region)	Ape Escape | Ape Escape (Demo 1) (EDC) | Ape Escape (Demo 2) | Ape Escape (Demo)	SCED-02133 / SCES-01564 / SCES-02028 / SCES-02029 / SCES-02030 / SCUS-94423 / SCUS-94470 / SCUS-94489
+NPJI00033	Crime Crackers	JP	exact	Crime Crackers	SCPS-10003
+NPJI00034	Crash Bandicoot 2	JP	fuzzy:0.95	Crash Bandicoot	PAPX-90010 / SCPS-10031 / SCPS-45026 / SCPS-91057 / SCPS-91304
+NPJI00035	WipeOut	JP	exact	WipEout	SIPS-60003
+NPJI00036	Wild Arms 2nd Ignition	JP	exact	Wild Arms 2nd Ignition (Disc 1) | Wild Arms 2nd Ignition (Disc 2) | Wild Arms: 2nd Ignition | Wild Arms: 2nd Ignition (Disc 1) | Wild Arms: 2nd Ignition (Disc 2)	PCPX-96161 / PCPX-96171 / SCPS-10089 / SCPS-10090 / SCPS-45429 / SCPS-45430 / SCPS-91208 / SCPS-91209 / SCPS-91321 / SCPS-91322
+NPJI00037	Crash Bandicoot 3	JP	fuzzy:0.95	Crash Bandicoot	PAPX-90010 / SCPS-10031 / SCPS-45026 / SCPS-91057 / SCPS-91304
+NPJI00038	Gunparade March	JP	fuzzy:0.90	Koukidou Gensou: Gunparade March	SCPS-10136
+NPJI00039	PoPoRoGue	JP	exact	PoPoRoGue	PAPX-90056 / SCPS-10050 / SCPS-91312
+NPJI00040	Linda Cube Again	JP	exact	Linda Cube Again	SCPS-45118
+NPJI00042	PoPoLoCrois Monogatari	JP	exact	PoPoLoCrois Monogatari	SCPS-10023 / SCPS-91030 / SCPS-91305
+NPJI00043	Crime Crackers 2	JP	exact	Crime Crackers 2	SCPS-10037
+NPJI00044	Alundra (The Adventures Of Alundra)	JP	exact	Alundra	SCPS-10035
+NPJI00045	XI [sai] Jumbo	JP	exact	XI [Sai] Jumbo | XI [sГЎi] Jumbo	SCPS-10123 / SCPS-45465 / SCPS-91231
+NPJI00046	Circadia	JP	exact	Circadia | Circadia (Disc 1) | Circadia (Disc 2)	PAPX-90073 / PCPX-96138 / PCPX-96140 / SCPS-10077 / SCPS-10078
+NPJI00047	The Legend of Dragoon	JP	exact	The Legend of Dragoon | The Legend of Dragoon (Disc 1) | The Legend of Dragoon (Disc 2) | The Legend of Dragoon (Disc 3) | The Legend of Dragoon (Disc 4)	PAPX-90091 / PAPX-90103 / PAPX-90104 / PCPX-96184 / SCPS-10119 / SCPS-10120 / SCPS-10121 / SCPS-10122 / SCPS-45461 / SCPS-45462 / SCPS-45463 / SCPS-45464
+NPJI00048	I.Q Final	JP	exact	I.Q Final | I.Q Final [PlayStation the Best]	PAPX-90063 / PCPX-96137 / SCPS-10071 / SCPS-91227 / SCPS-91311
+NPJI00049	PopoloCrois Monogatari II	JP	exact	PoPoLoCrois Monogatari II | PoPoLoCrois Monogatari II (Disc 1) | PoPoLoCrois Monogatari II (Disc 2) | PoPoLoCrois Monogatari II (Disc 3)	PCPX-96195 / SCPS-10112 / SCPS-10113 / SCPS-10114 / SCPS-45483 / SCPS-45484 / SCPS-45485 / SCPS-91313 / SCPS-91314 / SCPS-91315
+NPJI00050	Arc The Lad III	JP	exact	Arc the Lad III | Arc the Lad III (Disc 1) | Arc the Lad III (Disc 2)	PAPX-90093 / PAPX-90099 / PCPX-96176 / SCPS-10106 / SCPS-10107 / SCPS-45438 / SCPS-45439 / SCPS-91228 / SCPS-91229 / SCPS-91316 / SCPS-91317
+NPJI00051	Velldeselba Senki: Tsubasa no Kunshou	JP	exact	Velldeselba Senki: Tsubasa no Kunshou	PAPX-90012 / SCPS-10027
+NPJI00052	Arc the Lad: Monster Game with Casino Game	JP	exact	Arc the Lad: Monster Game with Casino Game (Disc 1) (Monster Game) | Arc the Lad: Monster Game with Casino Game (Disc 2) (Casino Game)	SCPS-10040 / SCPS-10041
+NPJI00053	Kokohore! Pukka: Dig-a-Dig Pukka	JP	fuzzy:0.62	Koko Hore! Pukka	SCPS-10133
+NPJI00054	Magical Dice Kids	JP	exact	Magical Dice Kids	SCPS-10135
+NPJI00055	Addie no Okurimono: To Moze from Addie	JP	exact	Addie no Okurimono: To Moze from Addie	PAPX-90105 / SCPS-10126
+NPJI00057	Docchi Mecha!	JP	fuzzy:0.92	Dotchi Mecha!	SCPS-10129
+NPJI00060	Crash Team Racing	JP	fuzzy:0.93(diff region)	CTR: Crash Team Racing | CTR: Crash Team Racing (Demo) | CTR: Crash Team Racing (EDC)	SCES-02105 / SCUS-94426 / SCUS-94459
+NPJI00061	Crash Bash Carnival	JP	fuzzy:0.92(diff region)	Crash Bash | Crash Bash (Demo)	SCES-02834 / SCUS-94570 / SCUS-94616
+NPJI00062	Spyro the Dragon	JP	exact	Spyro the Dragon	PAPX-90078 / SCPS-10083 / SCPS-10085 / SCPS-45395
+NPJI00063	Spyro 2: Ripto's Rage!	JP	exact(other region)	Spyro 2: Ripto's Rage! | Spyro 2: Ripto's Rage! (Demo)	SCUS-94425 / SCUS-94460
+NPJI00066	G-POLICE	JP	exact	G-Police | G-Police (Disc 1) | G-Police (Disc 2)	PCPX-96125 / SCPS-10065 / SCPS-10066
+NPJI00067	KulaQuest	JP	exact	KulaQuest	PCPX-96121 / SCPS-10064
+NPJI00069	Rapid Racer	JP	exact	Rapid Racer	SCPS-10060 / SCPS-45282
+NPJI00070	Fire Panic	JP	fuzzy:0.89	Fire Panic: Mack no Rescue Daisakusen	SCPS-10055
+NPJI00072	WarHawk	JP	fuzzy:0.88(diff region)	Warhawk: The Red Mercury Missions	SCES-00062 / SCUS-94305
+NPJI00078	Doko Demo Issho	JP	exact	Doko Demo Issho	PAPX-90086 / PCPX-96152 / SCPM-85006 / SCPS-10092 / SCPS-10142 / SCPS-91212
+NPJI00079	Pocket Jiman	JP	exact	Pocket Jiman	SCPS-10104
+NPJI00080	Brightis	JP	exact	Brightis	SCPS-10105
+NPJI00081	Pocket MuuMuu	JP	exact	Pocket MuuMuu	SCPS-10076
+NPJI00082	Vib-Ribbon	JP	exact	Vib-Ribbon	PAPX-90101 / PAPX-90102 / SCPS-18012 / SCPS-45469 / SCPS-91213 / SCPS-91308
+NPJI90001	XI[sai] / Devil Dice (Demo)	JP	fuzzy:0.95(diff region)	Devil Dice	SCES-01312 / SLUS-00672
+NPJJ00001	Mr. Driller	JP	exact	Mr Driller | Mr. Driller	SCPS-45259 / SLPS-02600
+NPJJ00002	Tekken 2	JP	exact	Tekken 2	SLPS-00300 / SLPS-91055
+NPJJ00003	Silent Bomber	JP	exact	Silent Bomber	SCPS-45437 / SLPM-80494 / SLPS-02334
+NPJJ00004	Biohazard Director’s Cut	JP	fuzzy:0.98	Bio Hazard: Director's Cut	SLPS-00998
+NPJJ00005	Bishi Bashi Special	JP	exact	Bishi Bashi Special | Bishi Bashi Special [Konami The Best] | Bishi Bashi Special [PSOne Books]	SLPM-86123 / SLPM-86825 / SLPM-87206
+NPJJ00006	Konami Antiques: MSX Collection Vol. 1	JP	exact	Konami Antiques: MSX Collection Vol. 1	SLPM-86052
+NPJJ00008	Konami Antiques: MSX Collection Vol. 2	JP	exact	Konami Antiques MSX Collection Vol.2 | Konami Antiques: MSX Collection Vol. 2	SCPS-45155 / SLPM-86062
+NPJJ00009	DINO CRISIS	JP	exact	Dino Crisis	SLPM-86903 / SLPS-02180
+NPJJ00010	The Conveni: Ano Machi wo Dokusen Seyo	JP	fuzzy:0.99	The Conveni: Ano Machi o Dokusen seyo	SLPM-86655 / SLPS-00782 / SLPS-91104
+NPJJ00011	The Adventure of Puppet Princess: Marl Oukoku no Ningyou Hime	JP	fuzzy:0.95	Marl Oukoku no Ningyou-hime: The Adventure of Puppet Princess | Marl Oukoku no Ningyou-hime: The Adventure of Puppet Princess (Omake Disc)	SLPM-80319 / SLPS-01734 / SLPS-02286 / SLPS-02287 / SLPS-91415
+NPJJ00013	Migi Hadari U-SA	JP	fuzzy:0.67	G Darius	SCPS-45202 / SLPM-80205 / SLPM-86453 / SLPS-01348
+NPJJ00014	Taiyou no Shippo: Wild, Pure, Simple Life	JP	exact	Taiyou no Shippo: Wild, Pure, Simple Life	SCPS-45099 / SLPS-00330 / SLPS-91034 / SLPS-91411
+NPJJ00015	A. IV Evolution Global (PlayStation the Best)	JP	exact(other region)	A.IV: Evolution Global	SCES-00290
+NPJJ00016	Vampire: Kyuuketsuki Densetsu	JP	fuzzy:0.98	Vampir: Kyuuketsuki Densetsu	SLPS-01932
+NPJJ00017	Spectral Force	JP	exact	Spectral Force	SLPS-00969 / SLPS-01056 / SLPS-01898
+NPJJ00018	Logic Mahjong Soryu 3 or 4players	JP	fuzzy:0.72	Logic Mahjong Souryuu: Sannin Uchi: 3 Players Game	SLPS-02036
+NPJJ00019	Yaku: Yuujou Dangi	JP	exact	Yaku: Yuujou Dangi	SLPS-00152
+NPJJ00020	THE DRUG STORE	JP	exact	The Drug Store	SLPM-86678
+NPJJ00021	PUZZLE MANIA	JP	exact	Puzzle Mania	SLPM-86653 / SLPS-01778
+NPJJ00023	Shanghai: Dynasty	JP	fuzzy:0.89	SuperLite 1500 Series: Shanghai: Dynasty	SLPM-86764
+NPJJ00024	Arcade Hits RAIDEN	JP	exact	Arcade Hits: Raiden	SLPM-86613
+NPJJ00025	Tall Unlimited	JP	exact	Tall Unlimited	SLPM-87116 / SLPS-02366
+NPJJ00026	Galaxy Fight	JP	exact(other region)	Galaxy Fight	SLES-00197
+NPJJ00027	Hard Edge	JP	exact	Hard Edge | Hard Edge [Collection Best] | Hard Edge [Value 1500]	SLPS-01733 / SLPS-02692 / SLPS-03270
+NPJJ00028	A5: A-Ressha de Ikou 5	JP	exact	A5: A Ressha de Ikou 5	SCPS-45153 / SLPS-01120 / SLPS-91124
+NPJJ00029	Lunatic Dawn III	JP	exact	Lunatic Dawn III	SLPS-01749 / SLPS-02537
+NPJJ00030	Fushigi Deka	JP	exact	Fushigi Deka	SLPM-86642
+NPJJ00031	LOVE GAME'S WAIWAI TENNIS PLUS	JP	fuzzy:0.98	Love Game's: Wai Wai Tennis Plus	SLPM-86899
+NPJJ00033	Ikasama Mahjong	JP	exact	Ikasama Mahjong	SLPS-02606 / SLPS-03314
+NPJJ00034	Jiisan 2 Tabi Bikkuri: CG Mukashibanashi	JP	none		
+NPJJ00035	Yaku Tou: Noroi no Game	JP	fuzzy:0.93	Yaku Tsuu: Noroi no Game	SLPS-00689
+NPJJ00036	JIGSAW WORLD	JP	exact	Jigsaw World	SLPS-00028 / SLPS-02251
+NPJJ00037	Bakumatsu Rouman: Gekka no Kenshi	JP	fuzzy:0.98	Bakumatsu Roman: Gekka no Kenshi	SLPM-86118 / SLPM-86436
+NPJJ00038	Real Bout Garou Densetsu Special Dominated Mind	JP	exact	Real Bout Garou Densetsu Special: Dominated Mind | Real Bout Garou Densetsu Special: Dominated Mind [SNK Best Collection]	SCPS-45276 / SLPM-80246 / SLPM-86085 / SLPM-86090 / SLPM-86321
+NPJJ00039	Real Bout Garou Densetsu	JP	exact	Real Bout Garou Densetsu | Real Bout Garou Densetsu [PlayStation the Best]	SCPS-45033 / SLPM-80070 / SLPM-86108 / SLPS-00640
+NPJJ00040	Metal Slug X	JP	exact	Metal Slug X	SCPS-45490
+NPJJ00041	Kenkaku Ibunroku Yomigaerishi Soukou no Yaiba Samurai Spirits Shinshou	JP	fuzzy:0.99	Kenkaku Ibunroku: Yomigaerishi Souku no Yaiba: Samurai Spirits Shinshou	SCPS-45466 / SLPM-80512 / SLPM-86345
+NPJJ00042	Garou Densetsu Wild Ambition	JP	exact	Garou Densetsu: Wild Ambition | Garou Densetsu: Wild Ambition [SNK Best Collection]	SCPS-45409 / SLPM-80446 / SLPM-86236 / SLPM-86576
+NPJJ00043	Spectral Tower	JP	exact	Spectral Tower	SLPS-00476
+NPJJ00044	Spectral Force 2: Eien naru Kiseki	JP	fuzzy:0.89	Spectral Force | Spectral Force 2	SLPS-00969 / SLPS-01056 / SLPS-01628 / SLPS-01898 / SLPS-02784
+NPJJ00045	Suna no Embrace: Eden no Sato no Never	JP	exact	Suna no Embrace: Eden no Sato no Never [Idea Factory Collection]	SLPS-03275
+NPJJ00046	The FamiRes: Shijou Saikyou no Menu	JP	exact	The Famires: Shijou Saikyou no Menu | The Famires: Shijou Saikyou no Menu [Best of the Best]	SLPM-87254 / SLPS-01763 / SLPS-02715
+NPJJ00047	Septentrion ~Out of the Blue~	JP	exact	Septentrion: Out of the Blue	SLPM-86612 / SLPS-01940
+NPJJ00048	Little Princess+1: Maru Oukoku no Ningyou Hime 2	JP	fuzzy:0.96	Little Princess: Marl Oukoku no Ningyou-hime 2 | Little Princess: Marl Oukoku no Ningyou-hime 2 (Disc 1) | Little Princess: Marl Oukoku no Ningyou-hime 2 (Disc 2)	SLPM-80492 / SLPS-02376 / SLPS-03012 / SLPS-03013 / SLPS-91414
+NPJJ00049	Samurai Spirits: Kenkaku Yubinan Pack	JP	fuzzy:0.93	Samurai Spirits: Kenkaku Shinan Pack	SCPS-45209 / SLPS-00647
+NPJJ00050	The King Of Fighters ’95	JP	exact	The King of Fighters '95	SLPS-00351 / SLPS-91026
+NPJJ00051	The King Of Fighters ’96	JP	exact	The King of Fighters '96	SLPM-86110 / SLPS-00834
+NPJJ00052	The King Of Fighters ’97	JP	exact	The King of Fighters '97	SCPS-45248 / SLPM-80242 / SLPM-86084 / SLPM-86245 / SLPS-91511
+NPJJ00053	Guilty Gear	JP	exact	Guilty Gear	SLPM-80302 / SLPS-01357 / SLPS-02273
+NPJJ00054	Spectral Tower 2	JP	fuzzy:0.95	Spectral Tower | Spectral Tower II	SLPM-80209 / SLPS-00476 / SLPS-01179 / SLPS-02055
+NPJJ00055	Oasis Road	JP	exact	Oasis Road	SLPS-01899
+NPJJ00056	The King Of Fighters ’98	JP	fuzzy:0.96	The King of Fighters '95 | The King of Fighters '96 | The King of Fighters '97 | The King of Fighters '99 | The King of Fighters '99 [SNK Best Collection] [Reprint]	SCPS-45248 / SCPS-45489 / SLPM-80242 / SLPM-86084 / SLPM-86110 / SLPM-86245 / SLPM-86462 / SLPM-86784 / SLPS-00351 / SLPS-00834 / SLPS-03450 / SLPS-91026 / SLPS-91511
+NPJJ00057	The King Of Fighters ’99	JP	exact	The King of Fighters '99 | The King of Fighters '99 [SNK Best Collection] [Reprint]	SCPS-45489 / SLPM-86462 / SLPM-86784 / SLPS-03450
+NPJJ00058	Samurai Spirits: Amakusa Kourin Special	JP	exact	Samurai Spirits: Amakusa Kourin Special	SLPS-01171 / SLPS-91513
+NPJJ00059	The King Of Fighters Kyo	JP	exact	The King of Fighters Kyo [SNK Best Collection]	SLPM-86314
+NPJJ00060	Samurai Spirits: Zankuro Musouken	JP	fuzzy:0.98	Samurai Spirits: Zankurou Musouken | Samurai Spirits: Zankurou Musouken [PlayStation the Best]	SLPS-00350 / SLPS-91024 / SLPS-91514
+NPJJ00061	Metal Slug	JP	fuzzy:0.95	Metal Slug X	SCPS-45490
+NPJJ00062	AI Mahjong Selection	JP	exact	AI Mahjong Selection	SLPM-87117
+NPJJ00063	Zipangu Jima: Unmei wa Saikoro ga Kimeru!?	JP	exact	Zipangu-jima: Unmei wa Saikoro ga Kimeru!?	SLPM-80488 / SLPM-86643 / SLPS-02244 / SLPS-02260
+NPJJ00064	Puzzle Mania 2	JP	exact	Puzzle Mania 2	SLPM-86674 / SLPS-01952
+NPJJ00065	Sanvein (SuperLite 1500 Series)	JP	exact(other region)	Sanvein	SLES-02919
+NPJJ00067	Cotton Original (SuperLite 1500 Series)	JP	fuzzy:0.89	Fantastic Night Dreams: Cotton Original	SLPS-02034
+NPJJ00068	Armored Core	JP	exact	Armored Core | Armored Core [PSOne Books]	SCPS-45060 / SLPM-80111 / SLPM-80118 / SLPM-80119 / SLPS-00900 / SLPS-03581 / SLPS-91064 / SLPS-91402
+NPJJ00069	King’s Field	JP	exact	King's Field	SLPS-00017 / SLPS-03578 / SLPS-91401
+NPJJ00070	BOXER'S ROAD	JP	exact	Boxer's Road	SLPS-00033 / SLPS-91007
+NPJJ00071	The Adventure Of Little Ralph	JP	fuzzy:0.91	Chippoke Ralph no Daibouken: The Adventure of Little Ralph	SLPM-80433 / SLPS-01853
+NPJJ00072	AI Shogi Selection	JP	fuzzy:0.97	AI Shougi Selection	SLPM-87068
+NPJJ00073	Chiki Chiki Chicken (SuperLite 1500 Series)	JP	fuzzy:0.61	Chiki Chiki Machine Mou Race: Wacky Races	SLPM-86845
+NPJJ00074	Memorial * Series: Sunsoft Vol. 1: Ikki / Super Arabian	JP	fuzzy:0.91	Memorial Series: Sunsoft Vol. 1 | Memorial Series: Sunsoft Vol. 2 | Memorial Series: Sunsoft Vol. 3 | Memorial Series: Sunsoft Vol. 4 | Memorial Series: Sunsoft Vol. 5 | Memorial Series: Sunsoft Vol. 6	SLPS-03135 / SLPS-03181 / SLPS-03366 / SLPS-03382 / SLPS-03397 / SLPS-03486
+NPJJ00075	Memorial * Series: Sunsoft Vol. 2: Route-16 Turbo / Atlantis no Nazo	JP	fuzzy:0.90	Memorial Series: Sunsoft Vol. 1 | Memorial Series: Sunsoft Vol. 2 | Memorial Series: Sunsoft Vol. 3 | Memorial Series: Sunsoft Vol. 4 | Memorial Series: Sunsoft Vol. 5 | Memorial Series: Sunsoft Vol. 6	SLPS-03135 / SLPS-03181 / SLPS-03366 / SLPS-03382 / SLPS-03397 / SLPS-03486
+NPJJ00076	Shinsou Kaiten: Wanwan Umi Monogatari: Sanyo Pachinko Paradise DX	JP	fuzzy:0.99	Shinsou Kaiten!! Wan Wan Umi Monogatari: Sanyo Pachinko Paradise DX	SLPS-03312
+NPJJ00077	Gakkou Deatta Kowai Hanashi S	JP	fuzzy:0.98	Gakkou de Atta Kowai Hanashi S	SLPS-00404
+NPJJ00078	Prismaticallization	JP	exact	Prismaticallization	SLPS-02360
+NPJJ00079	Sanyo Pachinko Paradise 5	JP	fuzzy:0.96	Sanyo Pachinko Paradise	SLPS-02164
+NPJJ00080	ATHENA -Awakening from the ordinary life-	JP	exact	Athena: Awakening from the Ordinary Life | Athena: Awakening from the Ordinary Life (Disc 1) | Athena: Awakening from the Ordinary Life (Disc 2) | Athena: Awakening from the Ordinary Life (Disc 3)	SLPM-80413 / SLPM-86185 / SLPM-86186 / SLPM-86187
+NPJJ00081	Arcade Hits: Sonic Wings Special	JP	exact	Arcade Hits: Sonic Wings Special	SLPM-87137
+NPJJ00082	The Conveni 2: Zenkoku Chain Tenkai da!	JP	exact	The Conveni 2: Zenkoku Chain Tenkai da!	SLPM-86691 / SLPS-01146
+NPJJ00083	King’s Field II	JP	exact	King's Field II	SLPS-00069 / SLPS-03579 / SLPS-91003 / SLPS-91423
+NPJJ00084	Echo Night	JP	exact	Echo Night	SLPS-01518 / SLPS-91143 / SLPS-91403
+NPJJ00085	Memorial * Series: Sunsoft Vol. 3: Madoola no Tsubasa / Toukaidou Gojuusan Tsugi	JP	fuzzy:0.89	Memorial Series: Sunsoft Vol. 1 | Memorial Series: Sunsoft Vol. 2 | Memorial Series: Sunsoft Vol. 3 | Memorial Series: Sunsoft Vol. 4 | Memorial Series: Sunsoft Vol. 5 | Memorial Series: Sunsoft Vol. 6	SLPS-03135 / SLPS-03181 / SLPS-03366 / SLPS-03382 / SLPS-03397 / SLPS-03486
+NPJJ00086	Blue Breaker: Egao no Yakusoku	JP	exact	Blue Breaker: Egao no Yakusoku	SLPM-86646 / SLPS-01122
+NPJJ00087	Azito	JP	exact	Azito	SLPM-87284 / SLPS-00683
+NPJJ00088	Shadow Tower	JP	exact	Shadow Tower	SLPS-01420
+NPJJ00089	Armored Core: Project Phantasma	JP	exact	Armored Core: Project Phantasma	SLPS-01130 / SLPS-91110 / SLPS-91424
+NPJJ00090	Ganbare Goemon Uchuu Kaizoku Akogingu	JP	exact	Ganbare Goemon: Uchuu Kaizoku Akogingu | Ganbare Goemon: Uchuu Kaizoku Akogingu [PSOne Books]	SLPM-86030 / SLPM-87327 / SLPS-00217
+NPJJ00091	Michinoku Hitou Koimonogatari Kai	JP	fuzzy:0.99	Michinoku Hitou Koi Monogatari Kai	SLPS-02502
+NPJJ00092	Hanafuda Graffiti: Koi Koi Monogatari	JP	exact	Hanafuda Graffiti: Koi Koi Monogatari	SLPM-87083 / SLPS-00367
+NPJJ00093	Sanyo Pachinko Paradise	JP	exact	Sanyo Pachinko Paradise	SLPS-02164
+NPJJ00094	Sanyo Pachinko Paradise 2	JP	fuzzy:0.96	Sanyo Pachinko Paradise	SLPS-02164
+NPJJ00095	King’s Field III	JP	exact	King's Field III	SLPS-00377 / SLPS-03580 / SLPS-91089 / SLPS-91426
+NPJJ00096	Echo Night #2: Nemuri no Shihaisha	JP	exact	Echo Night #2: Nemuri no Shihaisha	SLPM-80468 / SLPS-02167 / SLPS-91425
+NPJJ00098	Hana to Ryuu	JP	exact	Hana to Ryuu	SLPS-01532
+NPJJ00099	Neo Atlas	JP	exact	Neo Atlas	SLPM-80230 / SLPS-01212 / SLPS-91117
+NPJJ00100	Sanyo Pachinko Paradise 3	JP	fuzzy:0.96	Sanyo Pachinko Paradise	SLPS-02164
+NPJJ00101	Sanyo Pachinko Paradise 4	JP	fuzzy:0.96	Sanyo Pachinko Paradise	SLPS-02164
+NPJJ00102	Wizard’s Harmony	JP	exact	Wizard's Harmony | Wizard's Harmony [Reprint]	SLPS-00194 / SLPS-01877
+NPJJ00104	Fuuraiki	JP	exact	Fuuraiki	SLPS-03094
+NPJJ00105	Armored Core: Master of Arena	JP	exact	Armored Core: Master of Arena | Armored Core: Master of Arena (Disc 1) | Armored Core: Master of Arena (Disc 2)	SLPM-80371 / SLPS-01855 / SLPS-01856 / SLPS-91188 / SLPS-91189 / SLPS-91444 / SLPS-91445
+NPJJ00107	Frisky Tom	JP	fuzzy:0.90	Arcade Hits: Frisky Tom	SLPM-87118
+NPJJ00108	Arcade Hits: Moon Cresta	JP	exact	Arcade Hits: Moon Cresta	SLPM-87082
+NPJJ00109	Blue Breaker Burst: Bishou o Anata to	JP	exact	Blue Breaker Burst: Bishou o Anata to	SLPS-01502
+NPJJ00111	Poy Poy	JP	exact(other region)	Poy Poy	SLES-00785 / SLUS-00486
+NPJJ00118	Blue Breaker Burst: Egao no Asuni	JP	fuzzy:0.98	Blue Breaker Burst: Egao no Asu ni	SLPM-86648 / SLPS-01580
+NPJJ00120	Falcata	JP	fuzzy:0.88	Falcata: Astran Pardma no Monshou	SLPS-00010
+NPJJ00121	Marī no Atorie – Zāruburugu no Renkinjutsushi (Atelier Marie – The Alchemist of Salburg)	JP	fuzzy:0.80	Marie no Atelier: Salburg no Renkinjutsushi	SLPS-00856
+NPJJ00124	Card II (SuperLite 1500 Series)	JP	fuzzy:0.90(diff region)	Card Games | Card Shark	SLES-03206 / SLUS-01379
+NPJJ00125	Hanafuda II (SuperLite 1500 Series)	JP	fuzzy:0.90	Hanafuda Real 3D | Honkaku Hanafuda | Honkaku Hanafuda [Rerelease]	SLPS-01656 / SLPS-01747 / SLPS-03119
+NPJJ00126	Baroque	JP	exact	Baroque	SLPM-86341
+NPJJ00127	Arcade Hits: Magical Drop	JP	exact	Arcade Hits: Magical Drop	SLPM-87173
+NPJJ00128	Robin Lloyd no Bouken	JP	exact	Robin Lloyd no Bouken	SLPS-02501
+NPJJ00129	Biohazard 2	JP	exact	Biohazard 2 | Biohazard 2 (Disc 1) (Leon-hen) | Biohazard 2 (Disc 2) (Claire-hen)	SLPS-00999 / SLPS-01222 / SLPS-01223
+NPJJ00130	Dezaemon Plus!	JP	exact	Dezaemon Plus	SLPS-00335
+NPJJ00131	Pro Mahjong Kiwame Plus	JP	exact	Pro Mahjong Kiwame Plus | Pro Mahjong Kiwame Plus [PlayStation the Best]	SLPS-00402 / SLPS-91134
+NPJJ00132	Athena no Kateiban: Family Game	JP	fuzzy:0.98	Athena no Kateiban: Family Games	SLPS-00263 / SLPS-02751
+NPJJ00133	Kuroi Hitomi no Noir: Cielgris Fantasm (Noir Yeux Noire)	JP	exact	Kuroi Hitomi no Noir: Cielgris Fantasm	SLPS-01450
+NPJJ00134	Block Kuzushi Kowashite Help!	JP	exact	Block Kuzushi: Kowashite Help!	SLPS-03042
+NPJJ00135	Big League Slugger Baseball	JP	exact(other region)	Big League Slugger Baseball	SLUS-01527
+NPJJ00136	Extreme Go-Kart Racing	JP	exact(other region)	Extreme Go-Kart Racing	SLUS-01530
+NPJJ00137	Money Idol Exchanger	JP	exact	Money Idol Exchanger	SLPS-00963 / SLPS-02644
+NPJJ00138	Meru Purana	JP	exact	Meru Purana	SLPS-00359
+NPJJ00139	Nobunaga Hiroku: Ge-Ten no Yume	JP	fuzzy:0.98	Nobunaga Hiroku: Geten no Yume	SLPS-00862
+NPJJ00140	Ide Yosuke no Mahjong Kyoshitsu	JP	fuzzy:0.97	Ide Yousuke no Mahjong Kyoushitsu	SLPS-02272 / SLPS-02942
+NPJJ00141	Baroque Syndrome	JP	exact	Baroque Syndrome	SLPM-86540 / SLPM-86939
+NPJJ00142	Family Bowling	JP	exact	Family Bowling	SLPS-01523 / SLPS-03043
+NPJJ00143	Kawa no Nushi Tsuri: Hikyou o Motomete	JP	exact	Kawa no Nushi Tsuri: Hikyou o Motomete [PSOne Books] | Kawa no Nushi-tsuri: Hikyou o Motomete	SLPS-01536 / SLPS-91155 / SLPS-91502
+NPJJ00144	Gakkou o Tsukurou!!	JP	fuzzy:0.95	Gakkou o Tsukurou!! 2	SLPS-01660 / SLPS-91485
+NPJJ00145	Metal Gear Solid	JP	exact	Metal Gear Solid | Metal Gear Solid (Demo) | Metal Gear Solid (Disc 1) | Metal Gear Solid (Disc 1) (Ichi) | Metal Gear Solid (Disc 2) | Metal Gear Solid (Disc 2) (Ni) | Metal Gear Solid (Disc 3) | Metal Gear Solid [Konami the Best] (Disc 1) | Metal Gear Solid [Konami the Best] (Disc 2) | Metal Gear Solid [Metal Gear 20th Anniversary] (Disc 3) | Metal Gear Solid [PSOne Books] (Disc 1) | Metal Gear Solid [PSOne Books] (Disc 2)	PAPX-90044 / SCPS-45317 / SCPS-45318 / SCPS-45320 / SCPS-45321 / SCPS-45322 / SLPM-80254 / SLPM-86098 / SLPM-86111 / SLPM-86112 / SLPM-86114 / SLPM-86115 / SLPM-86485 / SLPM-86486 / SLPM-87030 / SLPM-87031 / SLPM-87411 / SLPM-87412 / SLPM-87413
+NPJJ00146	Dezaemon Kids!	JP	exact	Dezaemon Kids!	SLPS-01503
+NPJJ00147	Pro Mahjong Kiwame Plus II	JP	exact	Pro Mahjong Kiwame Plus II | Pro Mahjong Kiwame Plus II [Rerelease]	SLPS-01605 / SLPS-02645
+NPJJ00148	Erī no Atorie – Zāruburugu no Renkinjutsushi 2 (Atelier Elie – The Alchemist of Salburg 2)	JP	fuzzy:0.74	Marie no Atelier: Salburg no Renkinjutsushi	SLPS-00856
+NPJJ00149	Master of Monsters: Disciples of Gaia	JP	exact(other region)	Master of Monsters: Disciples of Gaia	SLES-00244 / SLUS-00595
+NPJJ00150	Magical Drop F	JP	fuzzy:0.95	Magical Drop	SLPS-00201
+NPJJ00151	Arcade Hits: Shienryu	JP	fuzzy:0.98	Arcade Hits: Shienryuu	SLPM-87228
+NPJJ00152	Pukunpa: Joshikouki No Houkago	JP	fuzzy:0.68	Joshikousei no Houkago... Pukunpa	SLPS-00409
+NPJJ00153	Pro Mahjong Kiwame Tengensenhen	JP	fuzzy:0.98	Pro Mahjong Kiwame: Tengensen-hen	SLPS-02347 / SLPS-02938
+NPJJ00154	BLOODY ROAR	JP	exact(other region)	Bloody Roar	SCUS-94199
+NPJJ00156	Nectaris: Military Madness	JP	exact(other region)	Nectaris: Military Madness	SLUS-00764
+NPJJ00157	Policenauts	JP	exact	Policenauts (Disc 1) | Policenauts (Disc 2)	SLPM-86048 / SLPM-86049 / SLPM-87290 / SLPM-87291 / SLPS-00215 / SLPS-00216
+NPJJ00158	Wizard’s Harmony 2	JP	exact	Wizard's Harmony 2	SCPS-45135 / SLPS-00984
+NPJJ00159	Lord Monarch: Shin Gaia Oukokuki	JP	exact	Lord Monarch: Shin Gaia Oukokuki	SLPM-86524 / SLPS-01728
+NPJJ00160	Bomberman Party Edition	JP	exact(other region)	Bomberman: Party Edition	SLUS-01189
+NPJJ00161	Tamamayu Monogatari (PlayStation the Best)	JP	exact	Tamamayu Monogatari | Tamamayu Monogatari [PSOne Books]	SLPS-01729 / SLPS-91154 / SLPS-91461
+NPJJ00162	Yamasa Digi Guide: New Pulsar R	JP	exact	Yamasa Digi Guide: New Pulsar R	SLPS-02980
+NPJJ00163	Yamasa Digi Guide: Hyper Rush	JP	exact	Yamasa Digi Guide: Hyper Rush	SLPS-02989
+NPJJ00164	Yamasa Digi Guide: M-771	JP	fuzzy:0.98	Yamasa Digi Guide: M771	SLPS-03038
+NPJJ00165	Acid	JP	exact	Acid	SLPM-80430 / SLPM-86589 / SLPS-02119
+NPJJ00166	Xenogears	JP	exact	Xenogears (Disc 1) | Xenogears (Disc 2) | Xenogears (Elhaym Van Houten Version) [Square Millennium Collection] (Disc 1) | Xenogears (Elhaym Van Houten Version) [Square Millennium Collection] (Disc 2) | Xenogears [PSOne Books] (Disc 2)	SCPS-45170 / SCPS-45171 / SLPS-01160 / SLPS-01161 / SLPS-02773 / SLPS-02774 / SLPS-02775 / SLPS-02776 / SLPS-91436 / SLPS-91437
+NPJJ00167	Einhander	JP	fuzzy:0.95(diff region)	Einhaender	SCUS-94243
+NPJJ00168	Astronoka	JP	exact	Astronoka | Astronoka (Disc 1)	SLPM-80278 / SLPM-86088 / SLPM-86107
+NPJJ00169	Rakugaki Showtime	JP	exact	Rakugaki Showtime	SLPM-86272
+NPJJ00170	Raystorm	JP	exact	RayStorm	SLPM-80066 / SLPS-00678 / SLPS-91050
+NPJJ00171	FIGHTERS' IMPACT	JP	exact	Fighters' Impact	SLPS-00822
+NPJJ00172	Brave Fencer Musashiden	JP	exact	Brave Fencer Musashiden	SCPS-45291 / SLPM-80262 / SLPS-01490 / SLPS-02769
+NPJJ00173	Ehrgeiz	JP	exact	Ehrgeiz	SCPS-45364
+NPJJ00174	Wizard’s Harmony R	JP	exact	Wizard's Harmony R	SLPS-01716
+NPJJ00175	Yamasa Digi Selection	JP	exact	Yamasa Digi Selection	SLPS-03428 / SLPS-03429
+NPJJ00176	Yamasa Digi Selection 2	JP	exact	Yamasa Digi Selection 2	SLPS-03484
+NPJJ00177	Project GaiaRay	JP	exact	Project Gaiaray	SCPS-45136 / SLPS-01013
+NPJJ00178	b.l.u.e. Legend of water	JP	exact	B. L. U. E.: Legend of Water	PAPX-90050 / SLPM-80243 / SLPS-01459
+NPJJ00179	Aquanaut no Kyuujitsu: Memories of Summer 1996	JP	exact	Aquanaut no Kyuujitsu: Memories of Summer 1996	SLPS-00406 / SLPS-02023
+NPJJ00180	Raycrisis	JP	exact	RayCrisis | Raycrisis	SCPS-45487 / SLPM-80541 / SLPM-86450
+NPJJ00183	Grille Logic	JP	exact	Grille Logic	SLPS-00211
+NPJJ00184	Chocobo Racing	JP	exact(other region)	Chocobo Racing	SLES-02079 / SLUS-00844
+NPJJ00185	Chocobo Stallion	JP	exact	Chocobo Stallion	SCPS-45472 / SLPS-02520 / SLPS-02521
+NPJJ00186	Dice de Chocobo	JP	exact	Dice de Chocobo	SLPS-02523
+NPJJ00187	ARKANOID RETURNS	JP	exact	Arkanoid Returns	SLPS-00948
+NPJJ00188	Aquanaut no Kyuujitsu 2	JP	exact	Aquanaut no Kyuujitsu 2	SLPM-80449 / SLPS-02141 / SLPS-02919
+NPJJ00189	Soukaigi	JP	exact	Soukaigi (Disc 1) | Soukaigi (Disc 2) | Soukaigi (Disc 3)	SLPS-01291 / SLPS-01292 / SLPS-01293
+NPJJ00190	Magical Date: Doki Doki Kokuhaku Daisakusen	JP	exact	Magical Date: Doki Doki Kokuhaku Daisakusen	SCPS-45134 / SLPM-86619 / SLPS-01091
+NPJJ00191	Beltlogger 9	JP	exact	Beltlogger 9 | Beltlogger 9 [PSOne Books]	SLPS-00581 / SLPS-00582 / SLPS-91462
+NPJJ00193	Seirei Shoukan: Princess of Darkness	JP	exact	Seirei Shoukan: Princess of Darkness	SLPM-80271 / SLPS-01271
+NPJJ00194	G Darius	JP	exact	G Darius	SCPS-45202 / SLPM-80205 / SLPM-86453 / SLPS-01348
+NPJJ00195	Bomberman Fantasy Race	JP	exact	Bomberman Fantasy Race	SLPM-87102 / SLPS-01525 / SLPS-91138
+NPJJ00196	Carom Shot 2	JP	exact	Carom Shot 2	SLPM-80267 / SLPS-01486
+NPJJ00197	Blockids	JP	exact	Blockids	SLPS-00205 / SLPS-00206
+NPJJ00198	Psychic Force 2	JP	exact	Psychic Force 2	SLPM-80463 / SLPM-86273
+NPJJ00199	Puzzle Bobble 2	JP	exact	Puzzle Bobble 2	SLPM-86618 / SLPS-00284 / SLPS-91018
+NPJJ00200	Dekiru! Game Center	JP	exact	Dekiru! Game Center	SLPS-01810
+NPJJ00201	Weltorv Estleia	JP	exact	Weltorv Estleia	SLPS-01887
+NPJJ00202	Puchi Carat	JP	exact	Puchi Carat	SLPM-86545 / SLPS-01435
+NPJJ00203	Kouyasai	JP	fuzzy:0.88	Kouyasai: A Sherd of Youthful Memories	SLPM-80420 / SLPS-01775
+NPJJ00204	Bomberman Land	JP	exact	Bomberman Land	SLPM-87080 / SLPM-87364 / SLPS-03002
+NPJJ00205	FISH EYES	JP	exact	Fish Eyes	SLPS-00463 / SLPS-91040 / SLPS-91458
+NPJJ00206	SPACE INVADERS	JP	exact	Space Invaders	SLPS-00940
+NPJJ00207	Building Crush!	JP	exact	Building Crush!	SLPS-00497
+NPJJ00208	Yamasa Digi	JP	fuzzy:0.92	Yamasa Digi Selection | Yamasa Digi Selection 2	SLPS-03428 / SLPS-03429 / SLPS-03484
+NPJJ00209	RAY TRACERS	JP	exact	Ray Tracers	SCPS-45010 / SLPS-00098
+NPJJ00210	Gensou no Artemis: Actress School Mystery Adventure	JP	fuzzy:0.88	Gensou no Artemis	SLPS-02563
+NPJJ00211	Tsuukai!! Slot Shooting	JP	exact	Tsuukai!! Slot Shooting	SLPS-00334
+NPJJ00212	Front Mission Alternative	JP	exact	Front Mission Alternative	SCPS-45090 / SLPM-87398 / SLPS-00953
+NPJJ00213	Theme Park	JP	exact	Theme Park	SLPS-00175 / SLPS-91013
+NPJJ00216	Soviet Strike	JP	exact	Soviet Strike	SLPS-00735
+NPJJ00217	Touki Denshou: Angel Eyes	JP	exact	Touki Denshou: Angel Eyes	SLPS-01168
+NPJJ00218	Front Mission 1st	JP	exact	Front Mission 1st	SLPM-87317 / SLPM-87330
+NPJJ00219	LAND MAKER	JP	exact	Land Maker	SLPM-86394
+NPJJ00221	Populous: The Beginning	JP	exact	Populous: The Beginning	SLPS-02085
+NPJJ00223	Culdcept Expansion Plus	JP	exact	Culdcept: Expansion Plus	SLPM-86658
+NPJJ00224	SaGa Frontier	JP	exact	SaGa Frontier | Saga Frontier [Square Millennium Collection]	SCPS-45102 / SLPM-87375 / SLPS-00898 / SLPS-02766 / SLPS-91482
+NPJJ00225	Bushido Blade	JP	exact	Bushido Blade	SCPS-45028 / SLPM-86020 / SLPM-87403
+NPJJ00226	Chaos Break	JP	exact	Chaos Break	SCPS-45480 / SLPM-86363
+NPJJ00227	Tecmo's Deception: Invitation to Darkness	JP	exact(other region)	Tecmo's Deception: Invitation to Darkness	SLUS-00340
+NPJJ00228	Front Mission 2	JP	exact	Front Mission 2	SCPS-45116 / SLPM-87331 / SLPM-87397 / SLPS-01000
+NPJJ00229	SaGa Frontier 2	JP	exact	Saga Frontier 2 (Disc 1) | Saga Frontier 2 (Disc 2) | Saga Frontier 2 [Ultimate Hits]	SCPS-45300 / SCPS-45301 / SLPM-87376
+NPJJ00230	Puzzle Bobble 3 DX	JP	fuzzy:0.97	Puzzle Bobble 3DX	SLPS-01065 / SLPS-91075
+NPJJ00231	Dead or Alive	JP	exact	Dead or Alive	SCPS-45190 / SLPS-01289
+NPJJ00232	Front Mission 3	JP	exact	Front Mission 3	SLPM-80467 / SLPM-87332 / SLPM-87399 / SLPS-02222 / SLPS-02772 / SLPS-91447
+NPJJ00233	Bushido Blade 2	JP	exact	Bushido Blade 2 | Bushido Blade 2 [Legendary Hits]	SCPS-45187 / SLPM-87404 / SLPS-01294
+NPJJ00234	Pop 'n' Pop	JP	exact	Pop 'n' Pop [Reprint] | Pop'n Pop	SLPM-86454 / SLPS-01636
+NPJJ00235	Kagero	JP	fuzzy:0.90(diff region)	Kagero: Deception II | Kagero: Deception II (Demo)	SLES-01967 / SLUS-00677 / SLUS-90041
+NPJJ00236	Brigandine: Grand Edition	JP	exact	Brigandine: Grand Edition (Disc 1) | Brigandine: Grand Edition (Disc 2)	SLPS-02661 / SLPS-02662
+NPJJ00237	Bokujou Monogatari Harvest Moon	JP	exact	Bokujou Monogatari: Harvest Moon	SLPS-02489 / SLPS-91218
+NPJJ00238	Bokujou Monogatari Harvest Moon For Girl	JP	exact	Bokujou Monogatari: Harvest Moon for Girl	SLPS-03087 / SLPS-91525
+NPJJ00239	Biohazard 3 Last Escape	JP	exact	Biohazard 3: Last Escape	SLPM-80485 / SLPM-87224 / SLPS-02300
+NPJJ00240	Monster Farm Jump	JP	exact	Monster Farm Jump	SLPS-03160
+NPJJ00242	Deception III: Dark Delusion	JP	exact(other region)	Deception III: Dark Delusion	SLUS-01067
+NPJJ00244	Farland Story: Yottsu no Fuuin	JP	exact	Farland Story: Yottsu no Fuuin	SLPM-80137 / SLPS-00797
+NPJJ00245	Lunar Wing: Toki o Koeta Seisen	JP	exact	Lunar Wing: Toki o Koeta Seisen	SLPM-86777
+NPJJ00246	Reel Fishing II	JP	exact(other region)	Reel Fishing II	SLES-02780 / SLUS-00843
+NPJJ00247	Tenshi Doumei (Angel Alliance)	JP	exact	Tenshi Doumei	SLPS-01228
+NPJJ00248	Gakkou o Tsukurou!! 2	JP	exact	Gakkou o Tsukurou!! 2	SLPS-01660 / SLPS-91485
+NPJJ00249	Knight&Baby	JP	exact	Knight & Baby	SLPS-01531
+NPJJ00250	Fire Pro Wrestling G	JP	exact	Fire Pro Wrestling G	SLPS-02065 / SLPS-02817
+NPJJ00251	Urawaza Mahjong: Korette Tenwatte Yatsukai	JP	exact	Urawaza Mahjong: Korette Tenwatte Yatsukai	SLPS-02807
+NPJJ00252	Cho Aniki	JP	none		
+NPJJ00253	Neo Atlas II	JP	exact	Neo Atlas II	SLPS-02238 / SLPS-02974
+NPJJ00254	Yamasa Digi Guide: Umekagetsu R	JP	exact	Yamasa Digi Guide: Umekagetsu R	SLPS-03096
+NPJJ00255	Advanced V.G.	JP	exact	Advanced V.G. | Advanced V.G. [Natsu-cole Series Vol.1]	SLPM-80017 / SLPM-87122 / SLPS-00208
+NPJJ00256	Assault Suits Valken 2	JP	exact	Assault Suits Valken 2	SCPS-45420 / SLPM-80452 / SLPM-86872 / SLPS-00854
+NPJJ00257	Carnage Heart EZ: Easy Zapping	JP	fuzzy:0.90	Carnage Heart | Carnage Heart EZ (Easy Zapping) | Carnage Heart [Artdink Best Choice]	SLPS-00151 / SLPS-00919 / SLPS-02540
+NPJJ00258	Himitsu Sentai Metamor V Deluxe	JP	exact	Himitsu Sentai Metamor V Deluxe (Disc 1) | Himitsu Sentai Metamor V Deluxe (Disc 2)	SLPS-01626 / SLPS-01627
+NPJJ00259	Grandia	JP	exact	Grandia (Disc 1) | Grandia (Disc 2)	SLPS-02124 / SLPS-02125 / SLPS-91205 / SLPS-91206
+NPJJ00260	Final Fantasy VII International	JP	exact	Final Fantasy VII International (Disc 1) | Final Fantasy VII International (Disc 2) | Final Fantasy VII International (Disc 3) | Final Fantasy VII International (Disc 4) (Perfect Guide)	SLPM-84020 / SLPM-84021 / SLPM-84022 / SLPM-87380 / SLPM-87381 / SLPM-87382 / SLPM-87383 / SLPS-01057 / SLPS-01058 / SLPS-01059 / SLPS-01060 / SLPS-91440 / SLPS-91441 / SLPS-91442 / SLPS-91443
+NPJJ00261	Gakkou o Tsukurou!! Kouchou Sensei Monogatari	JP	exact	Gakkou o Tsukurou!! Kouchou Sensei Monogatari	SLPS-02998 / SLPS-03313
+NPJJ00262	Tilk: Aoi Umi kara Kita Shoujo	JP	exact	Tilk: Aoi Umi kara Kita Shoujo	SLPS-00717
+NPJJ00263	Lunatic Dawn Odyssey	JP	exact	Lunatic Dawn Odyssey [Artdink Best Choice] | Lunatic Dawn: Odyssey	SLPS-02420 / SLPS-02957
+NPJJ00264	Langrisser I & II	JP	exact	Langrisser I & II	SLPM-86798 / SLPS-00896 / SLPS-00897 / SLPS-01822
+NPJJ00265	Final Fantasy Tactics	JP	exact	Final Fantasy Tactics | Final Fantasy Tactics (Disc 1) | Final Fantasy Tactics (Disc 2)	SCPS-45087 / SCPS-45088 / SLPM-87392 / SLPS-00770 / SLPS-02768 / SLPS-91435
+NPJJ00266	Zeus: Carnage Heart Second	JP	exact	Zeus: Carnage Heart Second	SLPM-80335 / SLPS-01666
+NPJJ00267	Arubarea no Otome: Uruwashi no Seishikitachi	JP	fuzzy:0.89	Albaria no Otome: Uruwashi no Seikishitachi	SLPS-01578
+NPJJ00268	Mahoutsukai ni Naru Houhou	JP	exact	Mahoutsukai ni Naru Houhou	SLPS-01754
+NPJJ00269	Dream Generation	JP	fuzzy:0.90	Dream Generation: Koi Ka? Shigoto Ka!? | Dream Generation: Koi ka? Shigoto ka!?...	SLPS-01482 / SLPS-02270
+NPJJ00270	Final Fantasy	JP	exact	Final Fantasy	SLPS-03430 / SLPS-03500
+NPJJ00271	Zeus II: Carnage Heart	JP	exact	Zeus II: Carnage Heart	SLPS-02318
+NPJJ00272	Farland Saga: Toki no Michishirube	JP	exact	Farland Saga: Toki no Michishirube	SLPS-01903
+NPJJ00273	Final Fantasy II	JP	exact	Final Fantasy II	SLPS-03501 / SLPS-03502
+NPJJ00275	Rockman	JP	exact	Rockman	SLPM-87250 / SLPS-02220
+NPJJ00276	Tecmo Stackers	JP	exact(other region)	Tecmo Stackers	SLUS-00315
+NPJJ00277	GaiaSeed	JP	fuzzy:0.88	GaiaSeed: Project Seed Trap	SLPS-00624
+NPJJ00278	TALL TWINS TOWER	JP	exact	Tall: Twins Tower	SLPS-03021
+NPJJ00280	Arcade Hits: Outlaws Of The Lost Dynasty	JP	fuzzy:0.92	Arcade Hits: Suiko Enbu: Outlaws of the Lost Dynasty	SLPM-87145
+NPJJ00281	Saikyo Todai Shogi	JP	fuzzy:0.88	Ai Shogi [Reprint]	SLPS-00840
+NPJJ00282	Vagrant Story	JP	exact	Vagrant Story	SCPS-45486 / SLPM-87393 / SLPS-02377 / SLPS-91457
+NPJJ00283	Dragon Knights Glorious	JP	fuzzy:0.89	Pandora Max Series Vol. 1: Dragon Knights Glorious	SLPS-02391
+NPJJ00284	Shisha no Yobu Tachi	JP	none		
+NPJJ00285	Tetsuman Special: Honkaku Mahjong	JP	fuzzy:0.95	Honkaku Mahjong: Tetsuman Special	SLPS-00238 / SLPS-91137
+NPJJ00286	Rapid Angel	JP	fuzzy:0.90	Kaisoku Tenshi: The Rapid Angel	SLPS-01553
+NPJJ00287	Rockman 2: Dr. Wily no Nazo	JP	exact	Rockman 2: Dr Wily no nazo [Complete Works] [Capcom Game Books] | Rockman 2: Dr. Wily no Nazo	SLPM-87249 / SLPM-87410 / SLPS-02255
+NPJJ00288	Side Pocket 3	JP	exact	Side Pocket 3	SLPS-01079
+NPJJ00289	Nippon Pro Mahjong Renmei Kounin: Doujou Yaburi	JP	exact	Nippon Pro Mahjong Renmei Kounin: Doujou Yaburi [Reprint]	SLPS-02356
+NPJJ00290	Rubbish Blazon	JP	fuzzy:0.88	Pandora Max Series Vol. 3: Rubbish Blazon	SLPS-02637
+NPJJ00291	Epica Stella	JP	exact	Epica Stella	SLPS-01465
+NPJJ00292	1 on 1	JP	exact	1 on 1	SLPM-80351 / SLPS-01706 / SLPS-02298
+NPJJ00293	Theme Aquarium	JP	exact	Theme Aquarium | Theme Aquarium (PSOne Books)	SLPS-01768 / SLPS-91470
+NPJJ00294	Final Fantasy VIII	JP	exact	Final Fantasy VIII (Disc 1) | Final Fantasy VIII (Disc 2) | Final Fantasy VIII (Disc 3) | Final Fantasy VIII (Disc 4) | Final Fantasy VIII (Square's Preview Extra)	SCPS-45375 / SCPS-45376 / SCPS-45377 / SCPS-45378 / SLPM-80269 / SLPM-87384 / SLPM-87385 / SLPM-87386 / SLPM-87387 / SLPS-01880 / SLPS-01881 / SLPS-01882 / SLPS-01883
+NPJJ00295	Mikagura Shoujo Tanteidan	JP	exact	Mikagura Shoujo Tanteidan (Disc 1) (Honpen Disc Ichi) | Mikagura Shoujo Tanteidan (Disc 2) (Honpen Disc Ni) | Mikagura Shoujo Tanteidan (Disc 3) (Intermission Disc) | Mikagura Shoujo Tanteidan (Disc 4) (Special Disc)	SLPS-01611 / SLPS-01612 / SLPS-01613 / SLPS-01614
+NPJJ00296	Catch! Kimochi Sensation	JP	fuzzy:0.89	Pandora Max Series Vol. 4: Catch! Kimochi Sensation	SLPS-02712
+NPJJ00297	Nippon Pro Mahjong Renmei Kounin: Shin Tetsuman	JP	fuzzy:0.79	Nihon Pro Mahjong Renmei Kounin: Honkaku Pro Mahjong: Shin Tetsuman	SLPS-01653 / SLPS-02802
+NPJJ00298	Lucifer Ring	JP	exact	Lucifer Ring	SLPS-01784
+NPJJ00299	Theme Hospital	JP	exact	Theme Hospital	SLPS-01405
+NPJJ00300	Gochachiru	JP	exact	Gochachiru (Pandora Max Series vol.5)	SLPS-02945
+NPJJ00301	Nekozamurai	JP	fuzzy:0.96	Neko Zamurai (Disc 1) | Neko Zamurai (Disc 2) | Neko Zamurai (Disc 3)	SLPS-01543 / SLPS-01544 / SLPS-01545
+NPJJ00302	Oni Zero: Fukkatsu	JP	fuzzy:0.89	Pandora Max Series Vol. 6: Oni Zero: Fukkatsu	SLPS-03106
+NPJJ00303	Tokimeki Memorial: Forever With You	JP	exact	Tokimeki Memorial Forever With You [PSone Books] | Tokimeki Memorial Forever With You [Playstation the Best] | Tokimeki Memorial: Forever with You	SCPS-45144 / SLPM-86053 / SLPM-87300 / SLPS-00064 / SLPS-00065
+NPJJ00304	Zoku Mikagura Shoujo Tanteidan ~Kanketsuhen~	JP	exact	Zoku Mikagura Shoujo Tanteidan: Kanketsuhen [Rerelease] (Disc 1) | Zoku Mikagura Shoujo Tanteidan: Kanketsuhen [Rerelease] (Disc 2) | Zoku Mikagura Shoujo Tanteidan: Kanketsuhen [Rerelease] (Disc 3) | Zoku Mikagura Shoujo Tanteidan: Kanketsuhen [Rerelease] (Disc 4)	SLPS-02927 / SLPS-02928 / SLPS-02929 / SLPS-02930
+NPJJ00305	Tehodoki Mahjong: Nyuumon-hen	JP	fuzzy:0.90	Nihon Pro Mahjong Renmei Kounin: Tehodoki Mahjong Nyuumon-hen	SLPS-01826 / SLPS-02853
+NPJJ00306	Hi-Octane	JP	exact	Hi-Octane	SLPS-00171
+NPJJ00307	Tokimeki Memorial 2	JP	exact	Tokimeki Memorial 2 (Disc 1) | Tokimeki Memorial 2 (Disc 2) | Tokimeki Memorial 2 (Disc 3) | Tokimeki Memorial 2 (Disc 4) | Tokimeki Memorial 2 (Disc 5)	SCPS-45451 / SCPS-45452 / SCPS-45453 / SCPS-45454 / SCPS-45455 / SLPM-86350 / SLPM-86351 / SLPM-86352 / SLPM-86353 / SLPM-86354 / SLPM-86355 / SLPM-86356 / SLPM-86357 / SLPM-86358 / SLPM-86359 / SLPM-86723 / SLPM-86724 / SLPM-86725 / SLPM-86726 / SLPM-86727
+NPJJ00308	Tokimeki Memorial 2 EVS Append Disc	JP	fuzzy:0.89	Tokimeki Memorial 2 (Disc 1) | Tokimeki Memorial 2 (Disc 2) | Tokimeki Memorial 2 (Disc 3) | Tokimeki Memorial 2 (Disc 4) | Tokimeki Memorial 2 (Disc 5)	SCPS-45451 / SCPS-45452 / SCPS-45453 / SCPS-45454 / SCPS-45455 / SLPM-86350 / SLPM-86351 / SLPM-86352 / SLPM-86353 / SLPM-86354 / SLPM-86355 / SLPM-86356 / SLPM-86357 / SLPM-86358 / SLPM-86359 / SLPM-86723 / SLPM-86724 / SLPM-86725 / SLPM-86726 / SLPM-86727
+NPJJ00309	Langrisser IV & V: Final Edition	JP	exact	Langrisser IV & V: Final Edition (Disc 1) (Langrisser IV Disc) | Langrisser IV & V: Final Edition (Disc 2) (Langrisser V Disc)	SLPS-01818 / SLPS-01819
+NPJJ00310	Gourmet Action Game: Manpuku!! Nabe Kazoku	JP	exact	Gourmet Action Game: Manpuku!! Nabe Kazoku	SLPM-80631 / SLPS-03381
+NPJJ00311	Magical Drop III	JP	exact(other region)	Magical Drop III (Disc 1) (Magical Drop III) | Magical Drop III (Disc 2) (Magical Drop +1)	SLES-02964 / SLES-12964
+NPJJ00312	Magic Carpet	JP	exact	Magic Carpet	SLPS-00587
+NPJJ00313	NOëL NOT DiGITAL	JP	exact	NOëL: Not Digital (Disc 1) | NOëL: Not Digital (Disc 2)	SLPS-00304 / SLPS-00305 / SLPS-00316 / SLPS-00317 / SLPS-91043 / SLPS-91044
+NPJJ00314	Yakiniku Bugyou	JP	exact	Yakiniku Bugyou (Best of the Best)	SLPS-03519
+NPJJ00316	Theme Park World	JP	exact	Theme Park World	SLPS-02643
+NPJJ00317	Motteke Tamago with Ganbare Kamonohasi	JP	fuzzy:0.99	Motteke Tamago with Ganbare! Kamonohashi	SLPS-01242
+NPJJ00318	Tokimeki Memorial: Taisen Puzzle-Dama	JP	exact	Tokimeki Memorial: Taisen Puzzle-Dama [PSOne Books]	SLPM-87306
+NPJJ00319	Championship Bass	JP	exact	Championship Bass	SLPS-02674
+NPJJ00320	Hyper Crazy Climber	JP	exact	Hyper Crazy Climber	SLPS-00248
+NPJJ00321	Kyuiin	JP	exact	Kyuiin	SLPS-00214
+NPJJ00322	Tokimeki Memorial 2 Taisen Puzzle-dama	JP	fuzzy:0.99	Tokimeki Memorial 2: Taisen Puzzledama	SLPM-86753
+NPJJ00323	Nippon Pro Mahjong Renmei Kounin: Doujou Yaburi 2	JP	exact	Nippon Pro Mahjong Renmei Kounin: Doujou Yaburi 2	SLPS-02484
+NPJJ00324	Kakuge-Yaro: Fighting Game Creator	JP	fuzzy:0.99	Kakuge Yarou: Fighting Game Creator	SLPS-02595
+NPJJ00325	Yakitori Musume: Sugo Ude Hanjouki	JP	fuzzy:0.98	Yakitori Musume: Sugoude Hanjouki	SLPM-80634 / SLPS-03435
+NPJJ00327	Family Chess	JP	exact	Family Chess	SLPS-03392
+NPJJ00328	Sentimental Graffiti	JP	exact	Sentimental Graffiti	SLPS-03184
+NPJJ00329	Deadheat Road	JP	exact	Deadheat Road	SLPS-00267
+NPJJ00330	Family Diamond	JP	exact	Family Diamond	SLPS-03348
+NPJJ00331	The Pro Mahjong: Menkyo Minnaten	JP	fuzzy:0.87	The Pro Mahjong: Menkyo Kaiden | The Pro Mahjong: Menkyo Kaiden [Reprint]	SLPM-86139 / SLPS-02632 / SLPS-03104
+NPJJ00332	Tokimeki no Houkago	JP	fuzzy:0.90	Tokimeki No Houkago: Ne Quiz Siyo [PSone Books] | Tokimeki no Houkago: Ne Quiz Shiyo	SLPM-86094 / SLPM-86347 / SLPM-87307
+NPJJ00333	Thunder Force V: Perfect System	JP	exact	Thunder Force V: Perfect System	SLPS-01406 / SLPS-02211
+NPJJ00334	Neorude	JP	exact	Neorude (Disc 1) (Game Disc) | Neorude (Disc 2) (Special Disc) | Neorude [Technosoft Collection]	SLPS-00823 / SLPS-00824 / SLPS-02212
+NPJJ00335	Family Gunjin Shogi	JP	fuzzy:0.97	Family Gunjin Shougi	SLPS-03379
+NPJJ00336	Puppet Zoo Pilomy	JP	exact	Puppet Zoo Pilomy	SLPS-00149
+NPJJ00337	Simple 1500 Series Vol. 14: The Block Kuzushi	JP	exact	Simple 1500 Series Vol. 14: The Block Kuzushi	SLPS-02227 / SLPS-02450
+NPJJ00338	Simple 1500 Series Vol. 15: The Pachinko	JP	exact	Simple 1500 Series Vol. 15: The Pachinko	SLPS-02301 / SLPS-02451
+NPJJ00339	Simple 1500 Series Vol. 18: The Bowling	JP	exact	Simple 1500 Series Vol. 18: The Bowling	SLPS-02433
+NPJJ00340	Simple 1500 Series Vol. 31: The Sound Novel	JP	exact	Simple 1500 Series Vol. 31: The Sound Novel	SLPS-02840
+NPJJ00341	Rockman 3: Dr. Wily no Saigo!?	JP	exact	Rockman 3: Dr. Wily no Saigo!?	SLPM-87258 / SLPS-02262
+NPJJ00342	My Garden	JP	exact	My Garden	SLPS-02213
+NPJJ00343	Uchuu Goushouden: Bakuretsu Akindo	JP	exact	Uchuu Goushouden: Bakuretsu Akindo	SLPS-00236
+NPJJ00344	Ganso Family Mahjong	JP	exact	Ganso Family Mahjong | Ganso Family Mahjong [Nichibutsu Select]	SLPS-01373 / SLPS-02787
+NPJJ00345	Simple 1500 Series Vol. 32: The Boxing	JP	exact	Simple 1500 Series Vol. 32: The Boxing	SLPS-02922
+NPJJ00346	Simple 1500 Series Vol. 35: The Shooting	JP	exact	Simple 1500 Series Vol. 35: The Shooting	SLPS-02910
+NPJJ00347	Simple 1500 Series Vol. 37: The Illust Puzzle & Slide Puzzle	JP	exact	Simple 1500 Series Vol. 37: The Illust Puzzle & Slide Puzzle	SLPS-02958
+NPJJ00348	Simple 1500 Series Vol. 43: The Hanafuda 2	JP	exact	Simple 1500 Series Vol. 43: The Hanafuda 2	SLPS-03009
+NPJJ00350	Simple 1500 Series Vol. 28: The Dungeon RPG	JP	exact	Simple 1500 Series Vol. 28: The Dungeon RPG	SLPS-02726
+NPJJ00351	Simple 1500 Series Vol. 33: The Takkyuu	JP	exact	Simple 1500 Series Vol. 33: The Takkyuu	SLPS-02908
+NPJJ00352	Simple 1500 Series Vol. 39: The Mahjong 2	JP	exact	Simple 1500 Series Vol. 39: The Mahjong 2	SLPS-03004
+NPJJ00353	Simple 1500 Series Vol. 40: The Shogi 2	JP	fuzzy:0.99	Simple 1500 Series Vol. 40: The Shougi 2	SLPS-03006
+NPJJ00354	Zero Divide	JP	exact	Zero Divide	SLPM-80008 / SLPS-00083
+NPJJ00356	Hoshi no Mahoroba	JP	exact	Hoshi no Mahoroba	SLPS-03267
+NPJJ00357	Hamster Club	JP	fuzzy:0.95	Hamster Club-i	SLPS-03266
+NPJJ00358	Fantastic Pinball Kyutenkai	JP	fuzzy:0.59(diff region)	Patriotic Pinball	SLES-04092 / SLUS-01539
+NPJJ00359	Hashiriya: Ookami Tachi no Densetsu	JP	exact	Hashiriya: Ookami-tachi no Densetsu	SLPS-00704
+NPJJ00360	Wolf Fang	JP	fuzzy:0.90	Wolf Fang: Kuuga 2001 | Wolf Fang: Kuuga 2001 [Maruan Series 7]	SLPS-00254 / SLPS-03073
+NPJJ00361	Simple 1500 Series Vol. 36: The Renai Simulation	JP	fuzzy:0.86	Simple 1500 Series Vol. 71: The Ren'ai Simulation 2: Fureai	SLPM-86870
+NPJJ00362	Simple 1500 Series Vol. 41: The Reversi 2	JP	exact	Simple 1500 Series Vol. 41: The Reversi 2	SLPS-03010
+NPJJ00363	Simple 1500 Series Vol. 44: The Card II	JP	fuzzy:0.96	Simple 1500 Series Vol. 44: The Card 2	SLPS-03007
+NPJJ00364	Simple 1500 Series Vol. 45: The Block Kuzushi 2	JP	exact	Simple 1500 Series Vol. 45: The Block Kuzushi 2	SLPS-03036
+NPJJ00365	Neorude 2	JP	exact	Neorude 2 | Neorude 2 [Technosoft Collection]	SLPS-01112 / SLPS-02254
+NPJJ00366	Kisou Jidaigeki Sugoroku: Ninroku	JP	none		
+NPJJ00367	Power Serve 3D Tennis	JP	exact(other region)	Power Serve 3D Tennis	SLUS-00105
+NPJJ00368	Final Fantasy IX	JP	exact	Final Fantasy IX (Disc 1) | Final Fantasy IX (Disc 2) | Final Fantasy IX (Disc 3) | Final Fantasy IX (Disc 4)	SCPS-45500 / SCPS-45501 / SCPS-45502 / SCPS-45503 / SLPM-87388 / SLPM-87389 / SLPM-87390 / SLPM-87391 / SLPS-02000 / SLPS-02001 / SLPS-02002 / SLPS-02003
+NPJJ00369	DonPachi	JP	exact	DonPachi	SLPM-86855 / SLPS-00548
+NPJJ00370	Sekai Saikyou Ginsei Igo 3	JP	exact	Sekai Saikyou Ginsei Igo 3	SLPS-03563
+NPJJ00371	Koutetsu Reiiki: Steeldom	JP	exact	Koutetsu Reiiki: Steeldom	SLPS-00431
+NPJJ00372	Simple 1500 Series Vol. 48: The Puzzle 2	JP	exact	Simple 1500 Series Vol. 48: The Puzzle 2	SLPM-86698
+NPJJ00373	Simple 1500 Series Vol. 49: The Casino	JP	exact	Simple 1500 Series Vol. 49: The Casino	SLPM-86699
+NPJJ00374	Simple 1500 Series Vol. 53: The Helicopter	JP	exact	Simple 1500 Series Vol. 53: The Helicopter	SLPM-86701
+NPJJ00375	Simple 1500 Series Vol. 55: The Darts	JP	exact	Simple 1500 Series Vol. 55: The Darts	SLPM-86714
+NPJJ00376	Zero Divide 2	JP	exact	Zero Divide 2	SCPS-45079
+NPJJ00377	DoDonPachi	JP	exact	DoDonPachi	SLPM-80286 / SLPS-01364
+NPJJ00378	Jet CopterX	JP	fuzzy:0.96	Jet Copter X	SLPM-86894
+NPJJ00379	Kaze no Oka Kouen Nite	JP	exact	Kaze no Oka Kouen Nite	SLPS-01565
+NPJJ00380	Simple 1500 Series Vol. 56: The Sniper	JP	exact	Simple 1500 Series Vol. 56: The Sniper	SLPM-86762
+NPJJ00381	Simple 1500 Series Vol. 57: The Meiro	JP	exact	Simple 1500 Series Vol. 57: The Meiro	SLPM-86715
+NPJJ00382	Simple 1500 Series Vol. 59: The Suiri – IT Tantei: 18 no Jikenbo	JP	exact	Simple 1500 Series Vol. 59: The Suiri: IT Tantei 18 no Jikenbo	SLPM-86709
+NPJJ00383	Simple 1500 Series Vol. 60: The Table Hockey	JP	exact	Simple 1500 Series Vol. 60: The Table Hockey	SLPM-86761
+NPJJ00384	DewPrism	JP	exact	DewPrism	SCPS-45436 / SLPM-87402 / SLPS-02330 / SLPS-91455
+NPJJ00385	Seiken Densetsu: Legend of Mana	JP	exact	Seiken Densetsu: Legend of Mana	SCPS-45416 / SLPM-87394 / SLPS-02170 / SLPS-02771 / SLPS-91456
+NPJJ00386	Simple 1500 Series Vol.63: The Gun Shooting 2	JP	exact	Simple 1500 Series Vol. 63: The Gun Shooting 2	SLPM-86816
+NPJJ00387	Simple 1500 Series Vol.64: The Kickboxing	JP	fuzzy:0.99	Simple 1500 Series Vol. 64: The Kick Boxing	SLPM-86841
+NPJJ00388	Simple 1500 Series Vol.65: The Golf	JP	exact	Simple 1500 Series Vol. 65: The Golf	SLPM-86842
+NPJJ00389	Simple 1500 Series Vol.70: The Onigokko	JP	fuzzy:0.95	Simple 1500 Series Vol. 86: The Onigokko	SLPM-87017
+NPJJ00390	Neorude: Kizamareta Monshou	JP	exact	Neorude: Kizamareta Monshou	SLPS-02417
+NPJJ00391	The Firemen 2: Pete & Danny	JP	exact	The Firemen 2: Pete & Danny	SLPS-00148 / SLPS-02090
+NPJJ00392	Hi Takara O	JP	fuzzy:0.67	Mushi Taro [PSOne Books]	SLPS-91492
+NPJJ00393	Reverthion	JP	exact	Reverthion	SLPS-00143
+NPJJ00394	NOëL: La Neige	JP	exact	NOëL: La Neige (Disc 1) | NOëL: La Neige (Disc 2) | NOëL: La Neige (Disc 3)	SLPS-01190 / SLPS-01191 / SLPS-01192 / SLPS-01193 / SLPS-01194 / SLPS-01195
+NPJJ00395	Zig Zag Ball	JP	none		
+NPJJ00396	Simple 1500 Series Vol.69: The Putter Golf	JP	exact	Simple 1500 Series Vol. 69: The Putter Golf	SLPM-86868
+NPJJ00397	Simple 1500 Series Vol.71: The Renai Simulation 2	JP	fuzzy:0.92	Simple 1500 Series Vol. 71: The Ren'ai Simulation 2: Fureai	SLPM-86870
+NPJJ00398	Simple 1500 Series Vol.72: The Beach Volley	JP	exact	Simple 1500 Series Vol. 72: The Beach Volley	SLPM-86871
+NPJJ00399	Simple 1500 Series Vol.74: The Horror Mystery	JP	fuzzy:0.90	Simple 1500 Series Vol. 74: The Horror Mystery: Sangeki-kan: Kevin Hakushaku no Fukkatsu	SLPM-86901
+NPJJ00400	Kumitate Battle: Kuttu Ketto	JP	exact	Kumitate Battle Kuttu Ketto	SLPS-01208
+NPJJ00401	Mahjong Youchien: Tamago-Gumi – Jong for Beginners	JP	fuzzy:0.66	Mahjong Youchien Tamago-gumi 2: Taikai e Ikou!	SLPS-02956
+NPJJ00402	Makeruna! Makendo 2	JP	fuzzy:0.97	Makeruna! Makendou 2	SLPS-00128
+NPJJ00403	Simple 1500 Series Vol. 78: The Zero Yon	JP	fuzzy:0.99	Simple 1500 Series Vol. 78: The Zeroyon	SLPM-86712
+NPJJ00404	Simple 1500 Series Vol. 82: The Sensuikan	JP	exact	Simple 1500 Series Vol. 82: The Sensuikan	SLPM-86973
+NPJJ00405	Simple 1500 Series Vol. 85: The Sengoku Bushou ~Tenka Touitsu no Yabou~	JP	exact	Simple 1500 Series Vol. 85: The Sengoku Bushou: Tenka Touitsu no Yabou	SLPM-87008
+NPJJ00406	Simple 1500 Series Vol. 86: The Onigokko	JP	exact	Simple 1500 Series Vol. 86: The Onigokko	SLPM-87017
+NPJJ00407	Maboroshi Tsukiyo	JP	exact	Maboroshi Tsukiyo [Reprint] (Disc 1) | Maboroshi Tsukiyo [Reprint] (Disc 2)	SLPS-03143 / SLPS-03144
+NPJJ00408	NOëL: La Neige Special	JP	exact	NOëL: La Neige Special	SLPS-01515
+NPJJ00409	Minna Atsumare! Igo Kyoushitsu	JP	exact	Minna Atsumare! Igo Kyoushitsu	SLPS-03554
+NPJJ00410	Shin Megami Tensei	JP	exact	Shin Megami Tensei	SLPS-03170
+NPJJ00411	Omise de Tensyu	JP	fuzzy:0.93	Omise de Tenshu	SLPS-01876
+NPJJ00412	Zanac x Zanac	JP	exact	Zanac x Zanac	SLPM-80626 / SLPS-03354
+NPJJ00413	Simple 1500 Series Vol.87: The Kyoutei	JP	exact	Simple 1500 Series Vol. 87: The Kyoutei	SLPM-87026
+NPJJ00414	Simple 1500 Series Vol.88: The Gal Mahjong – Love Songs Idol ha High Rate	JP	fuzzy:0.99	Simple 1500 Series Vol. 88: The Gal Mahjong: Love Songs: Idol wa High Rate	SLPM-87023
+NPJJ00415	Simple 1500 Series Vol.90: The Sensha	JP	exact	Simple 1500 Series Vol. 90: The Sensha	SLPM-87044
+NPJJ00416	Simple 1500 Series Vol.91: The Gambler – Honoo no Tobaku Densetsu	JP	exact	Simple 1500 Series Vol. 91: The Gambler: Honoo no Tobaku Densetsu	SLPM-86975
+NPJJ00417	elan	JP	fuzzy:0.75	Élan	SLPS-01925
+NPJJ00418	Ungra Walker	JP	fuzzy:0.92	UnGro Walker	SLPM-87055
+NPJJ00419	Battle Sugoroku: The Hunter (SuperLite 1500 Series)	JP	fuzzy:0.92(diff region)	Battle Hunter	SLUS-01335
+NPJJ00420	Oekaki Puzzle (SuperLite 1500 Series)	JP	fuzzy:0.89	SuperLite 1500 Series: Oekaki Puzzle | SuperLite 1500 Series: Oekaki Puzzle 2 | SuperLite 1500 Series: Oekaki Puzzle 3 | SuperLite 1500 Series: Oekaki Puzzle 4 | SuperLite 1500 Series: Oekaki Puzzle 5	SLPM-86428 / SLPM-86533 / SLPM-86675 / SLPM-86800 / SLPS-02068
+NPJJ00421	Sougaku Toshi Osaka	JP	exact	Sougaku Toshi Osaka (Disc 1) (Method) | Sougaku Toshi Osaka (Disc 2) (Object)	SLPS-01722 / SLPS-01723
+NPJJ00422	Simple 1500 Series Vol. 95: The Hikouki	JP	exact	Simple 1500 Series Vol. 95: The Hikouki	SLPM-87070
+NPJJ00423	Simple 1500 Series Vol. 97: The Squash	JP	exact	Simple 1500 Series Vol. 97: The Squash	SLPM-87088
+NPJJ00424	Simple 1500 Series Vol. 98: The Futsal	JP	exact	Simple 1500 Series Vol. 98: The Futsal	SLPM-87087
+NPJJ00425	Simple 1500 Series Vol. 99: The Kendo – Ken no Hanamichi	JP	fuzzy:0.99	Simple 1500 Series Vol. 99: The Kendou: Ken no Hanamichi	SLPM-87140
+NPJJ00426	SuperLite1500 Series Hooockey!!	JP	fuzzy:0.98	SuperLite 1500 Series: Hooockey!!	SLPM-86488
+NPJJ00427	SuperLite1500 Series Bomb Boat	JP	fuzzy:0.95	SuperLite 1500 Series: Bomboat	SLPM-87090
+NPJJ00428	SuperLite1500 Series Oekaki Puzzle 2	JP	fuzzy:0.99	SuperLite 1500 Series: Oekaki Puzzle 2	SLPM-86428
+NPJJ00429	Dokapon! Ikari no Tetsuken	JP	fuzzy:0.92	Dokapon! Ikari no Tekken	SLPM-80294 / SLPS-01559 / SLPS-91190
+NPJJ00430	LSD	JP	fuzzy:0.88	LSD: Dream Emulator	SLPS-01556 / SLPS-01642
+NPJJ00431	Marionette Company	JP	exact	Marionette Company	SLPM-86810 / SLPS-02058
+NPJJ00432	Zero Kara no Shogi: Shogi Youchien – Ayumi Kumi	JP	fuzzy:0.92	0 Kara no Shogi: Shogi Youchien Ayumi-Gumi	SLPS-02044
+NPJJ00433	Love Game's: Wai Wai Tennis	JP	exact	Love Game's: Wai Wai Tennis	PAPX-90014 / SLPM-86541 / SLPS-00686 / SLPS-01647
+NPJJ00434	Anoko Doko Noko	JP	fuzzy:0.94	Ano Ko Doko no Ko	SLPS-01522
+NPJJ00435	Shin Megami Tensei II	JP	exact	Shin Megami Tensei II	SLPM-86924
+NPJJ00436	Simple 1500 Series Vol.100: The Uchuuhikoushi	JP	fuzzy:0.99	Simple 1500 Series Vol. 100: The Uchuu Hikoushi	SLPM-87141
+NPJJ00437	Simple 1500 Series Vol. 101: The Sentou	JP	exact	Simple 1500 Series Vol. 101: The Sentou	SLPM-87142
+NPJJ00438	SuperLite1500 Series Quiz Master Red	JP	fuzzy:0.99	SuperLite 1500 Series: Quiz Master: Red	SLPM-86516
+NPJJ00439	Pangaea (SuperLite 1500 Series)	JP	fuzzy:0.88	SuperLite 1500 Series: Pangaea	SLPM-86276
+NPJJ00440	The Curling (SuperLite 1500 Series)	JP	fuzzy:0.88	SuperLite 1500 Series: The Curling	SLPM-86237
+NPJJ00441	Evergreen Avenue	JP	exact	Evergreen Avenue	SLPS-03278
+NPJJ00442	RungRung: Oz no Mahou Tsukai – Another World	JP	fuzzy:0.76	Oz no Mahoutsukai: Another World: Rung Rung	SLPS-02335
+NPJJ00443	Chocobo no Fushigi na Dungeon	JP	exact	Chocobo no Fushigi na Dungeon | Chocobo no Fushigi na Dungeon (Disc 1) | Chocobo no Fushigi na Dungeon (Disc 2) | Chocobo no Fushigi na Dungeon [PSOne Books]	SCPS-45163 / SCPS-45164 / SLPS-01234 / SLPS-91439
+NPJJ00444	Chocobo no Fushigi Dungeon 2	JP	fuzzy:0.95	Chocobo no Fushigi na Dungeon | Chocobo no Fushigi na Dungeon (Disc 1) | Chocobo no Fushigi na Dungeon (Disc 2) | Chocobo no Fushigi na Dungeon 2 | Chocobo no Fushigi na Dungeon 2 (Disc 1) | Chocobo no Fushigi na Dungeon 2 (Disc 2) | Chocobo no Fushigi na Dungeon [PSOne Books]	SCPS-45163 / SCPS-45164 / SCPS-45351 / SCPS-45352 / SCPS-45371 / SLPS-01234 / SLPS-01771 / SLPS-91439
+NPJJ00445	NOëL3 MISSION ON THE LINE	JP	fuzzy:0.98	NOëL 3: Mission on the Line (Disc 1) | NOëL 3: Mission on the Line (Disc 2) | NOëL 3: Mission on the Line (Disc 3)	SLPM-86609 / SLPM-86610 / SLPM-86611 / SLPS-01895 / SLPS-01896 / SLPS-01897
+NPJJ00446	Silhouette Mirage	JP	exact(other region)	Silhouette Mirage	SLUS-00728
+NPJJ00447	Akagawa Jirou: Yasoukyoku	JP	exact	Akagawa Jirou: Yasoukyoku	SLPS-01415 / SLPS-01462 / SLPS-91151 / SLPS-91503
+NPJJ00448	Shin Megami Tensei if…	JP	fuzzy:0.98	Shin Megami Tensei If...	SLPM-87153 / SLPM-87154
+NPJJ00449	Akagawa Jirou: Yasoukyoku 2	JP	exact	Akagawa Jirou: Yasoukyoku 2 | Akagawa Jirou: Yasoukyoku 2 [PSOne Books]	SLPS-03213 / SLPS-91505
+NPJJ00450	Mahjong Youchien: Tamago-Gumi 2 – Taikai e Ikou!	JP	exact	Mahjong Youchien Tamago-gumi 2: Taikai e Ikou!	SLPS-02956
+NPJJ00451	Marionette Company 2	JP	fuzzy:0.95	Marionette Company	SLPM-86810 / SLPS-02058
+NPJJ00452	Quiz Master Blue (SuperLite 1500 Series)	JP	fuzzy:0.90	SuperLite 1500 Series: Quiz Master: Blue	SLPM-86517
+NPJJ00453	Angolmois 99 (SuperLite 1500 Series)	JP	fuzzy:0.88	SuperLite 1500 Series: Angolmois 99	SLPM-86278
+NPJJ00454	Endless Season: Anoko Doko Noko (SuperLite 1500 Series)	JP	fuzzy:0.64	Ano Ko Doko no Ko	SLPS-01522
+NPJJ00455	Parasite Eve	JP	exact	Parasite Eve (Disc 1) | Parasite Eve (Disc 2)	SCPS-45203 / SCPS-45204 / SLPS-01230 / SLPS-01231
+NPJJ00456	Parasite Eve II	JP	exact	Parasite Eve II (Disc 1) | Parasite Eve II (Disc 2)	SCPS-45467 / SCPS-45468 / SLPS-02480 / SLPS-02481
+NPJJ00457	Lup*Salad	JP	none		
+NPJJ00458	Battle Athletess: Daiundoukai Alternative	JP	exact	Battle Athletess: Daiundoukai Alternative	SLPM-86525 / SLPS-01133
+NPJJ00459	Oekaki Puzzle 3 (SuperLite 1500 Series)	JP	fuzzy:0.89	SuperLite 1500 Series: Oekaki Puzzle | SuperLite 1500 Series: Oekaki Puzzle 2 | SuperLite 1500 Series: Oekaki Puzzle 3 | SuperLite 1500 Series: Oekaki Puzzle 4 | SuperLite 1500 Series: Oekaki Puzzle 5	SLPM-86428 / SLPM-86533 / SLPM-86675 / SLPM-86800 / SLPS-02068
+NPJJ00460	Pinball Golden Logres (SuperLite 1500 Series)	JP	fuzzy:0.90	SuperLite 1500 Series: Pinball: Golden Logres	SLPM-86260
+NPJJ00461	Quiz Master Yellow (SuperLite 1500 Series)	JP	fuzzy:0.90	SuperLite 1500 Series: Quiz Master: Yellow	SLPM-86518
+NPJJ00462	Salary Man Champ: Tatakau Salary Man	JP	fuzzy:0.97	Salaryman Champ: Tatakau Salaryman	SLPM-86820
+NPJJ00463	Saikyou Ginsei Mahjong	JP	exact	Saikyou Ginsei Mahjong	SLPS-03461
+NPJJ00464	Memorial * Series: Sunsoft Vol. 4: Chou Wakusei Senki Metafight / Ripple Island	JP	fuzzy:0.89	Memorial Series: Sunsoft Vol. 1 | Memorial Series: Sunsoft Vol. 2 | Memorial Series: Sunsoft Vol. 3 | Memorial Series: Sunsoft Vol. 4 | Memorial Series: Sunsoft Vol. 5 | Memorial Series: Sunsoft Vol. 6	SLPS-03135 / SLPS-03181 / SLPS-03366 / SLPS-03382 / SLPS-03397 / SLPS-03486
+NPJJ00465	Dragon Money	JP	exact	Dragon Money	SLPS-02037
+NPJJ00466	NOON: New Type Action Game	JP	fuzzy:0.87	Noon	SLPM-86063
+NPJJ00467	Shin Megami Tensei: Devil Children	JP	fuzzy:0.91	A Shin Megami Tensei: Devil Children: Kuro no Shoka no Sho	SLPM-87040
+NPJJ00468	Oekaki Puzzle 4 (SuperLite 1500 Series)	JP	fuzzy:0.89	SuperLite 1500 Series: Oekaki Puzzle | SuperLite 1500 Series: Oekaki Puzzle 2 | SuperLite 1500 Series: Oekaki Puzzle 3 | SuperLite 1500 Series: Oekaki Puzzle 4 | SuperLite 1500 Series: Oekaki Puzzle 5	SLPM-86428 / SLPM-86533 / SLPM-86675 / SLPM-86800 / SLPS-02068
+NPJJ00469	Saikyou Ginsei Chess	JP	exact	Saikyou Ginsei Chess	SLPS-03482
+NPJJ00470	Umi no Nushi Tsuri: Takarajima ni Mukatte	JP	exact	Umi no Nushi-tsuri: Takarajima ni Mukatte	SLPM-80459 / SLPS-02172
+NPJJ00471	Waku Waku Volley	JP	exact	Waku Waku Volley	SLPM-80342 / SLPS-01695 / SLPS-02346
+NPJJ00472	Favorite Dear: Enkan no Monogatari	JP	exact	Favorite Dear: Enkan no Monogatari | Favorite Dear: Enkan no Monogatari [Best Edition]	SLPS-03286 / SLPS-03566
+NPJJ00473	Irem Arcade Classics	JP	exact	Irem Arcade Classics	SLPS-00341
+NPJJ00475	Oekaki Puzzle 5 (SuperLite 1500 Series)	JP	fuzzy:0.89	SuperLite 1500 Series: Oekaki Puzzle | SuperLite 1500 Series: Oekaki Puzzle 2 | SuperLite 1500 Series: Oekaki Puzzle 3 | SuperLite 1500 Series: Oekaki Puzzle 4 | SuperLite 1500 Series: Oekaki Puzzle 5	SLPM-86428 / SLPM-86533 / SLPM-86675 / SLPM-86800 / SLPS-02068
+NPJJ00476	Cotton 100%	JP	fuzzy:0.88	SuperLite 1500 Series: Märchen Adventure: Cotton 100%	SLPM-87211
+NPJJ00477	Touge Max – Saisoku Driver Master	JP	fuzzy:0.92	Touge Max: Saisoku Drift Master	SCPS-45006 / SLPS-00592 / SLPS-91041
+NPJJ00478	Saikyou Ginsei Shogi 2	JP	fuzzy:0.98	Saikyou Ginsei Shougi 2	SLPS-03481
+NPJJ00480	Battle Athletess: Daiundoukai GTO	JP	exact	Battle Athletess: Daiundoukai GTO (Grand Trial Onnanoco)	SLPM-86526 / SLPS-01548
+NPJJ00481	Nobunaga no Yabou: Zenkokuban	JP	exact	Nobunaga no Yabou: Zenkokuban	SLPM-86605
+NPJJ00482	Touge Max 2	JP	exact	Touge Max 2	SLPM-87093 / SLPS-01574 / SLPS-91153
+NPJJ00483	Elan plus	JP	fuzzy:0.89	Élan Plus	SLPS-02759
+NPJJ00485	Memorial * Series: Sunsoft Vol. 5: Raf World / Hebereke	JP	fuzzy:0.91	Memorial Series: Sunsoft Vol. 1 | Memorial Series: Sunsoft Vol. 2 | Memorial Series: Sunsoft Vol. 3 | Memorial Series: Sunsoft Vol. 4 | Memorial Series: Sunsoft Vol. 5 | Memorial Series: Sunsoft Vol. 6	SLPS-03135 / SLPS-03181 / SLPS-03366 / SLPS-03382 / SLPS-03397 / SLPS-03486
+NPJJ00486	Umi no Oh! Yah!	JP	exact	Umi no Oh! Yah!	SLPM-80322 / SLPS-01623
+NPJJ00487	Finger Flashing	JP	exact	Finger Flashing	SLPS-02158
+NPJJ00488	Favorite Dear: Junshiro no Yogenmono	JP	fuzzy:0.90	Favorite Dear	SLPS-01759
+NPJJ00489	Akumajou Dracula X: Gekka no Yasoukyoku	JP	exact	Akumajou Dracula X: Gekka no Yasoukyoku	SLPM-86023 / SLPM-86073 / SLPM-87328
+NPJJ00490	Chrono Cross	JP	exact	Chrono Cross (Disc 1) | Chrono Cross (Disc 2)	SCPS-45447 / SCPS-45448 / SLPM-87395 / SLPM-87396 / SLPS-02364 / SLPS-02365 / SLPS-02777 / SLPS-02778 / SLPS-91464 / SLPS-91465
+NPJJ00491	Asuka 120% Burning Fest. Special	JP	fuzzy:0.95	Asuka 120% Special: Burning Fest. Special	SLPS-00231
+NPJJ00492	My Home Dream	JP	exact	My Home Dream	SLPS-00931 / SLPS-91085 / SLPS-91520
+NPJJ00493	Le Concert pp (pianissimo)	JP	fuzzy:0.90	Le Concert: ff: Fortissimo | Le Concert: pp: Pianissimo	SLPS-02343 / SLPS-02344 / SLPS-02925 / SLPS-02926
+NPJJ00494	Le Concert ff (fortissimo)	JP	fuzzy:0.90	Le Concert: ff: Fortissimo | Le Concert: pp: Pianissimo	SLPS-02343 / SLPS-02344 / SLPS-02925 / SLPS-02926
+NPJJ00495	Koten Tsugoshuu: Shijin no Kan	JP	fuzzy:0.87	Koten Tsumego-shuu: Shijin no Maki	SLPS-00159 / SLPS-02593
+NPJJ00496	Kohni Shogun	JP	fuzzy:0.88	Kouni Shougun	SLPS-02955
+NPJJ00497	Dai-2-Ji Super Robot Taisen	JP	exact	Dai-2-Ji Super Robot Taisen	SLPS-02406
+NPJJ00498	Dai-3-Ji Super Robot Taisen	JP	exact	Dai-3-Ji Super Robot Taisen	SLPS-02530
+NPJJ00499	Super Robot Taisen EX	JP	exact	Super Robot Taisen EX	SLPS-02529
+NPJJ00500	Yamasa Digi World: Tetra Master	JP	exact	Yamasa Digi World: Tetra Master	SLPM-80616 / SLPS-03212
+NPJJ00501	Metamoru Panic: Doki Doki Youma Busters!!	JP	fuzzy:0.99	Metamor Panic: Doki Doki Youma Busters!!	SLPS-00039
+NPJJ00502	Memorial * Series: Sunsoft Vol. 6: Battle Formula / Gimmick!	JP	fuzzy:0.91	Memorial Series: Sunsoft Vol. 1 | Memorial Series: Sunsoft Vol. 2 | Memorial Series: Sunsoft Vol. 3 | Memorial Series: Sunsoft Vol. 4 | Memorial Series: Sunsoft Vol. 5 | Memorial Series: Sunsoft Vol. 6	SLPS-03135 / SLPS-03181 / SLPS-03366 / SLPS-03382 / SLPS-03397 / SLPS-03486
+NPJJ00503	Akagawa Jirou: Majotachi no Nemuri – Fukkatsusai	JP	fuzzy:0.99	Akagawa Jirou: Majo-tachi no Nemuri: Fukkatsusai	SLPS-01863
+NPJJ00504	Art Camion Sugorokuden	JP	exact	Art Camion: Sugorokuden	SLPS-02710
+NPJJ00505	Mahjong Uranai Fortuna: Tsuki no Megami-tachi	JP	exact	Mahjong Uranai Fortuna: Tsuki no Megami-tachi	SLPS-03123
+NPJJ00506	Gotatsujin: Electro	JP	fuzzy:0.76	Goryuujin + Electro	SLPS-01620
+NPJJ00507	Digital Glider Airman	JP	exact	Digital Glider Airman | Digital Glider Airman [PSOne Books]	SLPS-02276 / SLPS-91486
+NPJJ00508	Star Gladiator: Episode I – Final Crusade	JP	exact	Star Gladiator: Episode I: Final Crusade	SLPM-80056 / SLPS-00539
+NPJJ00509	Vampire Savior EX Edition	JP	exact	Vampire Savior: EX Edition	SLPS-01700
+NPJJ00510	Cyberbots Fullmetal Madness	JP	exact	Cyberbots: Fullmetal Madness	SLPS-01011
+NPJJ00511	Rockman 4: Aratanaru Yabou!!	JP	exact	Rockman 4: Aratanaru Yabou!!	SLPM-87259 / SLPS-02324
+NPJJ00512	Mad Stalker Full Metal Force	JP	fuzzy:0.96	Mad Stalker: FullMetalForce	SLPS-00734
+NPJJ00513	Space Griffon VF-9	JP	exact	Space Griffon VF-9	SLPS-00012
+NPJJ00514	Hanabi Fantast	JP	exact	Hanabi Fantast [Magical 1500] | Hanabi: Fantast	PAPX-90048 / SLPM-80239 / SLPS-01439 / SLPS-03080
+NPJJ00515	Uki Uki Tsuri Tengoku: Ningyo Densetsu no Nazo	JP	exact	Uki Uki Tsuri Tengoku: Ningyo Densetsu no Nazo	SLPS-00983 / SLPS-01571
+NPJJ00516	Mr. Prospector: Horiate Kun	JP	exact	Mr. Prospector: Horiate-kun	SLPS-02226
+NPJJ00517	Hatsukoi Valentine	JP	exact	Hatsukoi Valentine	SLPS-00831
+NPJJ00518	Pet Pet Pet	JP	exact	Pet Pet Pet	SLPS-02292 / SLPS-03082
+NPJJ00519	Suizokukan Project: Fish Hunter e no Michi	JP	exact	Suizokukan Project: Fish Hunter e no Michi	SLPS-01809
+NPJJ00520	Doukyu Re-Mix: Billiards Multiple	JP	fuzzy:0.98	Doukyuu Re-mix: Billiards Multiple	SLPS-02011
+NPJJ00521	Final Fantasy V	JP	exact	Final Fantasy V	SCPS-45214 / SLPM-86081 / SLPS-01949
+NPJJ00522	Final Fantasy VI	JP	exact	Final Fantasy VI	SCPS-45387 / SLPM-86198 / SLPS-01950
+NPJJ00523	Asuka 120% Excellent: Burning Fest. Excellent	JP	exact	Asuka 120% Excellent: Burning Fest. Excellent	SLPS-00849
+NPJJ00524	First Queen IV: Varcia Senki	JP	exact	First Queen IV: Varcia Senki	SLPS-00604
+NPJJ00525	Uki Uki Tsuri Tengoku: Kawa Monogatari	JP	exact	Uki Uki Tsuri Tengoku: Kawa Monogatari	SLPS-01521
+NPJJ00526	Kitchen Panic	JP	exact	Kitchen Panic	SLPS-01395
+NPJJ00527	Hatsukoi Valentine Special	JP	exact	Hatsukoi Valentine Special	SLPS-01452
+NPJJ00528	OverBlood	JP	exact	OverBlood	SLPM-86641 / SLPS-00392 / SLPS-91032
+NPJJ00529	Ooedo Huusui Ingaritsu Hanabi 2	JP	exact	Ooedo Huusui Ingaritsu Hanabi 2 [Magical 1500]	SLPS-03112
+NPJJ00530	Quiz Shuu (SuperLite 3in1 Series)	JP	fuzzy:0.89	SuperLite 3in1 Series: Quiz-shuu	SLPM-86987
+NPJJ00531	Uki Uki Tsuri Tengoku: Uokami Densetsu o Oe	JP	fuzzy:0.89	Uki Uki Tsuri Tengoku: Gyoshin Densetsu o Oe	SLPS-02579
+NPJJ00532	Monster Bass	JP	exact(other region)	Monster Bass	SLUS-01490
+NPJJ00533	Community Pom: Omoide o Dakishimete	JP	exact	Community Pom: Omoide o Dakishimete	SLPS-02116
+NPJJ00534	U.P.P.	JP	exact	U.P.P.	SLPS-01480
+NPJJ00535	Rescue 24 Hours	JP	exact	Rescue 24 Hours	SLPS-00572
+NPJJ00536	Pro Wrestling Sengokuden: Hyper Tag Match	JP	fuzzy:0.93	Pro Wres Sengokuden: Hyper Tag Match	SLPS-01006
+NPJJ00538	DINO CRISIS 2	JP	exact	Dino Crisis 2	SLPM-80573 / SLPM-86627 / SLPM-87234
+NPJJ00539	Breath of Fire IV	JP	exact(other region)	Breath of Fire IV | Breath of Fire IV (Beta)	SLES-03552 / SLPS-02728 / SLUS-01324
+NPJJ00540	Pocket Fighter	JP	exact	Pocket Fighter | Pocket Fighter [Playstation the Best]	SLPS-01360 / SLPS-91191
+NPJJ00541	Wakusei Koukitai Little Cats	JP	exact	Wakusei Koukitai: Little Cats	SLPS-01374
+NPJJ00542	Koushien V	JP	exact	Koushien V	SLPS-00729
+NPJJ00543	Deserted Island	JP	exact	Deserted Island	SLPS-00602
+NPJJ00544	Oekaki Puzzle Shuu (SuperLite 3in1 Series)	JP	fuzzy:0.90	SuperLite 3in1 Series: Oekaki Puzzle-shuu	SLPM-86955
+NPJJ00545	PacaPaca Passion	JP	fuzzy:0.97	Paca Paca Passion	SLPS-02122
+NPJJ00546	Chrono Trigger	JP	exact	Chrono Trigger	SCPS-45446 / SLPM-87374 / SLPS-02430 / SLPS-91446
+NPJJ00547	Gouketsuji Ichizoku 2: Chotto Dake Saikyou Densetsu (Power Instinct 2)	JP	exact	Gouketsuji Ichizoku 2: Chotto dake Saikyou Densetsu	SLPM-80009 / SLPS-00104
+NPJJ00548	Asuka 120% Final: Burning Fest. Final	JP	exact	Asuka 120% Final: Burning Fest. Final	SLPS-02074
+NPJJ00549	Max Surfing 2000	JP	exact	Max Surfing 2000	SLPS-02398
+NPJJ00550	Vehicle Cavalier	JP	exact	Vehicle Cavalier	SLPS-00232
+NPJJ00551	Pacapaca Passion 2	JP	fuzzy:0.97	Paca Paca Passion 2	SLPS-02720
+NPJJ00552	Bounty Sword First	JP	exact	Bounty Sword First	SLPM-80101 / SLPM-86614 / SLPS-00757
+NPJJ00553	Goiken Muyou II	JP	exact	Goiken Muyou II	SLPS-01542
+NPJJ00554	Hyouryuu Ki: The Reportage Beyond the Sea	JP	fuzzy:0.99	Hyouryuuki: The Reportage Beyond the Sea	SLPM-87229 / SLPS-02358
+NPJJ00555	Pacapaca Passion Special	JP	exact	Pacapaca Passion Special	SLPS-02895
+NPJJ00556	Pocket Tuner	JP	exact	Pocket Tuner	SLPS-02218
+NPJJ00557	Twins Story	JP	fuzzy:0.90	Twins Story: Kimi ni Tsutaetakute...	SLPS-02126
+NPJJ00558	Slap Happy Rhythm Busters	JP	exact	Slap Happy Rhythm Busters	SLPS-02789 / SLPS-91460
+NPJJ00559	Bounty Sword: Double Edge	JP	exact	Bounty Sword: Double Edge	SLPM-86625 / SLPS-01479
+NPJJ00560	Doki Oki	JP	fuzzy:0.59	Doki Doki Poyatchio!! | Doki Doki Poyatchio!! [Reprint]	SLPM-80285 / SLPS-01573 / SLPS-03125
+NPJJ00561	Panzer Bandit	JP	exact	Panzer Bandit	SLPM-80124 / SLPS-00899
+NPJJ00562	Sengoku Mugen	JP	exact	Sengoku Mugen	SLPS-03151
+NPJJ00563	Nyan to Wonderful	JP	exact	Nyan to Wonderful	SLPS-00442 / SLPS-91047
+NPJJ00564	AERO DIVE	JP	fuzzy:0.94	Aerodive	SLPS-02367
+NPJJ00565	Zoku Gussun Oyoyo	JP	exact	Zoku Gussun Oyoyo	SLPS-00488
+NPJJ00566	Ore! Tomba	JP	exact	Ore! Tomba	SLPM-80165
+NPJJ00567	Ryuki Densyo: Dragoon	JP	fuzzy:0.90	Ryuuki Denshou: Dragoon	SLPS-01035
+NPJJ00568	Kid Klown in Crazy Chase 2: Love Love Hani Soudatsusen	JP	fuzzy:0.92	Kid Clown no Crazy Chase 2: Love Love Honey Soudatsusen	SLPS-00454
+NPJJ00570	Marl Jong!!	JP	exact	Marl Jong!!	SLPS-03537 / SLPS-03538
+NPJJ00571	Dioramos	JP	exact	Dioramos	SLPM-80587 / SLPS-02797
+NPJJ00572	Ochanoma Battle	JP	fuzzy:0.94	Ocha no Ma Battle	SLPM-86681
+NPJJ00573	Dai-4-Ji Super Robot Taisen S	JP	exact	Dai-4-Ji Super Robot Taisen S	SLPS-00196 / SLPS-91014
+NPJJ00574	Shin Super Robot Taisen	JP	exact	Shin Super Robot Taisen | Shin Super Robot Taisen [Playstation the Best]	SLPS-00550 / SLPS-91084
+NPJJ00575	Toy Dream	JP	fuzzy:0.95	Toys Dream	SLPS-01704
+NPJJ00576	Waku Waku Derby	JP	exact	Waku Waku Derby	SLPS-01157
+NPJJ00577	The Bombing Islands	JP	exact	The Bombing Islands	SLPS-91449
+NPJJ00578	Wai Wai 3-nin Uchi Mahjong	JP	exact	Wai Wai 3-nin Uchi Mahjong | Wai Wai 3-nin Uchi Mahjong [Controller Set]	HPS-91 / SLPM-86696
+NPJJ00579	Dangan	JP	exact	Dangan	SLPS-02609
+NPJJ00580	Pro Wrestling Sengokuden 2	JP	fuzzy:0.91	Pro Wrestling Sengokuden 2: Kakutou Emaki	SLPS-01388
+NPJJ00581	Wai Wai Trump Taisen	JP	exact	Wai Wai Trump Taisen | Wai Wai Trump Taisen [Controller Set]	HPS-105 / SLPM-86657
+NPJJ00582	The Oni Taiji: Mezase! Nidaime Momotarou	JP	exact	The Oni Taiji!!: Mezase! Nidaime Momotarou	SLPM-86989 / SLPS-00089
+NPJJ00584	Tekken	JP	exact	Tekken	SLPS-00040 / SLPS-91020
+NPJJ00585	Klonoa: Door to Phantomile	JP	exact(other region)	Klonoa: Door to Phantomile	SCES-00942 / SCES-01185 / SCES-01186 / SCES-01187 / SCES-01188 / SLUS-00585
+NPJJ00586	R4 RIDGE RACER TYPE 4	JP	exact	R4: Ridge Racer Type 4 | R4: Ridge Racer Type 4 (Disc 1) | R4: Ridge Racer Type 4 (Disc 2) | R4: Ridge Racer Type 4 [PSOne Books]	SCPS-45354 / SCPS-45355 / SCPS-45356 / SCPS-46001 / SLPS-01798 / SLPS-01800 / SLPS-91463
+NPJJ00587	Winning Lure	JP	exact	Winning Lure	SLPM-86548
+NPJJ00588	Jigsaw Island: Japan Graffiti	JP	exact	Jigsaw Island: Japan Graffiti	SLPM-86918 / SLPS-00473
+NPJJ00589	Strikers 1945 II	JP	exact	Strikers 1945 II	SLKA-02001 / SLPS-01637
+NPJJ00590	Chiisa na Oukoku Eltria	JP	fuzzy:0.89	Chiisana Oukoku Erutoria	SLPS-02750
+NPJJ00591	Quiz Nanairo Dreams: Nijiiro Machi no Kiseki	JP	fuzzy:0.94	Quiz Nanairo Dreams: Nijiiro-chou no Kiseki	SLPS-00875
+NPJJ00592	Marby Baby Story	JP	exact	Marby Baby Story	SLPS-01738
+NPJJ00593	Rockman 5: Blues no Wana!?	JP	exact	Rockman 5: Blues no Wana!?	SLPM-87268 / SLPS-02338
+NPJJ00594	Doki Doki Shutter Chance	JP	fuzzy:0.90	Doki Doki Shutter Chance: Koi no Puzzle o Kumitatete	SLPM-86988 / SLPS-01038
+NPJJ00595	Double Dragon	JP	exact	Double Dragon	SLPS-00191
+NPJJ00596	99 Kosuhien	JP	fuzzy:0.95	'99 Koshien [Magical 1500 Series]	SLPS-03085
+NPJJ00597	Dosukoi Densetsu	JP	exact	Dosukoi Densetsu	SLPS-01984
+NPJJ00598	Geom Cube	JP	exact	Geom Cube	SLPS-00007
+NPJJ00599	Sound Novel Evolution 2: Kamaitachi no Yoru: Tokubetsu-Hen	JP	exact	Sound Novel Evolution 2: Kamaitachi no Yoru Tokubetsu-hen	SLPS-01794 / SLPS-91187
+NPJJ00600	Choujin Gakuen Gowcaizer	JP	exact	Choujin Gakuen: Gowcaizer	SLPS-00527
+NPJJ00601	Max Surfing 2nd	JP	exact	Max Surfing 2nd	SLPS-02871
+NPJJ00602	Sound Novel Evolution 1: Otogirisou Sosei-Hen	JP	exact	Sound Novel Evolution 1: Otogirisou: Sosei-hen	SLPS-01645 / SLPS-91225
+NPJJ00603	Super Pang Collection	JP	exact	Super Pang Collection	SLPS-00360
+NPJJ00604	Tomba! The Wild Adventures	JP	exact	Tomba! The Wild Adventures	PAPX-90096 / SLPM-80476 / SLPS-02350
+NPJJ00605	Rebus	JP	exact	Rebus	SLPS-01343 / SLPS-91121
+NPJJ00606	Kuro no Ken: Blade of the Darkness	JP	exact	Kuro no Ken: Blade of the Darkness	SLPS-01030
+NPJJ00607	Street Boarders 2	JP	exact	Street Boarders 2	SLPS-02744
+NPJJ00608	Warriors Of Fate – Tench wo Kurau II	JP	none		
+NPJJ00609	Dungeon Shoutenkai: Densetsu no Ken Hajimemashita	JP	fuzzy:0.99	Dungeon Shoutenkai: Densetsu no Ken Hajime mashita	SLPS-01650
+NPJJ00610	Cool Boarders	JP	exact	Cool Boarders	SCPS-45061 / SLPS-00456 / SLPS-91031
+NPJJ00611	Super Robot Taisen F	JP	exact	Super Robot Taisen F	SLPS-01727 / SLPS-91216
+NPJJ00612	Super Robot Taisen F Final	JP	fuzzy:0.93	Super Robot Taisen EX | Super Robot Taisen F	SLPS-01727 / SLPS-02529 / SLPS-91216
+NPJJ00613	Clock Tower: The First Fear	JP	exact	Clock Tower: The First Fear	SLPS-00917
+NPJJ00614	Cool Boarders 2: Killing Session	JP	exact	Cool Boarders 2: Killing Session | Cool Boarders 2: Killing Session [Playstation the Best]	SCPS-45103 / SLPM-80143 / SLPS-00967 / SLPS-91122
+NPJJ00615	Blaster Master	JP	exact	Blaster Master	SLPS-02617 / SLPS-03269
+NPJJ00616	Final Round	JP	exact	Final Round	SLPS-01266
+NPJJ00618	The Shanghai (value 1500)	JP	fuzzy:0.88	Game no Tetsujin: The Shanghai | Shanghai: Banri no Choujou | Shanghai: Great Moments | Shanghai: Mateki Buyuu | Shanghai: Shouryuu Sairin | Value 1500: The Shanghai	SCPS-10004 / SCPS-10005 / SLPM-86836 / SLPS-00096 / SLPS-00266 / SLPS-01552 / SLPS-02703 / SLPS-03208
+NPJJ00619	Rising Zan: The Samurai Gunman	JP	exact	Rising Zan: The Samurai Gunman	SLPS-01691
+NPJJ00620	Super Robot Taisen Alpha	JP	exact	Super Robot Taisen Alpha	SLPS-02528 / SLPS-02636 / SLPS-03576 / SLPS-91408
+NPJJ00621	Super Robot Taisen Alpha Gaiden	JP	exact	Super Robot Taisen Alpha Gaiden	SLPS-03147 / SLPS-03148 / SLPS-03577 / SLPS-91506
+NPJJ00623	Gaia Master	JP	fuzzy:0.90(diff region)	Master of Monsters: Disciples of Gaia	SLES-00244 / SLUS-00595
+NPJJ00626	Kururin Pa!	JP	exact	Kururin Pa!	SLPS-00066
+NPJJ00627	Shiritsu Justice Gakuen: Legion Of Heroes (Rival Schools)	JP	exact	Shiritsu Justice Gakuen: Legion of Heroes (Disc 1) (Evolution Disc) | Shiritsu Justice Gakuen: Legion of Heroes (Disc 2) (Arcade Disc)	SLPS-01240 / SLPS-01241
+NPJJ00628	Myst	JP	exact	Myst	SLPS-00024 / SLPS-02924 / SLPS-91023 / SLPS-91123
+NPJJ00629	Harmful Park	JP	exact	Harmful Park	SLPS-00498
+NPJJ00630	Clock Tower 2	JP	exact	Clock Tower 2	SLPM-80062 / SLPM-80063 / SLPS-00657 / SLPS-91056
+NPJJ00632	Shingata Kururin Pa!	JP	exact	Shingata Kururin Pa!	SLPS-00414
+NPJJ00633	Trump Shiyouyo! Fukkoku-ban	JP	fuzzy:0.68	Trump Shiyou yo!	SLPS-01440 / SLPS-02225 / SLPS-02612
+NPJJ00637	Tokyo Majin Gakuen Ken Kaze Tobari	JP	fuzzy:0.73	Tokyo Majin Gakuen: Kenpuuchou (Disc 1) (You) | Tokyo Majin Gakuen: Kenpuuchou (Disc 2) (In)	SLPS-01432 / SLPS-01433 / SLPS-02834 / SLPS-02835
+NPJJ00638	Tokyo Majin Gakuen Oboro-Kitan	JP	exact	Tokyo Majin Gakuen: Oboro Kitan	SLPS-02015 / SLPS-02836
+NPJJ00639	Tokyo Majin Gakuen Gehoujou	JP	fuzzy:0.95	Tokyo Majin Gakuen: Gehouchou | Tokyo Majin Gakuen: Gehouchou (Disc 1) (You) | Tokyo Majin Gakuen: Gehouchou (Disc 2) (In) | Tokyo Majin Gakuen: Gehouchou (Disc 3) (Ja)	SLPM-80622 / SLPS-03330 / SLPS-03331 / SLPS-03332 / SLPS-03333 / SLPS-03334 / SLPS-03335
+NPJJ00645	Rayman	JP	exact	Rayman	SLPS-00026
+NPJJ00649	Clock Tower: Ghost Head	JP	exact	Clock Tower: Ghost Head | Clock Tower: Ghost Head [Playstation the Best]	SCPS-45173 / SLPM-80219 / SLPS-01290 / SLPS-91175
+NPJJ00651	Motto Trump Shiyouyo!	JP	fuzzy:0.80	Trump Shiyou yo!	SLPS-01440 / SLPS-02225 / SLPS-02612
+NPJJ00652	Final Fantasy IV	JP	exact	Final Fantasy IV	SCPS-45029 / SLPM-86028 / SLPS-01948
+NPJJ00656	Summon Night	JP	exact	Summon Night	SLPM-80509 / SLPS-02542 / SLPS-91507
+NPJJ00657	Summon Night 2	JP	exact	Summon Night 2 (Disc 1) | Summon Night 2 (Disc 2)	SLPS-03237 / SLPS-03238 / SLPS-91517 / SLPS-91518
+NPJJ00661	Super Black Bass X	JP	exact	Super Black Bass X	SCPS-45084 / SLPS-00839 / SLPS-02053
+NPJJ00662	Umihara Kawase Shun Second Edition	JP	exact	Umihara Kawase Shun: Second Edition	SLPS-02549
+NPJJ00664	Rockman 6: Shijou Saidai no Tatakai!!	JP	exact	Rockman 6: Shijou Saidai no Tatakai!!	SLPM-87269 / SLPS-02379
+NPJJ00670	The Match Golf	JP	exact	The Match Golf	SLPS-00178
+NPJJ00671	Metal Gear Solid Integral	JP	exact	Metal Gear Solid: Integral (Disc 1) | Metal Gear Solid: Integral (Disc 2) | Metal Gear Solid: Integral (Disc 3) (VR-Disc)	SCPS-45412 / SCPS-45413 / SCPS-45414 / SLPM-86247 / SLPM-86248 / SLPM-86249 / SLPM-86470 / SLPM-86471 / SLPM-86472 / SLPM-87324 / SLPM-87325 / SLPM-87326
+NPJJ00672	Xevious 3D/G+	JP	exact	Xevious 3D/G+	SLPS-00750
+NPJJ00673	Mr. Driller G	JP	exact	Mr. Driller G	SLPS-03336
+NPJJ00674	Cyber Sled	JP	fuzzy:0.63	Cyber Org	SCPS-45381 / SLPS-01910
+NPJJ00676	Smash Court	JP	exact	Smash Court	SLPS-00450 / SLPS-91053 / SLPS-91407
+NPJJ00677	Zutto Issho: With Me Everytime...	JP	exact	Zutto Issho: With Me Everytime...	SLPM-86523 / SLPS-01238
+NPJJ00678	EOS~Edge of Skyhigh~	JP	exact	EOS: Edge of Skyhigh	SLPS-00820
+NPJJ00679	Soukuu no Tsubasa: Gotha World	JP	exact	Soukuu no Tsubasa: Gotha World (Disc 1) | Soukuu no Tsubasa: Gotha World (Disc 2)	SLPS-01041 / SLPS-01042
+NPJJ00680	Neo Planet	JP	exact	Neo Planet	SLPS-00323
+NPJJ00681	Dragon Beat Legend of Pinball	JP	fuzzy:0.98	Dragonbeat: Legend of Pinball	SLPS-01067
+NPJJ00682	Abe a GO GO	JP	fuzzy:0.95	Abe a GoGo	SLPM-80175 / SLPS-01118
+NPJJ00683	Tokyo 23-Ku Seifuku Wars	JP	exact	Tokyo 23-ku Seifuku Wars	SLPS-01259
+NPJJ00684	ABE'99	JP	exact	Abe '99 (Disc 1) | Abe '99 (Disc 2)	SLPS-02095 / SLPS-02096
+NPJJ00685	Heroine Dream	JP	exact	Heroine Dream | Heroine Dream [Mouichido Kimi ni Eitai...Loved Series vol.2]	SLPS-00470 / SLPS-00471 / SLPS-02264
+NPJJ00686	Heroine Dream 2	JP	exact	Heroine Dream 2 | Heroine Dream 2 [The Best Buy]	SLPS-01376 / SLPS-02933
+NPJJ00687	Namco Museum Vol. 1	JP	exact	Namco Museum Vol. 1	SLPS-00107 / SLPS-91158
+NPJJ00688	Namco Museum Vol. 2	JP	exact	Namco Museum Vol. 2	SLPS-00209 / SLPS-00210 / SLPS-91159
+NPJJ00689	Namco Museum Vol. 3	JP	exact	Namco Museum Vol. 3	SLPS-00390 / SLPS-91160
+NPJJ00690	Namco Museum Vol. 4	JP	exact	Namco Museum Vol. 4	SLPS-00540 / SLPS-91161
+NPJJ00691	Strider Hiryu 1&2	JP	fuzzy:0.98	Strider Hiryuu 1 & 2 | Strider Hiryuu 1 & 2 (Disc 1) (Strider Hiryuu) | Strider Hiryuu 1 & 2 (Disc 2) (Strider Hiryuu 2)	SLPM-80537 / SLPS-02620 / SLPS-02621
+NPJJ00692	Namco Museum Vol. 5	JP	exact	Namco Museum Vol. 5	SLPS-00705 / SLPS-91162
+NPJJ00693	Namco Museum Encore	JP	exact	Namco Museum Encore	SLPS-00765 / SLPS-01050 / SLPS-91163
+NPJJ00694	Namco Anthology 1	JP	exact	Namco Anthology 1	SLPS-01220
+NPJJ00695	Namco Anthology 2	JP	exact	Namco Anthology 2	SLPS-01221
+NPJJ00696	Smash Court 2	JP	exact	Smash Court 2	SLPS-01693
+NPJJ00697	Starblade Alpha	JP	exact(other region)	Starblade Alpha	SCES-00034 / SLUS-00057
+NPJJ00698	Galaxian^3	JP	exact(other region)	Galaxian^3	SCES-00269
+NPJJ00699	Silver Jiken	JP	fuzzy:0.95	Silver Jiken: The Silver	SLPS-02320 / SLPS-02969
+NPJJ00700	Tantei Jinguuji Saburou: Yume no Owarini	JP	fuzzy:0.99	Tantei Jinguuji Saburou: Yume no Owari ni	SLPS-01356 / SLPS-03014
+NPJJ00701	Tantei Jinguuji Saburou Early Collection	JP	exact	Tantei Jinguuji Saburou: Early Collection	SLPS-02157 / SLPS-03137
+NPJJ00702	Tantei Jinguuji Saburou: Mikan no Rupo	JP	fuzzy:0.95	Tantei Jinguuji Saburou: Mikan no Report	SLPS-00544 / SLPS-03016
+NPJJ00703	Tantei Jinguuji Saburou: Touka ga Kienu Aidani	JP	fuzzy:0.84	Tantei Jinguuji Saburou: Tomoshibi ga Kienu Ma ni	SLPS-02427 / SLPS-03015
+NPJJ00704	Castlevania Chronicle: Akumajō Dracula	JP	fuzzy:0.96	Castlevania Chronicle: Akumajou Dracula	SLPM-86754
+NPJJ00705	Ms. Pac-Man Maze Madness	JP	exact	Ms. Pac-Man Maze Madness	SLPS-03000
+NPJJ00706	Smash Court 3	JP	exact	Smash Court 3	SLPS-03001
+NPJJ00707	Puyo Puyo Sun Ketteiban	JP	exact	Puyo Puyo Sun: Ketteiban	SLPM-87213 / SLPS-01080 / SLPS-91224
+NPJJ00708	Dragon Valor	JP	exact	Dragon Valor (Disc 1) | Dragon Valor (Disc 2)	SCPS-45459 / SCPS-45460 / SLPS-02190 / SLPS-02191
+NPJJ00711	Expert	JP	exact	Expert	SLPS-00342
+NPJJ00713	Susume! Kaizoku	JP	fuzzy:0.92	Susume! Kaizoku: Be Pirates! | Susume! Kaizoku: Be Pirates! [Artdink Best Choice]	SLPM-80367 / SLPS-01737 / SLPS-02467
+NPJJ00714	Monster Farm 2	JP	exact	Monster Farm 2	SLPM-80379 / SLPS-01906 / SLPS-91199
+NPJJ00715	Roommate: Inoue Ryoko	JP	exact	Roommate: Inoue Ryoko	SLPS-02140
+NPJJ00716	Sihouette☆Stories	JP	fuzzy:0.91	Silhouette Stories	SLPS-00374
+NPJJ00717	Lunar 2: Eternal Blue	JP	exact	Lunar 2: Eternal Blue | Lunar 2: Eternal Blue (Disc 1) | Lunar 2: Eternal Blue (Disc 2) | Lunar 2: Eternal Blue (Disc 3) | Lunar 2: Eternal Blue [Kadokawa the Best] (Disc 1) | Lunar 2: Eternal Blue [Kadokawa the Best] (Disc 2) | Lunar 2: Eternal Blue [Kadokawa the Best] (Disc 3)	SLPM-80419 / SLPS-02081 / SLPS-02082 / SLPS-02083 / SLPS-02966 / SLPS-02967 / SLPS-02968
+NPJJ00718	Pocke-Kano: Yumi Aida	JP	fuzzy:0.95	Pocke-Kano: Aida Yumi	SLPS-02497
+NPJJ00719	Pocke-Kano: Fumio Ueno	JP	fuzzy:0.95	Pocke-Kano: Ueno Fumio	SLPS-02498
+NPJJ00720	Pocke-Kano: Shizuka Houjouin	JP	fuzzy:0.95	Pocke-Kano: Houjouin Shizuka	SLPS-02499
+NPJJ00721	Street Fighter Alpha: Warriors' Dreams	JP	exact(other region)	Street Fighter Alpha: Warriors' Dreams	SLES-00199 / SLUS-00197
+NPJJ00722	Street Fighter Zero 2	JP	exact	Street Fighter Zero 2 | Street Fighter Zero 2'	SLPM-80043 / SLPS-00415 / SLPS-91105
+NPJJ00723	Tron ni Kobun	JP	exact	Tron ni Kobun	SLPS-02108
+NPJJ00724	Rockman Battle & Chase	JP	exact	Rockman: Battle & Chase	SLPS-00764 / SLPS-91093
+NPJJ00725	Rockman X4	JP	exact	Rockman X4	SLPM-87315 / SLPS-00901 / SLPS-00902 / SLPS-91106
+NPJJ00726	Rockman X5	JP	exact	Rockman X5	SLPM-86666 / SLPM-87021
+NPJJ00727	Rockman 8: Metal Heroes	JP	exact	Rockman 8: Metal Heroes	SLPS-00630 / SLPS-91045
+NPJJ00728	Street Fighter Alpha 3	JP	exact(other region)	Street Fighter Alpha 3	SLES-01863 / SLUS-00821
+NPJJ00729	I'Max Shogi II	JP	fuzzy:0.97	I'Max Shougi II	SLPS-01029
+NPJJ00730	Taikai Nobunaga Ten: Ge-Ten II	JP	fuzzy:0.79	Ooumi Nobunaga Den: Geten II	SLPS-00874
+NPJJ00731	Honoo no Ryourinin: Cooking Fighter Hao	JP	exact	Honoo no Ryourinin: Cooking Fighter Hao	SLPS-01382
+NPJJ00732	Shiritsu Justice Gakuen: Nekketsu Seisyun Nikki 2	JP	fuzzy:0.98	Shiritsu Justice Gakuen: Nekketsu Seishun Nikki 2	SLPM-86750 / SLPS-02120
+NPJJ00733	Rockman X6	JP	exact	Rockman X6	SLPM-86959 / SLPM-87183
+NPJJ00734	Super Puzzle Fighter II Turbo	JP	exact(other region)	Super Puzzle Fighter II Turbo	SLES-00605 / SLUS-00418
+NPJJ00735	Kileak: The DNA Imperative	JP	exact(other region)	Kileak: The DNA Imperative	SCUS-94102
+NPJJ00736	Epidemic	JP	exact(other region)	Epidemic	SCES-00393 / SCUS-94152
+NPJJ00737	Kowloon's Gate	JP	exact	Kowloon's Gate	SLPM-80047 / SLPM-80080
+NPJJ00738	Dragonseeds	JP	fuzzy:0.96(diff region)	Dragon Seeds	SLUS-00734
+NPJJ00739	T: Kara Hajimaru Monogatari	JP	exact	T kara Hajimaru Monogatari	SLPS-01350
+NPJJ00740	Slam Dragon	JP	exact	Slam Dragon	SLPS-00246
+NPJJ00741	Gambler Jiko Chuushinha: Ippatsu Shoubu!	JP	fuzzy:0.96	Gyuwambler Jiko Chuushinha: Ippatsu Shoubu!	SLPS-02509
+NPJJ00742	Kuon no Kizuna	JP	exact	Kuon no Kizuna	SLPS-01676
+NPJJ00743	Capcom Generation Dai-go-shū Kakutōka-tachi (Capcom Generations 5: Street Fighter Collection 2)	JP	fuzzy:0.90	Capcom Generation: Dai-5-shuu Kakutouka-tachi	SLPS-01725
+NPJJ00744	Speed Power Gunbike	JP	fuzzy:0.91	Kahen Soukou Gunbike: Speed Power Gunbike	SLPS-01066
+NPJJ00745	DamDam StompLand	JP	exact	DamDam Stompland	SLPM-80170 / SLPS-01135
+NPJJ00746	Doki Doki Poyacchio	JP	fuzzy:0.95	Doki Doki Poyatchio!! | Doki Doki Poyatchio!! [Reprint]	SLPM-80285 / SLPS-01573 / SLPS-03125
+NPJJ00747	Battle Arena Toshinden	JP	exact(other region)	Battle Arena Toshinden	SCES-00002 / SCUS-94003 / SCUS-94200
+NPJJ00748	Battle Arena Toshinden 2 Plus	JP	fuzzy:0.98	Battle Arena Toushinden 2 Plus	SLPS-91006
+NPJJ00749	Battle Arena Toshinden 3	JP	exact(other region)	Battle Arena Toshinden 3	SCES-00700 / SLUS-00483
+NPJJ00750	THUNDERFORCE V Perfect System	JP	fuzzy:0.98	Thunder Force V: Perfect System	SLPS-01406 / SLPS-02211
+NPJJ00751	Neorude	JP	exact	Neorude (Disc 1) (Game Disc) | Neorude (Disc 2) (Special Disc) | Neorude [Technosoft Collection]	SLPS-00823 / SLPS-00824 / SLPS-02212
+NPJJ00752	My Garden	JP	exact	My Garden	SLPS-02213
+NPJJ00753	Fantastic Pinball Kyutenkai	JP	fuzzy:0.59(diff region)	Patriotic Pinball	SLES-04092 / SLUS-01539
+NPJJ00754	Neorude2	JP	fuzzy:0.94	Neorude 2 | Neorude 2 [Technosoft Collection]	SLPS-01112 / SLPS-02254
+NPJJ00755	Koutetsu Reiiki: Steeldom	JP	exact	Koutetsu Reiiki: Steeldom	SLPS-00431
+NPJJ00756	Kaze no Oka Kouen Nite	JP	exact	Kaze no Oka Kouen Nite	SLPS-01565
+NPJJ00757	Neorude: Kizamareta Monshou	JP	exact	Neorude: Kizamareta Monshou	SLPS-02417
+NPJJ00758	Reverthion	JP	exact	Reverthion	SLPS-00143
+NPJJ00759	Kumitate Battle: Kuttu Ketto	JP	exact	Kumitate Battle Kuttu Ketto	SLPS-01208
+NPJJ00760	Omise de Tensyu	JP	fuzzy:0.93	Omise de Tenshu	SLPS-01876
+NPJJ00761	Advanced V.G. 2	JP	exact	Advanced V.G. 2	SLPM-80311 / SLPS-01318
+NPJJ00762	EXECTOR	JP	exact	Exector	SLPS-00091
+NPJJ00763	Nekketsu Oyako	JP	exact	Nekketsu Oyako	SLPS-00006
+NPJJ00764	Puyo Puyo Tsuu Ketteiban	JP	exact	Puyo Puyo Tsuu: Ketteiban	SCPS-45002 / SLPS-00530 / SLPS-91194
+NPJJ00768	Puyo Puyo~n: Kakkun to Issho	JP	fuzzy:0.87	Puyo Puyoon: Car-kun to Issho	SLPS-02412
+NPEE00001	Crash Bandicoot	EU	exact	Crash Bandicoot (EDC)	SCES-00344
+NPEE00002	Syphon Filter	EU	exact	Syphon Filter	SCES-01910 / SCES-01911 / SCES-01912 / SCES-01913 / SCES-01914
+NPEE00004	WipEout	EU	exact	WipEout	SCES-00010
+NPEE00006	Medievil	EU	exact	MediEvil | MediEvil (Beta 8)	SCES-00311 / SCES-01492 / SCES-01493 / SCES-01494 / SCES-01495
+NPEE00007	Jumping Flash	EU	exact	Jumping Flash!	SCES-00003
+NPEE00008	Crash Bandicoot 2: Cortex Strikes Back	EU	exact	Crash Bandicoot 2: Cortex Strikes Back	SCES-00967
+NPEE00014	Crash Bandicoot 3: Warped (Spanish)	EU	exact	Crash Bandicoot 3: Warped	SCES-01420
+NPEE00023	Syphon Filter 3	EU	exact	Syphon Filter 3	SCES-03697 / SCES-03698 / SCES-03699 / SCES-03700
+NPEE00025	Everybody’s Golf 2	EU	exact	Everybody's Golf 2	SCES-02146
+NPEE00026	Crash Team Racing	EU	fuzzy:0.93	CTR: Crash Team Racing (EDC)	SCES-02105
+NPEE00027	Cool Boarders	EU	exact	Cool Boarders	SCES-00568
+NPEE00030	Kula World	EU	fuzzy:0.73	Ducati World	SLES-02821 / SLES-03377
+NPEE00031	Motor Toon Grand Prix 2	EU	exact	Motor Toon Grand Prix 2	SCES-00245
+NPEE00038	Kurushi Final: Mental Blocks	EU	fuzzy:0.90	Kurushi Final	SCES-02009 / SCES-02010 / SCES-02011 / SCES-02012 / SCES-02013
+NPEE00039	Destruction Derby	EU	exact	Destruction Derby	SCES-00008
+NPEE00040	Cool Boarders 2	EU	exact	Cool Boarders 2	SCES-00992
+NPEE00044	Vib-Ribbon	EU	exact	Vib-Ribbon	SCES-02873
+NPEE00049	Twisted Metal	EU	exact	Twisted Metal	SCES-00061
+NPEE00051	G-Police	EU	exact	G-Police (Demo) | G-Police (Disc 1) | G-Police (Disc 2)	SLED-01034 / SLES-00082 / SLES-00853 / SLES-00854 / SLES-00855 / SLES-00856 / SLES-10082 / SLES-10853 / SLES-10854 / SLES-10855 / SLES-10856
+NPEE00052	Syphon Filter 2	EU	exact	Syphon Filter 2 (Disc 1) | Syphon Filter 2 (Disc 1) (EDC) | Syphon Filter 2 (Disc 1) (Rev 1) | Syphon Filter 2 (Disc 2)	SCES-02285 / SCES-02286 / SCES-02287 / SCES-02288 / SCES-12285 / SCES-12286 / SCES-12287 / SCES-12288
+NPEE00053	Um Jammer Lammy	EU	exact	Um Jammer Lammy	SCES-01753
+NPEE00054	Jet Rider	EU	exact	Jet Rider	SCES-00566
+NPEE00055	Jet Rider 2	EU	exact	Jet Rider 2	SCES-01045
+NPEE00056	Wild Arms	EU	exact	Wild Arms	SCES-00321 / SCES-01171 / SCES-01172 / SCES-01173 / SCES-01174
+NPEE00057	Rally Cross	EU	exact	Rally Cross	SCES-00408
+NPEE00062	Warhawk	EU	fuzzy:0.88	Warhawk: The Red Mercury Missions	SCES-00062
+NPEE00074	Spyro 2: Gateway to Glimmer	EU	exact	Spyro 2: Gateway to Glimmer	SCES-02104
+NPEE00075	Spyro: Year of The Dragon	EU	exact	Spyro: Year of the Dragon	SCES-02835
+NPEE00076	Spyro the Dragon	EU	exact	Spyro the Dragon	SCES-01438
+NPEF00001	Populous The Beginning	EU	exact	Populous: The Beginning	SLES-01760
+NPEF00002	Actua Golf 3	EU	exact	Actua Golf 3	SLES-01042
+NPEF00003	Actua Tennis	EU	exact	Actua Tennis	SLES-00265 / SLES-01396
+NPEF00004	Hardcore 4×4	EU	fuzzy:0.92	Hardcore 4x4	SLES-00261
+NPEF00005	Judge Dredd	EU	exact	Judge Dredd	SLES-00755
+NPEF00006	Loaded	EU	exact	Loaded	SLES-00013
+NPEF00007	N2O	EU	fuzzy:0.88(diff region)	N2O: Nitrous Oxide	SLES-00809 / SLUS-00637
+NPEF00008	Motorhead	EU	exact	Motorhead	SLES-00556
+NPEF00009	Reloaded	EU	fuzzy:0.94	Re-Loaded	SLES-00537
+NPEF00011	Tomb Raider	EU	exact	Tomb Raider | Tomb Raider (Demo) | Tomb Raider (EDC)	SLED-00571 / SLES-00024 / SLES-00485 / SLES-00486
+NPEF00012	Tomb Raider 2	EU	exact(other region)	Tomb Raider 2	SLPM-80168 / SLPS-01200 / SLPS-91119 / SLPS-91434
+NPEF00013	Bishi Bashi Special	EU	exact	Bishi Bashi Special	SLES-02537
+NPEF00015	Theme Hospital	EU	exact	Theme Hospital	SLES-00627
+NPEF00016	Fade to Black	EU	exact	Fade to Black | Fade to Black (SLES-00339)	SLES-00209 / SLES-00339
+NPEF00020	SHEEP	EU	exact	Sheep	SLES-02218
+NPEF00021	Driver	EU	exact	Driver | Driver (Demo)	SLED-01817 / SLES-01816 / SLES-01975 / SLES-01976 / SLES-01977 / SLES-01978
+NPEF00022	Tom Clancy’s Rainbow Six	EU	exact	Tom Clancy's Rainbow Six	SLES-01136 / SLES-02372
+NPEF00023	Rayman	EU	exact	Rayman (EDC)	SLES-00049
+NPEF00024	Reel Fishing	EU	exact	Reel Fishing	SLES-01727
+NPEF00027	Street Skater	EU	exact	Street Skater	SLES-01759
+NPEF00028	Command & Conquer: Red Alert	EU	exact	Command & Conquer: Red Alert (Disc 1) (Allies) | Command & Conquer: Red Alert (Disc 2) (Soviet)	SLES-00949 / SLES-10949
+NPEF00029	Command & Conquer	EU	exact	Command & Conquer | Command & Conquer (Disc 1) (GDI) | Command & Conquer (Disc 2) (NOD)	SLED-00652 / SLES-00530 / SLES-00531 / SLES-10530 / SLES-10531
+NPEF00036	Metal Gear Solid	EU	exact	Metal Gear Solid (Demo 1) | Metal Gear Solid (Demo 2) | Metal Gear Solid (Disc 1) | Metal Gear Solid (Disc 1) (Rev 1) | Metal Gear Solid (Disc 2) | Metal Gear Solid (Disc 2) (Rev 1)	SLED-01400 / SLED-01775 / SLES-01370 / SLES-01506 / SLES-01507 / SLES-01508 / SLES-01734 / SLES-11370 / SLES-11506 / SLES-11507 / SLES-11508 / SLES-11734
+NPEF00037	International Track & Field	EU	exact	International Track & Field	SLES-00333
+NPEF00038	Silent Hill	EU	exact	Silent Hill | Silent Hill (Demo)	SLED-01735 / SLED-01774 / SLED-02186 / SLES-01514
+NPEF00039	Syndicate Wars	EU	exact	Syndicate Wars	SLES-00212 / SLES-00213
+NPEF00040	Theme Park	EU	exact	Theme Park	SLES-00072
+NPEF00042	Command & Conquer: Red Alert Retaliation	EU	exact	Command & Conquer: Red Alert: Retaliation (Disc 1) (Allies) | Command & Conquer: Red Alert: Retaliation (Disc 2) (Soviet)	SLES-01343 / SLES-11343
+NPEF00043	Spin Jam	EU	exact	Spin Jam	SLES-02790
+NPEF00045	Street Fighter Alpha: Warriors’ Dreams	EU	exact	Street Fighter Alpha: Warriors' Dreams	SLES-00199
+NPEF00046	The Little Mermaid II	EU	fuzzy:0.92	Disney's The Little Mermaid II	SCES-03032
+NPEF00047	Disney’s Hercules	EU	fuzzy:0.90(diff region)	Disney's Hercules Action Game | Disney's Hercules Action Game (Rerelease)	SLUS-00529 / SLUS-01029
+NPEF00048	Street Skater 2 (EN/FR/DE)	EU	exact	Street Skater 2	SLES-02703
+NPEF00049	Hi-Octane (EN/FR/DE/ES)	EU	exact	Hi-Octane	SLES-00115
+NPEF00050	Magic Carpet	EU	exact	Magic Carpet	SLES-00211
+NPEF00051	Castlevania: Symphony of the Night	EU	exact	Castlevania: Symphony of the Night	SLES-00524
+NPEF00054	Suikoden	EU	exact	Suikoden	SLES-00527
+NPEF00056	James Pond 2: Codename Robocod	EU	fuzzy:0.93	Robocod: James Pond II	SLES-04112
+NPEF00057	Constructor	EU	exact	Constructor	SLES-00927 / SLES-01428
+NPEF00058	Creatures 3: Raised in Space	EU	fuzzy:0.96	Creatures: Raised in Space	SLES-04111
+NPEF00059	Crisis Beat	EU	exact	Crisis Beat	SLES-02793
+NPEF00060	Guilty Gear	EU	exact	Guilty Gear	SLES-02494
+NPEF00062	Future Cop: LAPD	EU	fuzzy:0.92	Future Cop: L.A.P.D. | Future Cop: L.A.P.D. (Demo)	SLED-01509 / SLES-01449 / SLES-01482
+NPEF00063	Championship Bass	EU	exact	Championship Bass	SLES-02775
+NPEF00068	Extreme Pinball	EU	exact	Extreme Pinball	SLES-00206
+NPEF00069	Final Fantasy VII	EU	exact	Final Fantasy VII (Disc 1) | Final Fantasy VII (Disc 2) | Final Fantasy VII (Disc 3)	SCES-00867 / SCES-00868 / SCES-00869 / SCES-00900 / SCES-10867 / SCES-10868 / SCES-10869 / SCES-10900 / SCES-20867 / SCES-20868 / SCES-20869 / SCES-20900
+NPEF00070	Final Fantasy VIII	EU	exact	Final Fantasy VIII (Demo 1) | Final Fantasy VIII (Demo 2) | Final Fantasy VIII (Demo) | Final Fantasy VIII (Disc 1) | Final Fantasy VIII (Disc 2) | Final Fantasy VIII (Disc 3) | Final Fantasy VIII (Disc 4)	SCED-02062 / SCES-02080 / SCES-12080 / SCES-22080 / SCES-32080 / SLED-02258 / SLED-02259 / SLED-02262 / SLES-02080 / SLES-02081 / SLES-02082 / SLES-02083 / SLES-02084 / SLES-12080 / SLES-12081 / SLES-12082 / SLES-12083 / SLES-12084 / SLES-22080 / SLES-22081 / SLES-22082 / SLES-22083 / SLES-22084 / SLES-32080 / SLES-32081 / SLES-32082 / SLES-32083 / SLES-32084
+NPEF00071	Final Fantasy IX	EU	exact	Final Fantasy IX (Disc 1) | Final Fantasy IX (Disc 2) | Final Fantasy IX (Disc 3) | Final Fantasy IX (Disc 4)	SLES-02965 / SLES-02966 / SLES-02967 / SLES-02968 / SLES-02969 / SLES-12965 / SLES-12966 / SLES-12967 / SLES-12968 / SLES-12969 / SLES-22965 / SLES-22966 / SLES-22967 / SLES-22968 / SLES-22969 / SLES-32965 / SLES-32966 / SLES-32967 / SLES-32968 / SLES-32969
+NPEF00077	Monsters, Inc. Scare Island	EU	fuzzy:0.92	Disney-Pixar Monsters, Inc.: Scare Island | Disney-Pixar Monsters, Inc.: Scare Island (Demo)	SCED-03811 / SCES-03759
+NPEF00080	A Bug’s Life	EU	fuzzy:0.92(diff region)	Disney/Pixar A Bug's Life	SLPM-86330
+NPEF00082	Disney’s Party Time with Winnie the Pooh	EU	exact	Disney's Party Time with Winnie the Pooh	SCES-03705
+NPEF00083	Vagrant Story	EU	exact	Vagrant Story	SLES-02754 / SLES-02755 / SLES-02756
+NPEF00084	Lilo & Stitch: Trouble in Paradise	EU	fuzzy:0.93	Disney's Lilo & Stitch: Trouble in Paradise	SCES-03871
+NPEF00085	Peter Pan: Adventures in Neverland	EU	fuzzy:0.87	Disney's Peter Pan: Adventures in Never Land | Disney's Peter Pan: Adventures in Never Land (Demo)	SCED-03883 / SCES-03707
+NPEF00087	Front Mission 3	EU	exact	Front Mission 3 (Beta)	SLES-02423
+NPEF00088	Atlantis: The Lost Empire	EU	fuzzy:0.93	Disney's Atlantis: The Lost Empire	SCED-03636 / SCES-03533
+NPEF00093	Toy Story 2: Buzz Lightyear to the Rescue	EU	fuzzy:0.92	Disney-Pixar Toy Story 2: Buzz Lightyear to the Rescue! | Disney-Pixar Toy Story 2: Buzz Lightyear to the Rescue! (Demo)	SLED-02416 / SLES-02067
+NPEF00094	Toy Story Racer	EU	fuzzy:0.91	Disney-Pixar Toy Story Racer	SLES-03396 / SLES-03397 / SLES-03398
+NPEF00097	Oddworld: Abe’s Exoddus	EU	exact	Oddworld: Abe's Exoddus (Disc 1) | Oddworld: Abe's Exoddus (Disc 2)	SLES-01480 / SLES-01503 / SLES-01504 / SLES-01505 / SLES-11480 / SLES-11503 / SLES-11504 / SLES-11505
+NPEF00098	Oddworld: Abe’s Oddysee	EU	exact	Oddworld: Abe's Oddysee | Oddworld: Abe's Oddysee (Demo)	SLED-00725 / SLES-00664 / SLES-00839 / SLES-00840 / SLES-00841
+NPEF00103	Sorcerer’s Maze	EU	exact	Sorcerer's Maze	SLES-04086
+NPEF00104	SuperStar Dance Club	EU	fuzzy:0.93	Superstar Dance Club: 1 Hits!!!	SLES-04088
+NPEF00105	Jigsaw Madness	EU	exact	Jigsaw Madness	SLES-04089
+NPEF00106	Airboat Racing	EU	fuzzy:0.95	XS Airboat Racing	SLES-04101
+NPEF00107	XS Junior League Soccer	EU	exact	XS Junior League Soccer	SLES-04120
+NPEF00108	Rayman 2: The Great Escape (Multi2: FR/DE)	EU	exact	Rayman 2: The Great Escape	SLES-02905 / SLES-02906
+NPEF00109	Tekken 2	EU	exact	Tekken 2	SCES-00255
+NPEF00110	Blood Omen: Legacy of Kain	EU	exact	Blood Omen: Legacy of Kain	SLES-00075 / SLES-00522 / SLES-00523
+NPEF00112	Fear Effect 2	EU	fuzzy:0.95	Fear Effect (Disc 1) | Fear Effect (Disc 2) | Fear Effect (Disc 3) | Fear Effect (Disc 4)	SLES-02166 / SLES-02167 / SLES-02168 / SLES-12166 / SLES-12167 / SLES-12168 / SLES-22166 / SLES-22167 / SLES-22168 / SLES-32166 / SLES-32167 / SLES-32168
+NPEF00113	Fighting Force	EU	exact	Fighting Force (Demo) | Fighting Force (EDC)	SLED-00881 / SLES-00731
+NPEF00114	Fighting Force 2	EU	exact	Fighting Force 2 | Fighting Force 2 (Demo)	SLED-02314 / SLES-02233 / SLES-02235 / SLES-02237
+NPEF00115	Legacy of Kain: Soul Reaver	EU	exact	Legacy of Kain: Soul Reaver | Legacy of Kain: Soul Reaver (Demo)	SLED-02252 / SLES-01301 / SLES-02024 / SLES-02025 / SLES-02026 / SLES-02027
+NPEF00117	Gex	EU	exact	Gex	SLES-00133
+NPEF00118	Gex: Deep Cover Gecko	EU	exact	Gex: Deep Cover Gecko | Gex: Deep Cover Gecko (Demo)	SLED-01954 / SLES-01299 / SLES-01908
+NPEF00119	Gex 3D: Enter The Gecko	EU	exact	Gex 3D: Enter the Gecko | Gex 3D: Enter the Gecko (Demo)	SLED-01112 / SLES-00596
+NPEF00120	Tomb Raider: The Last Revelation	EU	exact	Tomb Raider: The Last Revelation | Tomb Raider: The Last Revelation (Demo)	SLED-02418 / SLES-02238 / SLES-02241 / SLES-02242
+NPEF00121	Tomb Raider Chronicles	EU	exact	Tomb Raider Chronicles	SLES-03331 / SLES-03336
+NPEF00122	Tomb Raider 3: Adventures of Lara Croft	EU	fuzzy:0.95	Tomb Raider III: Adventures of Lara Croft | Tomb Raider III: Adventures of Lara Croft (Rev 1) | Tomb Raider III: Adventures of Lara Croft (Rev 1) (EDC)	SLES-01649 / SLES-01683 / SLES-01684 / SLES-01685
+NPEF00123	Urban Chaos	EU	exact	Urban Chaos	SLES-02071 / SLES-02354 / SLES-02355
+NPEF00124	Grandia	EU	exact	Grandia (Disc 1) | Grandia (Disc 2)	SLES-02397 / SLES-02398 / SLES-02399 / SLES-12397 / SLES-12398 / SLES-12399
+NPEF00125	PONG	EU	exact	Pong	SLES-02020
+NPEF00126	Missile Command (EN/IT)	EU	exact	Missile Command	SLES-02245 / SLES-02482
+NPEF00127	Centipede	EU	exact	Centipede	SLES-01664 / SLES-01900
+NPEF00128	Alone in the Dark: The New Nightmare	EU	exact	Alone in the Dark: The New Nightmare (Disc 1) | Alone in the Dark: The New Nightmare (Disc 2)	SLES-02801 / SLES-02802 / SLES-02803 / SLES-02804 / SLES-02805 / SLES-12801 / SLES-12802 / SLES-12803 / SLES-12804 / SLES-12805
+NPEF00129	Atari Anniversary Edition Redux	EU	exact	Atari Anniversary Edition Redux	SLES-03808
+NPEF00130	Gunship	EU	exact	Gunship	SLES-00027
+NPEF00131	Critical Depth	EU	exact	Critical Depth	SLES-00136
+NPEF00134	Tekken	EU	exact	Tekken	SCES-00005
+NPEF00135	R4: Ridge Racer Type 4	EU	exact(other region)	R4: Ridge Racer Type 4 | R4: Ridge Racer Type 4 (Disc 1) | R4: Ridge Racer Type 4 (Disc 2) | R4: Ridge Racer Type 4 [PSOne Books]	SCPS-45354 / SCPS-45355 / SCPS-45356 / SCPS-46001 / SLPS-01798 / SLPS-01800 / SLPS-91463 / SLUS-00797
+NPEF00136	All Star Boxing	EU	exact	All Star Boxing	SLES-03958
+NPEF00137	ATV Racers	EU	exact	ATV Racers	SLES-04059
+NPEF00139	Gubble	EU	exact	Gubble	SLES-03208
+NPEF00140	Miracle Space Race	EU	exact	Miracle Space Race	SLES-04057
+NPEF00142	Snowboard Racer	EU	exact	Snowboard Racer	SLES-03960
+NPEF00143	Sports Superbike 2	EU	exact	Sports Superbike 2	SLES-03827
+NPEF00144	Super Slammin’ Dodgeball	EU	exact	Super Slammin' Dodgeball	SLES-03961
+NPEF00148	40 Winks	EU	exact	40 Winks | 40 Winks (Demo)	SLED-02435 / SLES-01937 / SLES-01940 / SLES-01941
+NPEF00150	Parasite Eve II (Italian)	EU	exact	Parasite Eve II (Disc 1) | Parasite Eve II (Disc 2)	SLES-02558 / SLES-02559 / SLES-02560 / SLES-02561 / SLES-02562 / SLES-12558 / SLES-12559 / SLES-12560 / SLES-12561 / SLES-12562
+NPEF00152	Final Fantasy V (100% identical, different link)	EU	exact(other region)	Final Fantasy V	SCPS-45214 / SLPM-86081 / SLPS-01949
+NPEF00153	A Bug's life and Monster's Inc	EU	none		
+NPEF00154	Atlantis and Hercules	EU	fuzzy:0.64	Atlantis: The Lost Tales (Disc 1) | Atlantis: The Lost Tales (Disc 2) | Atlantis: The Lost Tales (Disc 3)	SLES-01291 / SLES-01605 / SLES-11291 / SLES-11605 / SLES-21291 / SLES-21605
+NPEF00155	Little Mermaid 2 & Winnie the Pooh	EU	fuzzy:0.66	Disney Learning: Winnie the Pooh	SLES-03983
+NPEF00156	Toy Story Racer & Toy Story 2	EU	fuzzy:0.91	Disney-Pixar Toy Story Racer	SLES-03396 / SLES-03397 / SLES-03398
+NPEF00157	Final Fantasy VI	EU	exact	Final Fantasy VI | Final Fantasy VI (Bonus Disc: Final Fantasy X Demo)	SCED-50642 / SCES-03828
+NPEF00158	Streak: Hover Board Racing	EU	fuzzy:0.98	Streak Hoverboard Racing	SLES-01437
+NPEF00159	Bugriders: The Race of Kings	EU	exact	Bugriders: The Race of Kings	SLES-00875
+NPEF00161	Street Fighter Alpha 2	EU	exact	Street Fighter Alpha 2	SLES-00496
+NPEF00163	Resident Evil: Director’s Cut	EU	exact	Resident Evil: Director's Cut	SLES-00969 / SLES-00970 / SLES-00971
+NPEF00167	Arc the Lad	EU	exact(other region)	Arc the Lad | Arc the Lad [PSOne Books]	SCPS-10008 / SCPS-91004 / SCPS-91302
+NPEF00168	Arc the Lad II	EU	exact(other region)	Arc the Lad II	SCPS-10026 / SCPS-91071 / SCPS-91310
+NPEF00169	Arc the Lad III	EU	exact(other region)	Arc the Lad III | Arc the Lad III (Disc 1) | Arc the Lad III (Disc 2)	PAPX-90093 / PAPX-90099 / PCPX-96176 / SCPS-10106 / SCPS-10107 / SCPS-45438 / SCPS-45439 / SCPS-91228 / SCPS-91229 / SCPS-91316 / SCPS-91317
+NPEF00170	Arc Arena: Monster Tournament	EU	fuzzy:0.92(diff region)	Arc the Lad Collection: Arc Arena: Monster Tournament	SLUS-01255
+NPEF00171	Arcade Hits: Shienryu	EU	fuzzy:0.98(diff region)	Arcade Hits: Shienryuu	SLPM-87228
+NPEF00172	Arcade Hits: Sonic Wings Special	EU	exact(other region)	Arcade Hits: Sonic Wings Special	SLPM-87137
+NPEF00175	Alundra	EU	exact	Alundra | Alundra (Demo)	SLED-01308 / SLES-01135 / SLES-01198 / SLES-01256 / SLES-01257 / SLES-01258
+NPEF00176	Blockids	EU	exact	Blockids	SLES-04003
+NPEF00177	Cho Aniki	EU	none		
+NPEF00178	Dezaemon Plus	EU	exact(other region)	Dezaemon Plus	SLPS-00335
+NPEF00179	Gaia Seed: Project Seed Trap	EU	fuzzy:0.98(diff region)	GaiaSeed: Project Seed Trap	SLPS-00624
+NPEF00180	Galaxy Fight	EU	exact	Galaxy Fight	SLES-00197
+NPEF00182	Tall Unlimited	EU	exact(other region)	Tall Unlimited	SLPM-87116 / SLPS-02366
+NPEF00184	Rageball	EU	exact	Rageball	SLES-03511
+NPEF00185	Rascal Racers	EU	exact	Rascal Racers	SLES-04058
+NPEF00186	Suikoden II	EU	exact	Suikoden II | Suikoden II (Demo)	SLED-02742 / SLES-02442 / SLES-02443 / SLES-02444 / SLES-02445 / SLES-02446
+NPEF00196	Klonoa: Door to Phantomile	EU	exact	Klonoa: Door to Phantomile	SCES-00942 / SCES-01185 / SCES-01186 / SCES-01187 / SCES-01188
+NPEF00197	Fear Effect	EU	exact	Fear Effect (Disc 1) | Fear Effect (Disc 2) | Fear Effect (Disc 3) | Fear Effect (Disc 4)	SLES-02166 / SLES-02167 / SLES-02168 / SLES-12166 / SLES-12167 / SLES-12168 / SLES-22166 / SLES-22167 / SLES-22168 / SLES-32166 / SLES-32167 / SLES-32168
+NPEF00198	Resident Evil 2	EU	exact	Resident Evil 2 (Disc 1) | Resident Evil 2 (Disc 2) | Resident Evil 2 (Preview)	SLED-00977 / SLES-00972 / SLES-00973 / SLES-00974 / SLES-00975 / SLES-00976 / SLES-10972 / SLES-10973 / SLES-10974 / SLES-10975 / SLES-10976
+NPEF00199	Resident Evil 3: Nemesis	EU	exact	Resident Evil 3: Nemesis | Resident Evil 3: Nemesis (Demo)	SLED-02541 / SLES-02529 / SLES-02530 / SLES-02531 / SLES-02532 / SLES-02533 / SLES-02698
+NPEF00200	NAMCO Heritage Bundle	EU	none		
+NPEF00201	Pandemonium	EU	exact	Pandemonium! | Pandemonium! (Demo)	SLED-00570 / SLES-00526
+NPEF00202	Pandemonium 2	EU	exact	Pandemonium 2 | Pandemonium 2 (Demo)	SLED-01015 / SLES-00965
+NPEF00203	Mickey’s Wild Adventure	EU	exact	Mickey's Wild Adventure (EDC)	SCES-00163
+NPEF00205	Buzz Lightyear of Star Command	EU	fuzzy:0.92	Disney-Pixar Buzz Lightyear of Star Command	SLES-03310
+NPEF00264	All-Star Boxing	EU	exact	All Star Boxing	SLES-03958
+NPEF00270	Dezaemon Kids!	EU	exact(other region)	Dezaemon Kids!	SLPS-01503
+NPEF00272	Tomba!	EU	exact(other region)	Tomba! | Tomba! (Demo)	SCUS-94236 / SCUS-94255 / SLPS-01144
+NPEF00273	Tomba! 2: The Evil Swine Return	EU	exact(other region)	Tomba! 2: The Evil Swine Return | Tomba! 2: The Evil Swine Return (Demo)	SCUS-94454 / SCUS-94464
+NPEF00286	Harvest Moon: Back to Nature	EU	exact	Harvest Moon: Back to Nature (Rev 1)	SLES-02781
+NPEF00302	Metal Gear Solid: Special Missions	EU	exact	Metal Gear Solid: Special Missions	SLES-02136
+NPHB00641	Smash Court 2	ASIA	exact	Smash Court 2	SLPS-01693
+NPHI00001	Arc The Lad	ASIA	exact	Arc the Lad | Arc the Lad [PSOne Books]	SCPS-10008 / SCPS-91004 / SCPS-91302
+NPHI00002	Everybody's Golf2	ASIA	fuzzy:0.97	Everybody's Golf 2	SCES-02146
+NPHI00003	JumpingFlash!	ASIA	fuzzy:0.88	Rap-la-MuuMuu from JumpingFlash! 2	PAPX-90007
+NPHI00004	TOMARUNNER!	ASIA	fuzzy:0.90	Gekisou Tomarunner	PCPX-96164 / SCPS-10087
+NPHI00011	Panekit	ASIA	fuzzy:0.87	Panekit: Infinitive Crafting Toy Case	SCPS-10096
+NPHI00012	XI[sai]	ASIA	exact	XI [Sai] | XI [sГЎi]	PAPX-90032 / PAPX-90037 / PAPX-90039 / SCPS-10051 / SCPS-45268 / SCPS-91166 / SCPS-91303
+NPHI00013	DEPTH	ASIA	exact	Depth	SCPS-18003
+NPHI00014	JumpingFlash!2	ASIA	fuzzy:0.88	Rap-la-MuuMuu from JumpingFlash! 2	PAPX-90007
+NPHI00015	WILD ARMS	ASIA	exact	Wild Arms	PCPX-96034 / SCES-00321 / SCES-01171 / SCES-01172 / SCES-01173 / SCES-01174 / SCPS-10028 / SCPS-45027 / SCPS-91038 / SCPS-91306 / SCUS-94608
+NPHI00016	Robbit mon Dieu	ASIA	exact	Robbit mon Dieu	PAPX-90098 / SCPS-10103
+NPHI00017	Bealphareth	ASIA	exact	Bealphareth	SCPS-10138
+NPHI00018	Tiny Bullets	ASIA	exact	Tiny Bullets	SCPS-10130
+NPHI00020	Ape Escape! (For PS3)	ASIA	exact	Ape Escape | Ape Escape (Demo 1) (EDC) | Ape Escape (Demo 2) | Ape Escape (Demo)	SCED-02133 / SCES-01564 / SCES-02028 / SCES-02029 / SCES-02030 / SCUS-94423 / SCUS-94470 / SCUS-94489
+NPHI00021	My Hot Cooking (For PS3)	ASIA	none		
+NPHI00022	PoPoLoCrois	ASIA	fuzzy:0.95	Popolocrois II [PlayStation the Best] (Disc 1) | Popolocrois II [PlayStation the Best] (Disc 2) | Popolocrois II [PlayStation the Best] (Disc 3)	SCPS-91220 / SCPS-91221 / SCPS-91222
+NPHI00023	XI[sai] JUMBO	ASIA	exact	XI [Sai] Jumbo | XI [sГЎi] Jumbo	SCPS-10123 / SCPS-45465 / SCPS-91231
+NPHI00024	I.Q Intelligent Qube	ASIA	exact	I.Q: Intelligent Qube | I.Q: Intelligent Qube (Demo)	PCPX-96058 / SCPS-10029 / SCPS-45036 / SCPS-91068 / SCUS-94181 / SCUS-94196
+NPHI00025	I.Q FINAL	ASIA	exact	I.Q Final | I.Q Final [PlayStation the Best]	PAPX-90063 / PCPX-96137 / SCPS-10071 / SCPS-91227 / SCPS-91311
+NPHI00026	Arc The Lad II	ASIA	exact	Arc the Lad II	SCPS-10026 / SCPS-91071 / SCPS-91310
+NPHI00027	Arc The Lad III	ASIA	exact	Arc the Lad III | Arc the Lad III (Disc 1) | Arc the Lad III (Disc 2)	PAPX-90093 / PAPX-90099 / PCPX-96176 / SCPS-10106 / SCPS-10107 / SCPS-45438 / SCPS-45439 / SCPS-91228 / SCPS-91229 / SCPS-91316 / SCPS-91317
+NPHI00028	Arc the Lad Monster Game with Casino Game	ASIA	exact	Arc the Lad: Monster Game with Casino Game (Disc 1) (Monster Game) | Arc the Lad: Monster Game with Casino Game (Disc 2) (Casino Game)	SCPS-10040 / SCPS-10041
+NPHI00029	Um Jammer Lammy	ASIA	exact	Um Jammer Lammy | Um Jammer Lammy (Demo) | Um Jammer Lammy [PSOne Books]	PCPX-96150 / SCES-01753 / SCPS-18011 / SCPS-45391 / SCPS-91226 / SCPS-91325 / SCUS-94398 / SCUS-94448
+NPHI00030	Gunners Heaven	ASIA	exact	Gunners Heaven	SCPS-10006
+NPHI00031	CIRCADIA	ASIA	exact	Circadia | Circadia (Disc 1) | Circadia (Disc 2)	PAPX-90073 / PCPX-96138 / PCPX-96140 / SCPS-10077 / SCPS-10078
+NPHI00032	The Chronicles of Berdeseruba	ASIA	fuzzy:0.65	Chronicles of the Sword (Disc 1) | Chronicles of the Sword (Disc 2)	SCUS-94700 / SCUS-94701 / SLES-00165 / SLES-00166 / SLES-00167 / SLES-00191 / SLES-00192 / SLES-10165 / SLES-10166 / SLES-10167 / SLES-10191 / SLES-10192
+NPHI00033	Motor Toon Grand Prix	ASIA	exact	Motor Toon Grand Prix	SCPS-10001 / SCUS-94355
+NPHI00034	Legend of Dragoon	ASIA	fuzzy:0.95	Legend of Dragoon, The (Disc 1) | Legend of Dragoon, The (Disc 2) | Legend of Dragoon, The (Disc 3) | Legend of Dragoon, The (Disc 4) | The Legend of Dragoon | The Legend of Dragoon (Disc 1) | The Legend of Dragoon (Disc 2) | The Legend of Dragoon (Disc 3) | The Legend of Dragoon (Disc 4)	PAPX-90091 / PAPX-90103 / PAPX-90104 / PCPX-96184 / SCES-03043 / SCES-03044 / SCES-03045 / SCES-03046 / SCES-03047 / SCES-13043 / SCES-13044 / SCES-13045 / SCES-13046 / SCES-13047 / SCES-23043 / SCES-23044 / SCES-23045 / SCES-23046 / SCES-23047 / SCES-33043 / SCES-33044 / SCES-33045 / SCES-33046 / SCES-33047 / SCPS-10119 / SCPS-10120 / SCPS-10121 / SCPS-10122 / SCPS-45461 / SCPS-45462 / SCPS-45463 / SCPS-45464 / SCUS-94491 / SCUS-94584 / SCUS-94585 / SCUS-94586
+NPHI00035	Cool Boarders 2	ASIA	exact	Cool Boarders 2	SCES-00992 / SCUS-94358
+NPHI00036	MediEvil	ASIA	exact	MediEvil | MediEvil (Beta 8) | MediEvil (Demo)	SCES-00311 / SCES-01492 / SCES-01493 / SCES-01494 / SCES-01495 / SCUS-94227 / SCUS-94291
+NPHI00037	Wild Arms	ASIA	exact	Wild Arms	PCPX-96034 / SCES-00321 / SCES-01171 / SCES-01172 / SCES-01173 / SCES-01174 / SCPS-10028 / SCPS-45027 / SCPS-91038 / SCPS-91306 / SCUS-94608
+NPHJ00001	Mr. DRILLER	ASIA	exact	Mr Driller | Mr. Driller	SCES-02771 / SCPS-45259 / SLPS-02600 / SLUS-01111
+NPHJ00002	SilentBomber	ASIA	fuzzy:0.96	Silent Bomber	SCPS-45437 / SLES-02989 / SLES-02990 / SLES-02991 / SLES-02992 / SLPM-80494 / SLPS-02334 / SLUS-00902
+NPHJ00003	Biohazard: Director’s Cut	ASIA	fuzzy:0.98	Bio Hazard: Director's Cut	SLPS-00998
+NPHJ00004	DINO CRISIS	ASIA	exact	Dino Crisis | Dino Crisis (Demo)	SLES-02207 / SLES-02208 / SLES-02209 / SLES-02210 / SLES-02211 / SLPM-86903 / SLPS-02180 / SLUS-00922 / SLUS-90066
+NPHJ00005	Marl Kingdom～Doll Princess～	ASIA	none		
+NPHJ00006	Tail of the Sun　WILD・PURE・SIMPLE LIFE	ASIA	fuzzy:0.90	Tail of the Sun	SCUS-94607
+NPHJ00007	U-SA	ASIA	exact	U-SA	SLPS-02693
+NPHJ00009	THE CONVENI!	ASIA	fuzzy:0.88	The Conveni 2: Zenkoku Chain Tenkai da!	SLPM-86691 / SLPS-01146
+NPHJ00014	The King of Fighters '95	ASIA	exact	The King of Fighters '95	SLPS-00351 / SLPS-91026
+NPHJ00015	THE KING OF FIGHTERS’96	ASIA	exact	The King of Fighters '96	SLPM-86110 / SLPS-00834
+NPHJ00016	The King of Fighters ’97	ASIA	exact	The King of Fighters '97	SCPS-45248 / SLPM-80242 / SLPM-86084 / SLPM-86245 / SLPS-91511
+NPHJ00018	REAL BOUT FATAL FURY SPECIAL DOMINATED MIND	ASIA	fuzzy:0.91	Real Bout Fatal Fury	SCES-00561
+NPHJ00019	Marl Kingdom2 ～Little Princess～	ASIA	none		
+NPHJ00020	SEPTENTRION	ASIA	fuzzy:0.88	Septentrion: Out of the Blue	SLPM-86612 / SLPS-01940
+NPHJ00021	SPECTRAL TOWER	ASIA	exact	Spectral Tower	SLPS-00476
+NPHJ00022	SPECTRAL FORCE 2	ASIA	exact	Spectral Force 2	SLPS-01628 / SLPS-02784
+NPHJ00023	EMBRACE in the SAND	ASIA	none		
+NPHJ00024	GUILTYGEAR	ASIA	fuzzy:0.95	Guilty Gear	SLES-02494 / SLPM-80302 / SLPS-01357 / SLPS-02273 / SLUS-00772
+NPHJ00025	The King of Fighters '98	ASIA	fuzzy:0.96	The King of Fighters '95 | The King of Fighters '96 | The King of Fighters '97 | The King of Fighters '99 | The King of Fighters '99 [SNK Best Collection] [Reprint]	SCPS-45248 / SCPS-45489 / SLPM-80242 / SLPM-86084 / SLPM-86110 / SLPM-86245 / SLPM-86462 / SLPM-86784 / SLPS-00351 / SLPS-00834 / SLPS-03450 / SLPS-91026 / SLPS-91511
+NPHJ00026	THE KING OF FIGHTERS'99	ASIA	exact	The King of Fighters '99 | The King of Fighters '99 [SNK Best Collection] [Reprint]	SCPS-45489 / SLPM-86462 / SLPM-86784 / SLPS-03450
+NPHJ00027	SAMURAI SHODOWN 3	ASIA	fuzzy:0.92	Samurai Shodown III	SCES-00563
+NPHJ00028	THE KING OF FIGHTERS KYO	ASIA	exact	The King of Fighters Kyo [SNK Best Collection]	SLPM-86314
+NPHJ00029	Samurai Shodown 4 Special	ASIA	fuzzy:0.77	Samurai Shodown III	SCES-00563
+NPHJ00030	Metal Slug	ASIA	fuzzy:0.95	Metal Slug X	SCPS-45490 / SLES-03575 / SLUS-01212
+NPHJ00031	SANVEIN	ASIA	exact	Sanvein	SLES-02919
+NPHJ00032	Cotton Original (SuperLite 1500 Series)	ASIA	fuzzy:0.89	Fantastic Night Dreams: Cotton Original	SLPS-02034
+NPHJ00033	SPECTRAL TOWERⅡ	ASIA	fuzzy:0.97	Spectral Tower	SLPS-00476
+NPHJ00034	OASIS ROAD	ASIA	exact	Oasis Road	SLPS-01899
+NPHJ00036	AI MAHJONG SELECTION	ASIA	exact	AI Mahjong Selection	SLPM-87117
+NPHJ00037	ZIPANGUJIMA～Unmei wa Saikoro ga Kimeru!?～	ASIA	fuzzy:0.94	Zipangu-jima: Unmei wa Saikoro ga Kimeru!?	SLPM-80488 / SLPM-86643 / SLPS-02244 / SLPS-02260
+NPHJ00039	PUZZLE MANIA 2	ASIA	exact	Puzzle Mania 2	SLPM-86674 / SLPS-01952
+NPHJ00040	BOXER'S ROAD	ASIA	exact	Boxer's Road	SLPS-00033 / SLPS-91007
+NPHJ00041	The Adventure of Little Ralph	ASIA	fuzzy:0.91	Chippoke Ralph no Daibouken: The Adventure of Little Ralph	SLPM-80433 / SLPS-01853
+NPHJ00042	AI SHOGI SELECTION	ASIA	fuzzy:0.97	AI Shougi Selection	SLPM-87068
+NPHJ00044	SuperLite 1500 Series CHITTY　CHITTY　CHICKEN	ASIA	exact	SuperLite 1500 Series: Chitty Chitty Chicken	SLPM-86630
+NPHJ00045	KING'S FIELD	ASIA	exact	King's Field	SCES-00510 / SLPS-00017 / SLPS-03578 / SLPS-91401 / SLUS-00158
+NPHJ00046	ARMORED CORE (For PS3)	ASIA	exact	Armored Core | Armored Core (Reprint) | Armored Core [PSOne Books]	SCES-00842 / SCPS-45060 / SCUS-94182 / SLPM-80111 / SLPM-80118 / SLPM-80119 / SLPS-00900 / SLPS-03581 / SLPS-91064 / SLPS-91402 / SLUS-01323
+NPHJ00047	KING'S FIELD II	ASIA	exact	King's Field II	SLPS-00069 / SLPS-03579 / SLPS-91003 / SLPS-91423 / SLUS-00255
+NPHJ00048	KING'S FIELD III	ASIA	exact	King's Field III	SLPS-00377 / SLPS-03580 / SLPS-91089 / SLPS-91426
+NPHJ00049	ARMORED CORE　PROJECT PHANTASMA (For PS3)	ASIA	exact	Armored Core: Project Phantasma	SLPS-01130 / SLPS-91110 / SLPS-91424 / SLUS-00670
+NPHJ00050	SHADOW TOWER	ASIA	exact	Shadow Tower	SLPS-01420 / SLUS-00863
+NPHJ00051	ECHO NIGHT	ASIA	exact	Echo Night	SLPS-01518 / SLPS-91143 / SLPS-91403 / SLUS-00820
+NPHJ00052	ECHO NIGHT 2	ASIA	fuzzy:0.95	Echo Night	SLPS-01518 / SLPS-91143 / SLPS-91403 / SLUS-00820
+NPHJ00053	ATHENA -Awakening from the ordinary life-	ASIA	exact	Athena: Awakening from the Ordinary Life | Athena: Awakening from the Ordinary Life (Disc 1) | Athena: Awakening from the Ordinary Life (Disc 2) | Athena: Awakening from the Ordinary Life (Disc 3)	SLPM-80413 / SLPM-86185 / SLPM-86186 / SLPM-86187
+NPHJ00054	GAKKOU DE ATTA KOWAIHANASI	ASIA	fuzzy:0.93	Gakkou de Atta Kowai Hanashi S	SLPS-00404
+NPHJ00055	Prismaticallization	ASIA	exact	Prismaticallization	SLPS-02360
+NPHJ00056	Memorial☆Series SUNSOFT Vol.1	ASIA	fuzzy:0.97	Memorial Series: Sunsoft Vol. 1	SLPS-03135
+NPHJ00057	Memorial☆Series SUNSOFT Vol.2	ASIA	fuzzy:0.97	Memorial Series: Sunsoft Vol. 2	SLPS-03181
+NPHJ00058	Memorial☆Series SUNSOFT Vol.3	ASIA	fuzzy:0.97	Memorial Series: Sunsoft Vol. 3	SLPS-03366
+NPHJ00059	THE CONVENI 2	ASIA	fuzzy:0.88	The Conveni 2: Zenkoku Chain Tenkai da!	SLPM-86691 / SLPS-01146
+NPHJ00060	Arcade Hits Sonic Wings Special	ASIA	exact	Arcade Hits: Sonic Wings Special	SLPM-87137
+NPHJ00061	BLUE BREAKER	ASIA	fuzzy:0.90	Blue Breaker: Egao no Yakusoku	SLPM-86646 / SLPS-01122
+NPHJ00062	AZITO	ASIA	exact	Azito	SLPM-87284 / SLPS-00683
+NPHJ00063	Biohazard 2	ASIA	exact	Biohazard 2 | Biohazard 2 (Disc 1) (Leon-hen) | Biohazard 2 (Disc 2) (Claire-hen)	SLPS-00999 / SLPS-01222 / SLPS-01223
+NPHJ00065	Atelier Marie Plus	ASIA	fuzzy:0.91	Marie no Atelier Plus: Salburg no Renkinjutsushi	SLPS-01418 / SLPS-91179
+NPHJ00066	ARMORED CORE MASTER OF ARENA	ASIA	exact	Armored Core: Master of Arena | Armored Core: Master of Arena (Disc 1) | Armored Core: Master of Arena (Disc 2)	SLPM-80371 / SLPS-01855 / SLPS-01856 / SLPS-91188 / SLPS-91189 / SLPS-91444 / SLPS-91445 / SLUS-01030 / SLUS-01081
+NPHJ00067	BLUE BREAKER BURST	ASIA	fuzzy:0.91	Blue Breaker Burst: Bishou o Anata to | Blue Breaker Burst: Egao no Asu ni | Blue Breaker Burst: Hohoemi o Anata to	SLPM-86647 / SLPM-86648 / SLPS-01469 / SLPS-01502 / SLPS-01580
+NPHJ00068	BLUE BREAKER BURST-2	ASIA	fuzzy:0.91	Blue Breaker Burst: Bishou o Anata to | Blue Breaker Burst: Egao no Asu ni | Blue Breaker Burst: Hohoemi o Anata to	SLPM-86647 / SLPM-86648 / SLPS-01469 / SLPS-01502 / SLPS-01580
+NPHJ00069	Waiwai Kart	ASIA	fuzzy:0.96	Wai Wai Kart	SLPM-87230
+NPHJ00070	BLOCK KUZUSHI	ASIA	exact	Block Kuzushi	SLPM-87236
+NPHJ00071	WAIWAI KUSAYAKYU	ASIA	fuzzy:0.91	Wai Wai Kusa Yakyuu	SLPM-87244
+NPHJ00072	Falcata	ASIA	fuzzy:0.88	Falcata: Astran Pardma no Monshou	SLPS-00010
+NPHJ00073	Meru Purana	ASIA	exact	Meru Purana	SLPS-00359
+NPHJ00074	Noir yeux noire -Cielgris Fantasm-	ASIA	fuzzy:0.70	Kuroi Hitomi no Noir: Cielgris Fantasm	SLPS-01450
+NPHJ00075	The adventures of Robin Lloyd	ASIA	fuzzy:0.62	Adventures of Lomax, The	SCUS-94906
+NPHJ00077	Master Of Monsters Akatsuki no Kenjatachi	ASIA	fuzzy:0.99	Master of Monsters: Akatsuki no Kenja-tachi	SLPM-86542 / SLPS-00916
+NPHJ00078	Arcade Hits ShienRyu	ASIA	fuzzy:0.98	Arcade Hits: Shienryuu	SLPM-87228
+NPHJ00082	Atelier Elie	ASIA	fuzzy:0.90	Atelier Elie: Elie no Atelier: Salburg no Renkinjutsushi 2	SLPS-01751 / SLPS-91180
+NPHJ00083	Wizard's Harmony	ASIA	exact	Wizard's Harmony | Wizard's Harmony [Reprint]	SLPS-00194 / SLPS-01877
+NPHJ00085	LORD MONARCH	ASIA	fuzzy:0.89	Lord Monarch: Shin Gaia Oukokuki	SLPM-86524 / SLPS-01728
+NPHJ00086	Wizard's Harmony 2	ASIA	exact	Wizard's Harmony 2	SCPS-45135 / SLPS-00984
+NPHJ00087	TAMAMAYU MONOGATARI	ASIA	exact	Tamamayu Monogatari | Tamamayu Monogatari [PSOne Books]	SLPS-01729 / SLPS-91154 / SLPS-91461
+NPHJ00092	Acid	ASIA	exact	Acid	SLPM-80430 / SLPM-86589 / SLPS-02119
+NPHJ00093	THE AQUANAUT'S HOLIDAY: MEMORIES OF SUMMER 1996	ASIA	fuzzy:0.89	Aquanaut's Holiday	SCES-00241 / SCUS-94603
+NPHJ00094	THE AQUANAUT'S HOLIDAY 2	ASIA	fuzzy:0.95	Aquanaut's Holiday	SCES-00241 / SCUS-94603
+NPHJ00095	BELTLOGGER 9	ASIA	exact	Beltlogger 9 | Beltlogger 9 [PSOne Books]	SLPS-00581 / SLPS-00582 / SLPS-91462
+NPHJ00096	BIOHAZARD 3 LAST ESCAPE	ASIA	exact	Biohazard 3: Last Escape	SLPM-80485 / SLPM-87224 / SLPS-02300
+NPHJ00097	DEAD OR ALIVE	ASIA	exact	Dead or Alive | Dead or Alive (Demo)	SCED-01372 / SCES-01259 / SCPS-45190 / SLPS-01289 / SLUS-00606 / SLUS-80606
+NPHJ00098	DECEPTION(KOKUMEIKAN)	ASIA	fuzzy:0.90	Devil's Deception | Kagero: Deception II | Kagero: Deception II (Demo)	SLES-00848 / SLES-01967 / SLUS-00677 / SLUS-90041
+NPHJ00099	MONSTER FARM JUMP	ASIA	exact	Monster Farm Jump	SLPS-03160
+NPHJ00100	KAGERO(TRAPT)	ASIA	fuzzy:0.90	Kagero: Deception II | Kagero: Deception II (Demo)	SLES-01967 / SLUS-00677 / SLUS-90041
+NPHJ00101	SOUMATOU(DARK DELUSION)	ASIA	exact	Soumatou | Soumatou [PlayStation the Best]	SLPM-80507 / SLPS-02479 / SLPS-91237
+NPHJ00102	ANGEL EYES(TOUKI DENSETU)	ASIA	fuzzy:0.90	Touki Denshou: Angel Eyes	SLPS-01168
+NPHJ00103	Kawa No Nushi Zuri	ASIA	fuzzy:0.62	Kawa no Nushi Tsuri: Hikyou o Motomete [PSOne Books] | Kawa no Nushi-tsuri: Hikyou o Motomete	SLPS-01536 / SLPS-91155 / SLPS-91502
+NPHJ00104	Bokujou Monogatari Harvest Moon	ASIA	exact	Bokujou Monogatari: Harvest Moon	SLPS-02489 / SLPS-91218
+NPHJ00105	Bokujou Monogatari Harvest Moon for Girl	ASIA	exact	Bokujou Monogatari: Harvest Moon for Girl	SLPS-03087 / SLPS-91525
+NPHJ00106	FINAL FANTASY VII INTERNATIONAL	ASIA	exact	Final Fantasy VII International (Disc 1) | Final Fantasy VII International (Disc 2) | Final Fantasy VII International (Disc 3) | Final Fantasy VII International (Disc 4) (Perfect Guide)	SLPM-84020 / SLPM-84021 / SLPM-84022 / SLPM-87380 / SLPM-87381 / SLPM-87382 / SLPM-87383 / SLPS-01057 / SLPS-01058 / SLPS-01059 / SLPS-01060 / SLPS-91440 / SLPS-91441 / SLPS-91442 / SLPS-91443
+NPHJ00107	FRONT MISSION ALTERNATIVE	ASIA	exact	Front Mission Alternative	SCPS-45090 / SLPM-87398 / SLPS-00953
+NPHJ00108	BRAVE FENCER MUSASHIDEN	ASIA	exact	Brave Fencer Musashiden	SCPS-45291 / SLPM-80262 / SLPS-01490 / SLPS-02769
+NPHJ00109	DICE DE CHOCOBO	ASIA	exact	Dice de Chocobo	SLPS-02523
+NPHJ00110	FINAL FANTASY TACTICS	ASIA	exact	Final Fantasy Tactics | Final Fantasy Tactics (Disc 1) | Final Fantasy Tactics (Disc 2)	SCPS-45087 / SCPS-45088 / SCUS-94221 / SLPM-87392 / SLPS-00770 / SLPS-02768 / SLPS-91435
+NPHJ00111	FINAL FANTASY	ASIA	exact	Final Fantasy	SLPS-03430 / SLPS-03500
+NPHJ00112	FINAL FANTASY II	ASIA	exact	Final Fantasy II	SLPS-03501 / SLPS-03502
+NPHJ00113	GAIASEED	ASIA	fuzzy:0.88	GaiaSeed: Project Seed Trap	SLPS-00624
+NPHJ00114	TALL TWINS TOWER	ASIA	exact	Tall: Twins Tower	SLPS-03021
+NPHJ00116	VAGRANT STORY	ASIA	exact	Vagrant Story	SCPS-45486 / SLES-02754 / SLES-02755 / SLES-02756 / SLPM-87393 / SLPS-02377 / SLPS-91457 / SLUS-01040
+NPHJ00117	THE RAPID ANGEL	ASIA	fuzzy:0.90	Kaisoku Tenshi: The Rapid Angel	SLPS-01553
+NPHJ00119	Epica Stella	ASIA	exact	Epica Stella	SLPS-01465
+NPHJ00126	FINAL FANTASY VIII	ASIA	exact	Final Fantasy VIII (Demo 1) | Final Fantasy VIII (Demo 2) | Final Fantasy VIII (Demo) | Final Fantasy VIII (Disc 1) | Final Fantasy VIII (Disc 2) | Final Fantasy VIII (Disc 3) | Final Fantasy VIII (Disc 4) | Final Fantasy VIII (Square's Preview Extra)	SCED-02062 / SCES-02080 / SCES-12080 / SCES-22080 / SCES-32080 / SCPS-45375 / SCPS-45376 / SCPS-45377 / SCPS-45378 / SLED-02258 / SLED-02259 / SLED-02262 / SLES-02080 / SLES-02081 / SLES-02082 / SLES-02083 / SLES-02084 / SLES-12080 / SLES-12081 / SLES-12082 / SLES-12083 / SLES-12084 / SLES-22080 / SLES-22081 / SLES-22082 / SLES-22083 / SLES-22084 / SLES-32080 / SLES-32081 / SLES-32082 / SLES-32083 / SLES-32084 / SLPM-80269 / SLPM-87384 / SLPM-87385 / SLPM-87386 / SLPM-87387 / SLPS-01880 / SLPS-01881 / SLPS-01882 / SLPS-01883 / SLUS-00892 / SLUS-00908 / SLUS-00909 / SLUS-00910
+NPHJ00127	Mikagura Shoujo Tanteidan	ASIA	exact	Mikagura Shoujo Tanteidan (Disc 1) (Honpen Disc Ichi) | Mikagura Shoujo Tanteidan (Disc 2) (Honpen Disc Ni) | Mikagura Shoujo Tanteidan (Disc 3) (Intermission Disc) | Mikagura Shoujo Tanteidan (Disc 4) (Special Disc)	SLPS-01611 / SLPS-01612 / SLPS-01613 / SLPS-01614
+NPHJ00128	Lucifer Ring	ASIA	exact	Lucifer Ring	SLPS-01784
+NPHJ00129	NEKOZAMURAI	ASIA	fuzzy:0.96	Neko Zamurai (Disc 1) | Neko Zamurai (Disc 2) | Neko Zamurai (Disc 3)	SLPS-01543 / SLPS-01544 / SLPS-01545
+NPHJ00137	METAL GEAR SOLID	ASIA	exact	Metal Gear Solid | Metal Gear Solid (Demo 1) | Metal Gear Solid (Demo 2) | Metal Gear Solid (Demo) | Metal Gear Solid (Disc 1) | Metal Gear Solid (Disc 1) (Ichi) | Metal Gear Solid (Disc 1) (Rev 1) | Metal Gear Solid (Disc 2) | Metal Gear Solid (Disc 2) (Ni) | Metal Gear Solid (Disc 2) (Rev 1) | Metal Gear Solid (Disc 3) | Metal Gear Solid [Konami the Best] (Disc 1) | Metal Gear Solid [Konami the Best] (Disc 2) | Metal Gear Solid [Metal Gear 20th Anniversary] (Disc 3) | Metal Gear Solid [PSOne Books] (Disc 1) | Metal Gear Solid [PSOne Books] (Disc 2)	PAPX-90044 / SCPS-45317 / SCPS-45318 / SCPS-45320 / SCPS-45321 / SCPS-45322 / SLED-01400 / SLED-01775 / SLES-01370 / SLES-01506 / SLES-01507 / SLES-01508 / SLES-01734 / SLES-11370 / SLES-11506 / SLES-11507 / SLES-11508 / SLES-11734 / SLPM-80254 / SLPM-86098 / SLPM-86111 / SLPM-86112 / SLPM-86114 / SLPM-86115 / SLPM-86485 / SLPM-86486 / SLPM-87030 / SLPM-87031 / SLPM-87411 / SLPM-87412 / SLPM-87413 / SLUS-00594 / SLUS-00776 / SLUS-80594 / SLUS-90035
+NPHJ00138	FINAL FANTASY IX	ASIA	exact	Final Fantasy IX (Disc 1) | Final Fantasy IX (Disc 1) (Rev 1) | Final Fantasy IX (Disc 2) | Final Fantasy IX (Disc 2) (Rev 1) | Final Fantasy IX (Disc 3) | Final Fantasy IX (Disc 3) (Rev 1) | Final Fantasy IX (Disc 4) | Final Fantasy IX (Disc 4) (Rev 1)	SCPS-45500 / SCPS-45501 / SCPS-45502 / SCPS-45503 / SLES-02965 / SLES-02966 / SLES-02967 / SLES-02968 / SLES-02969 / SLES-12965 / SLES-12966 / SLES-12967 / SLES-12968 / SLES-12969 / SLES-22965 / SLES-22966 / SLES-22967 / SLES-22968 / SLES-22969 / SLES-32965 / SLES-32966 / SLES-32967 / SLES-32968 / SLES-32969 / SLPM-87388 / SLPM-87389 / SLPM-87390 / SLPM-87391 / SLPS-02000 / SLPS-02001 / SLPS-02002 / SLPS-02003 / SLUS-01251 / SLUS-01295 / SLUS-01296 / SLUS-01297
+NPHJ00139	DonPachi	ASIA	exact	DonPachi	SLPM-86855 / SLPS-00548
+NPHJ00140	Hanafuda Graffiti Koikoi Monogatari	ASIA	fuzzy:0.99	Hanafuda Graffiti: Koi Koi Monogatari	SLPM-87083 / SLPS-00367
+NPHJ00141	Hana to Ryuu ～Hanafuda・Mah-jong～	ASIA	fuzzy:0.92	Hana to Ryuu: Hanafuda, Mahjong	SLPM-87062
+NPHJ00143	Zoku Mikagura Shoujo Tanteidan ～Kanketsu Hen～	ASIA	fuzzy:0.98	Zoku Mikagura Shoujo Tanteidan: Kanketsu-hen (Disc 1) | Zoku Mikagura Shoujo Tanteidan: Kanketsu-hen (Disc 2) | Zoku Mikagura Shoujo Tanteidan: Kanketsu-hen (Disc 3) | Zoku Mikagura Shoujo Tanteidan: Kanketsu-hen (Disc 4)	SLPS-02266 / SLPS-02267 / SLPS-02268 / SLPS-02269
+NPHJ00144	NOëL NOT DiGITAL	ASIA	exact	NOëL: Not Digital (Disc 1) | NOëL: Not Digital (Disc 2)	SLPS-00304 / SLPS-00305 / SLPS-00316 / SLPS-00317 / SLPS-91043 / SLPS-91044
+NPHJ00147	KAKUGE- YAROU -FightingGameCreator	ASIA	fuzzy:0.97	Kakuge Yarou: Fighting Game Creator	SLPS-02595
+NPHJ00148	Family Chess	ASIA	exact	Family Chess	SLPS-03392
+NPHJ00149	Family Diamond	ASIA	exact	Family Diamond	SLPS-03348
+NPHJ00150	Family Gunjin Shogi	ASIA	fuzzy:0.97	Family Gunjin Shougi	SLPS-03379
+NPHJ00151	PUPPET ZOO PILOMY	ASIA	exact	Puppet Zoo Pilomy	SLPS-00149
+NPHJ00152	Bakuretsu Akindo Uchuu Goushouden	ASIA	fuzzy:0.95	Uchuu Goushouden: Bakuretsu Akindo	SLPS-00236
+NPHJ00153	Shinobi no Roku	ASIA	exact	Shinobi no Roku	SLPS-02877
+NPHJ00154	Arcade Hits WOLF FANG	ASIA	fuzzy:0.92	Arcade Hits: Wolf Fang: Kuuga 2001	SLPM-87270
+NPHJ00155	Sekai Saikyou Ginsei Igo3	ASIA	fuzzy:0.98	Sekai Saikyou Ginsei Igo 3	SLPS-03563
+NPHJ00156	DODONPACHI	ASIA	exact	DoDonPachi	SLPM-80286 / SLPS-01364
+NPHJ00157	Jet Copter X	ASIA	exact	Jet Copter X	SLPM-86894
+NPHJ00159	DEWPRISM	ASIA	exact	DewPrism	SCPS-45436 / SLPM-87402 / SLPS-02330 / SLPS-91455
+NPHJ00161	Legend of Mana	ASIA	exact	Legend of Mana	SLUS-01013
+NPHJ00163	FRONT MISSION 3	ASIA	exact	Front Mission 3 | Front Mission 3 (Beta)	SLES-02423 / SLPM-80467 / SLPM-87332 / SLPM-87399 / SLPS-02222 / SLPS-02772 / SLPS-91447 / SLUS-01011
+NPHJ00166	Rayman	ASIA	exact	Rayman | Rayman (EDC) | Rayman (Playable Game Preview)	SLES-00049 / SLPS-00026 / SLUS-00005 / SLUS-90001
+NPHJ00167	Rayman 2: The Great Escape	ASIA	exact	Rayman 2: The Great Escape | Rayman 2: The Great Escape (Demo)	SLES-02905 / SLES-02906 / SLUS-01235 / SLUS-90095
+NPHJ00168	Tom Clancy's Rainbow Six	ASIA	exact	Tom Clancy's Rainbow Six	SLES-01136 / SLES-02372 / SLUS-00947
+NPHJ00169	Dino Crisis	ASIA	exact	Dino Crisis | Dino Crisis (Demo)	SLES-02207 / SLES-02208 / SLES-02209 / SLES-02210 / SLES-02211 / SLPM-86903 / SLPS-02180 / SLUS-00922 / SLUS-90066
+NPHJ00170	Resident Evil Director's Cut	ASIA	exact	Resident Evil: Director's Cut	SLES-00969 / SLES-00970 / SLES-00971 / SLUS-00551
+NPHJ00171	Resident Evil 2	ASIA	exact	Resident Evil 2 | Resident Evil 2 (Demo) | Resident Evil 2 (Disc 1) | Resident Evil 2 (Disc 2) | Resident Evil 2 (Preview)	SLED-00977 / SLES-00972 / SLES-00973 / SLES-00974 / SLES-00975 / SLES-00976 / SLES-10972 / SLES-10973 / SLES-10974 / SLES-10975 / SLES-10976 / SLUS-00421 / SLUS-00592 / SLUS-80421 / SLUS-90009
+NPHJ00172	Resident Evil 3: Nemesis	ASIA	exact	Resident Evil 3: Nemesis | Resident Evil 3: Nemesis (Demo)	SLED-02541 / SLES-02529 / SLES-02530 / SLES-02531 / SLES-02532 / SLES-02533 / SLES-02698 / SLUS-00923 / SLUS-90064
+NPHJ00173	Street Fighter Alpha	ASIA	fuzzy:0.95	Street Fighter Alpha 2 | Street Fighter Alpha 3	SLES-00496 / SLES-01863 / SLUS-00258 / SLUS-00821
+NPHJ00174	Street Fighter Alpha 2	ASIA	exact	Street Fighter Alpha 2	SLES-00496 / SLUS-00258
+NPHJ00176	Military Madness: Nectaris	ASIA	fuzzy:0.95	Nectaris: Military Madness	SLUS-00764
+NPHJ00177	Bomberman Land	ASIA	exact	Bomberman Land	SLPM-87080 / SLPM-87364 / SLPS-03002
+NPHJ00178	Bloody Roar	ASIA	exact	Bloody Roar	SCUS-94199
+NPHJ00179	Bomberman Party Edition	ASIA	exact	Bomberman: Party Edition	SLUS-01189
+NPHJ00180	BOMBERMAN FANTASY RACE	ASIA	exact	Bomberman Fantasy Race	SLES-01712 / SLPM-87102 / SLPS-01525 / SLPS-91138 / SLUS-00823
+NPHJ00181	Bloody Roar 2	ASIA	fuzzy:0.95	Bloody Roar | Bloody Roar II	SCUS-94199 / SCUS-94424
+NPHJ00182	Chocobo no Fushigina Dungeon	ASIA	fuzzy:0.98	Chocobo no Fushigi na Dungeon | Chocobo no Fushigi na Dungeon (Disc 1) | Chocobo no Fushigi na Dungeon (Disc 2) | Chocobo no Fushigi na Dungeon [PSOne Books]	SCPS-45163 / SCPS-45164 / SLPS-01234 / SLPS-91439
+NPHJ00197	SIMPLE1500SERIES Vol.65 THE GOLF	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 65: The Golf	SLPM-86842
+NPHJ00198	SIMPLE1500SERIES Vol.33 THE TABLE TENNIS	ASIA	fuzzy:0.88	Tennis | V-Tennis | V-Tennis 2	SLES-00285 / SLPS-00103 / SLPS-00469 / SLUS-00218 / SLUS-01348
+NPHJ00199	SIMPLE1500SERIES Vol.32 THE BOXING	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 32: The Boxing	SLPS-02922
+NPHJ00200	SIMPLE1500SERIES Vol.64 THE KICK-BOXING	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 64: The Kick Boxing	SLPM-86841
+NPHJ00201	SIMPLE1500SERIES Vol.72 THE BEACH VOLLEYBALL	ASIA	fuzzy:0.93	Simple 1500 Series Vol. 72: The Beach Volley	SLPM-86871
+NPHJ00202	SIMPLE1500SERIES Vol.18 THE BOWLING	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 18: The Bowling	SLPS-02433
+NPHJ00203	SIMPLE1500SERIES Vol.63 THE GUN SHOOTING 2	ASIA	fuzzy:0.98	Simple 1500 Series Vol. 63: The Gun Shooting 2	SLPM-86816
+NPHJ00204	SIMPLE1500SERIES Vol.35 THE SHOOTING	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 35: The Shooting	SLPS-02910
+NPHJ00205	SIMPLE1500SERIES Vol.56 THE SNIPER	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 56: The Sniper	SLPM-86762
+NPHJ00206	SIMPLE1500SERIES Vol.37 THE PICTURE & SLIDE PUZZLE	ASIA	fuzzy:0.86	Simple 1500 Series Vol. 37: The Illust Puzzle & Slide Puzzle	SLPS-02958
+NPHJ00207	SIMPLE1500SERIES Vol.14 THE BLOCK BREAKER	ASIA	fuzzy:0.83	Simple 1500 Series Vol. 14: The Block Kuzushi	SLPS-02227 / SLPS-02450
+NPHJ00208	SIMPLE1500SERIES Vol.45 THE BLOCK BREAKER 2	ASIA	fuzzy:0.84	Simple 1500 Series Vol. 45: The Block Kuzushi 2	SLPS-03036
+NPHJ00209	SIMPLE1500SERIES Vol.44 THE CARD 2	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 44: The Card 2	SLPS-03007
+NPHJ00210	SIMPLE1500SERIES Vol.39 THE MAH-JOHNG 2	ASIA	fuzzy:0.95	Simple 1500 Series Vol. 39: The Mahjong 2	SLPS-03004
+NPHJ00211	SIMPLE1500SERIES Vol.41 THE REVERSI 2	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 41: The Reversi 2	SLPS-03010
+NPHJ00212	SIMPLE1500SERIES Vol.55 THE DARTS	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 55: The Darts	SLPM-86714
+NPHJ00213	SIMPLE1500SERIES Vol.60 THE TABLE HOCKEY	ASIA	fuzzy:0.98	Simple 1500 Series Vol. 60: The Table Hockey	SLPM-86761
+NPHJ00214	SIMPLE1500SERIES Vol.15 THE PACHINKO	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 15: The Pachinko	SLPS-02301 / SLPS-02451
+NPHJ00215	SIMPLE1500SERIES Vol.70 THE WAR SIMULATION	ASIA	fuzzy:0.80	Simple 1500 Series Vol. 71: The Ren'ai Simulation 2: Fureai	SLPM-86870
+NPHJ00216	SIMPLE1500SERIES Vol.28 THE DUNGEON RPG	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 28: The Dungeon RPG	SLPS-02726
+NPHJ00217	SIMPLE1500SERIES Vol.53 THE HELICOPTER	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 53: The Helicopter	SLPM-86701
+NPHJ00218	SIMPLE1500SERIES Vol.57 THE MAZE	ASIA	fuzzy:0.90	Simple 1500 Series Vol. 57: The Meiro	SLPM-86715
+NPHJ00219	SIMPLE1500SERIES Vol.49 THE CASINO	ASIA	fuzzy:0.97	Simple 1500 Series Vol. 49: The Casino	SLPM-86699
+NPHJ00220	SIMPLE1500SERIES Vol.31 THE SOUND NOVELLE	ASIA	fuzzy:0.95	Simple 1500 Series Vol. 31: The Sound Novel	SLPS-02840
+NPHJ00221	Chocobo no Fushigina Dungeon 2	ASIA	fuzzy:0.98	Chocobo no Fushigi na Dungeon 2 | Chocobo no Fushigi na Dungeon 2 (Disc 1) | Chocobo no Fushigi na Dungeon 2 (Disc 2)	SCPS-45351 / SCPS-45352 / SCPS-45371 / SLPS-01771
+NPHJ00222	Parasite Eve	ASIA	exact	Parasite Eve (Disc 1) | Parasite Eve (Disc 2)	SCPS-45203 / SCPS-45204 / SLPS-01230 / SLPS-01231 / SLUS-00662 / SLUS-00668
+NPHJ00223	Parasite Eve II	ASIA	exact	Parasite Eve II (Disc 1) | Parasite Eve II (Disc 2)	SCPS-45467 / SCPS-45468 / SLES-02558 / SLES-02559 / SLES-02560 / SLES-02561 / SLES-02562 / SLES-12558 / SLES-12559 / SLES-12560 / SLES-12561 / SLES-12562 / SLPS-02480 / SLPS-02481 / SLUS-01042 / SLUS-01055
+NPHJ00225	CHRONO CROSS	ASIA	exact	Chrono Cross (Disc 1) | Chrono Cross (Disc 2)	SCPS-45447 / SCPS-45448 / SLPM-87395 / SLPM-87396 / SLPS-02364 / SLPS-02365 / SLPS-02777 / SLPS-02778 / SLPS-91464 / SLPS-91465 / SLUS-01041 / SLUS-01080
+NPHJ00226	CHRONO TRIGGER	ASIA	exact	Chrono Trigger	SCPS-45446 / SLPM-87374 / SLPS-02430 / SLPS-91446
+NPHJ00227	Final Fantasy V (Japanese)	ASIA	exact	Final Fantasy V	SCPS-45214 / SLPM-86081 / SLPS-01949
+NPHJ00228	FINAL FANTASY VI	ASIA	exact	Final Fantasy VI | Final Fantasy VI (Bonus Disc: Final Fantasy X Demo)	SCED-50642 / SCES-03828 / SCPS-45387 / SLPM-86198 / SLPS-01950
+NPHJ00229	Hi・Hou・Ou	ASIA	none		
+NPHJ00230	THE FIREMEN 2	ASIA	fuzzy:0.88	The Firemen 2: Pete & Danny	SLPS-00148 / SLPS-02090
+NPHJ00231	ZIG ZAG BALL	ASIA	none		
+NPHJ00232	NOel～La neige	ASIA	fuzzy:0.85	NOëL: La Neige (Disc 1) | NOëL: La Neige (Disc 2) | NOëL: La Neige (Disc 3)	SLPS-01190 / SLPS-01191 / SLPS-01192 / SLPS-01193 / SLPS-01194 / SLPS-01195
+NPHJ00233	Minna Atsumare!　Igo Kyoushitsu	ASIA	exact	Minna Atsumare! Igo Kyoushitsu	SLPS-03554
+NPHJ00234	NOel～La neige Special	ASIA	fuzzy:0.90	NOëL: La Neige Special	SLPS-01515
+NPHJ00235	elan	ASIA	fuzzy:0.75	Élan	SLPS-01925
+NPHJ00236	UNGRA WALKER	ASIA	fuzzy:0.92	UnGro Walker	SLPM-87055
+NPHJ00237	SuperLite1500 Series Battle SUGOROKU THE HUNTER A.R.0062	ASIA	fuzzy:0.99	SuperLite 1500 Series: Battle Sugoroku the Hunter: A.R.0062	SLPM-86400
+NPHJ00238	SuperLite1500 Series Oekaki Puzzle	ASIA	fuzzy:0.99	SuperLite 1500 Series: Oekaki Puzzle	SLPS-02068
+NPHJ00239	SuperLite1500 Series CardsⅡ	ASIA	fuzzy:0.89	SuperLite 1500 Series: Card II	SLPM-86298
+NPHJ00240	Love Game's WaiWai Tennis	ASIA	fuzzy:0.98	Love Game's: Wai Wai Tennis	PAPX-90014 / SLPM-86541 / SLPS-00686 / SLPS-01647
+NPHJ00241	ANOKODOKONOKO	ASIA	fuzzy:0.87	Ano Ko Doko no Ko	SLPS-01522
+NPHJ00242	SuperLite1500 Series Hooockey!!	ASIA	fuzzy:0.98	SuperLite 1500 Series: Hooockey!!	SLPM-86488
+NPHJ00243	SuperLite1500 Series Oekaki Puzzle 2	ASIA	fuzzy:0.99	SuperLite 1500 Series: Oekaki Puzzle 2	SLPM-86428
+NPHJ00244	SuperLite1500 Series BOMB BOAT	ASIA	fuzzy:0.95	SuperLite 1500 Series: Bomboat	SLPM-87090
+NPHJ00245	Noel3 MISSION ON THE LINE	ASIA	fuzzy:0.94	NOëL 3: Mission on the Line (Disc 1) | NOëL 3: Mission on the Line (Disc 2) | NOëL 3: Mission on the Line (Disc 3)	SLPM-86609 / SLPM-86610 / SLPM-86611 / SLPS-01895 / SLPS-01896 / SLPS-01897
+NPHJ00246	SILHOUETTE MIRAGE REPROGRAMMED HOPE	ASIA	exact	Silhouette Mirage: Reprogrammed Hope	SLPS-01449
+NPHJ00247	SuperLite1500 Series QUIZ MASTER RED	ASIA	fuzzy:0.99	SuperLite 1500 Series: Quiz Master: Red	SLPM-86516
+NPHJ00248	SuperLite1500 Series PANGAEA	ASIA	fuzzy:0.98	SuperLite 1500 Series: Pangaea	SLPM-86276
+NPHJ00249	SuperLite1500 Series THE CURLING	ASIA	fuzzy:0.98	SuperLite 1500 Series: The Curling	SLPM-86237
+NPHJ00250	SuperLite1500 Series QUIZ MASTER BLUE	ASIA	fuzzy:0.99	SuperLite 1500 Series: Quiz Master: Blue	SLPM-86517
+NPHJ00251	SuperLite1500 Series Angolmois99	ASIA	fuzzy:0.97	SuperLite 1500 Series: Angolmois 99	SLPM-86278
+NPHJ00252	SuperLite1500 Series ANOKODOKONOKO ENDLESS SEASON	ASIA	fuzzy:0.95	SuperLite 1500 Series: Ano Ko Doko no Ko: Endless Season	SLPM-86259
+NPHJ00253	SuperLite1500 Series Oekaki Puzzle 3	ASIA	fuzzy:0.99	SuperLite 1500 Series: Oekaki Puzzle 3	SLPM-86533
+NPHJ00254	SuperLite1500 Series Pinball Golden Logres	ASIA	fuzzy:0.99	SuperLite 1500 Series: Pinball: Golden Logres	SLPM-86260
+NPHJ00255	SuperLite1500 Series QUIZ MASTER YELLOW	ASIA	fuzzy:0.99	SuperLite 1500 Series: Quiz Master: Yellow	SLPM-86518
+NPHJ00256	Salary Man Champ Tatakau Salary man	ASIA	fuzzy:0.97	Salaryman Champ: Tatakau Salaryman	SLPM-86820
+NPHJ00257	Saikyou Ginsei Mahjong	ASIA	exact	Saikyou Ginsei Mahjong	SLPS-03461
+NPHJ00258	SuperLite1500 Series Oekaki Puzzle 4	ASIA	fuzzy:0.99	SuperLite 1500 Series: Oekaki Puzzle 4	SLPM-86675
+NPHJ00259	Saikyou Ginsei Chess	ASIA	exact	Saikyou Ginsei Chess	SLPS-03482
+NPHJ00260	SuperLite1500 Series Oekaki Puzzle 5	ASIA	fuzzy:0.99	SuperLite 1500 Series: Oekaki Puzzle 5	SLPM-86800
+NPHJ00261	SuperLite1500 Series COTTON 100%	ASIA	fuzzy:0.78	SuperLite 1500 Series: Crazy Balloon 2000	SLPM-86660
+NPHJ00262	Saikyou Ginsei Shougi 2	ASIA	exact	Saikyou Ginsei Shougi 2	SLPS-03481
+NPHJ00263	elan plus	ASIA	fuzzy:0.89	Élan Plus	SLPS-02759
+NPHJ00264	SuperLite1500 Series HANAFUDAⅡ	ASIA	fuzzy:0.92	SuperLite 1500 Series: Hanafuda II	SLPM-86319
+NPHJ00265	Shijin no Maki Koten Tsumego Shuu	ASIA	fuzzy:0.95	Koten Tsumego-shuu: Shijin no Maki	SLPS-00159 / SLPS-02593
+NPHJ00266	KohniShogun	ASIA	fuzzy:0.83	Kouni Shougun	SLPS-02955
+NPHJ00267	GORYUZIN ELECTRO	ASIA	fuzzy:0.86	Goryuujin + Electro	SLPS-01620
+NPHJ00268	DIGITALGLIDER AIRMAN	ASIA	fuzzy:0.98	Digital Glider Airman | Digital Glider Airman [PSOne Books]	SLPS-02276 / SLPS-91486
+NPHJ00269	FINAL FANTASY VII	ASIA	exact	Final Fantasy VII (Disc 1) | Final Fantasy VII (Disc 2) | Final Fantasy VII (Disc 3) | Final Fantasy VII (Interactive Sampler CD) | Final Fantasy VII (Square Soft on PlayStation Previews)	SCES-00867 / SCES-00868 / SCES-00869 / SCES-00900 / SCES-10867 / SCES-10868 / SCES-10869 / SCES-10900 / SCES-20867 / SCES-20868 / SCES-20869 / SCES-20900 / SCPS-45007 / SCPS-45008 / SCPS-45009 / SCUS-94163 / SCUS-94164 / SCUS-94165 / SCUS-94179 / SCUS-94961 / SLPS-00700 / SLPS-00701 / SLPS-00702
+NPHJ00270	FINAL FANTASY VIII	ASIA	exact	Final Fantasy VIII (Demo 1) | Final Fantasy VIII (Demo 2) | Final Fantasy VIII (Demo) | Final Fantasy VIII (Disc 1) | Final Fantasy VIII (Disc 2) | Final Fantasy VIII (Disc 3) | Final Fantasy VIII (Disc 4) | Final Fantasy VIII (Square's Preview Extra)	SCED-02062 / SCES-02080 / SCES-12080 / SCES-22080 / SCES-32080 / SCPS-45375 / SCPS-45376 / SCPS-45377 / SCPS-45378 / SLED-02258 / SLED-02259 / SLED-02262 / SLES-02080 / SLES-02081 / SLES-02082 / SLES-02083 / SLES-02084 / SLES-12080 / SLES-12081 / SLES-12082 / SLES-12083 / SLES-12084 / SLES-22080 / SLES-22081 / SLES-22082 / SLES-22083 / SLES-22084 / SLES-32080 / SLES-32081 / SLES-32082 / SLES-32083 / SLES-32084 / SLPM-80269 / SLPM-87384 / SLPM-87385 / SLPM-87386 / SLPM-87387 / SLPS-01880 / SLPS-01881 / SLPS-01882 / SLPS-01883 / SLUS-00892 / SLUS-00908 / SLUS-00909 / SLUS-00910
+NPHJ00271	FINAL FANTASY IX	ASIA	exact	Final Fantasy IX (Disc 1) | Final Fantasy IX (Disc 1) (Rev 1) | Final Fantasy IX (Disc 2) | Final Fantasy IX (Disc 2) (Rev 1) | Final Fantasy IX (Disc 3) | Final Fantasy IX (Disc 3) (Rev 1) | Final Fantasy IX (Disc 4) | Final Fantasy IX (Disc 4) (Rev 1)	SCPS-45500 / SCPS-45501 / SCPS-45502 / SCPS-45503 / SLES-02965 / SLES-02966 / SLES-02967 / SLES-02968 / SLES-02969 / SLES-12965 / SLES-12966 / SLES-12967 / SLES-12968 / SLES-12969 / SLES-22965 / SLES-22966 / SLES-22967 / SLES-22968 / SLES-22969 / SLES-32965 / SLES-32966 / SLES-32967 / SLES-32968 / SLES-32969 / SLPM-87388 / SLPM-87389 / SLPM-87390 / SLPM-87391 / SLPS-02000 / SLPS-02001 / SLPS-02002 / SLPS-02003 / SLUS-01251 / SLUS-01295 / SLUS-01296 / SLUS-01297
+NPHJ00272	Xenogears	ASIA	exact	Xenogears (Disc 1) | Xenogears (Disc 2) | Xenogears (Elhaym Van Houten Version) [Square Millennium Collection] (Disc 1) | Xenogears (Elhaym Van Houten Version) [Square Millennium Collection] (Disc 2) | Xenogears [PSOne Books] (Disc 2)	SCPS-45170 / SCPS-45171 / SLPS-01160 / SLPS-01161 / SLPS-02773 / SLPS-02774 / SLPS-02775 / SLPS-02776 / SLPS-91436 / SLPS-91437 / SLUS-00664 / SLUS-00669
+NPHJ00273	CYBERBOTS	ASIA	fuzzy:0.88	Cyberbots: Fullmetal Madness	SLPS-01011
+NPHJ00274	DARKSTALKERS 3 （VAMPIRE SAVIOR EX EDITION)	ASIA	fuzzy:0.88	Darkstalkers 3	SLES-01719 / SLUS-00745
+NPHJ00275	PLASMA SWORD	ASIA	fuzzy:0.61	Brave Sword	SLPS-02889
+NPHJ00276	POCKET FIGHTER	ASIA	exact	Pocket Fighter | Pocket Fighter [Playstation the Best]	SLES-01378 / SLPS-01360 / SLPS-91191 / SLUS-00653
+NPHJ00277	DINO CRISIS 2	ASIA	exact	Dino Crisis 2 | Dino Crisis 2 (Demo)	SLES-03221 / SLES-03222 / SLES-03223 / SLES-03224 / SLES-03225 / SLPM-80573 / SLPM-86627 / SLPM-87234 / SLUS-01279 / SLUS-90087
+NPHJ00278	COMMAND AND CONQUER	ASIA	exact	Command & Conquer | Command & Conquer (Disc 1) (GDI) | Command & Conquer (Disc 2) (NOD)	SLED-00652 / SLES-00530 / SLES-00531 / SLES-10530 / SLES-10531 / SLUS-00379 / SLUS-00410
+NPHJ00279	Command & Conquer Red Alert	ASIA	exact	Command & Conquer: Red Alert (Disc 1) (Allies) | Command & Conquer: Red Alert (Disc 2) (Soviet)	SLES-00949 / SLES-10949 / SLUS-00431 / SLUS-00485
+NPHJ00280	Command & Conquer Retaliation	ASIA	fuzzy:0.92	Command & Conquer | Command & Conquer (Disc 1) (GDI) | Command & Conquer (Disc 2) (NOD)	SLED-00652 / SLES-00530 / SLES-00531 / SLES-10530 / SLES-10531 / SLUS-00379 / SLUS-00410
+NPHJ00281	SimCity 2000	ASIA	exact	SimCity 2000	SLES-00471 / SLPS-00420 / SLPS-91098 / SLUS-00113
+NPHJ00282	Sim Theme Park	ASIA	fuzzy:0.96	SimTheme Park	SLUS-01069
+NPHJ00283	Championship Bass	ASIA	exact	Championship Bass	SLES-02775 / SLPS-02674 / SLUS-01084
+NPHJ00284	Extreme Pinball	ASIA	exact	Extreme Pinball	SLES-00206 / SLUS-00200
+NPHJ00285	HI-OCTANE	ASIA	exact	Hi-Octane	SLES-00115 / SLPS-00171
+NPHJ00286	Magic Carpet	ASIA	exact	Magic Carpet	SLES-00211 / SLPS-00587 / SLUS-00029
+NPHJ00287	BREATH OF FIRE IV	ASIA	exact	Breath of Fire IV | Breath of Fire IV (Beta)	SLES-03552 / SLPS-02728 / SLUS-01324
+NPHJ00288	DINO CRISIS 2	ASIA	exact	Dino Crisis 2 | Dino Crisis 2 (Demo)	SLES-03221 / SLES-03222 / SLES-03223 / SLES-03224 / SLES-03225 / SLPM-80573 / SLPM-86627 / SLPM-87234 / SLUS-01279 / SLUS-90087
+NPHJ00289	R4 RIDGE RACER TYPE 4	ASIA	exact	R4: Ridge Racer Type 4 | R4: Ridge Racer Type 4 (Disc 1) | R4: Ridge Racer Type 4 (Disc 2) | R4: Ridge Racer Type 4 [PSOne Books]	SCPS-45354 / SCPS-45355 / SCPS-45356 / SCPS-46001 / SLPS-01798 / SLPS-01800 / SLPS-91463 / SLUS-00797
+NPHJ00290	Klonoa: Door to Phantomile	ASIA	exact	Klonoa: Door to Phantomile	SCES-00942 / SCES-01185 / SCES-01186 / SCES-01187 / SCES-01188 / SLUS-00585
+NPHJ00291	TEKKEN	ASIA	exact	Tekken	SCES-00005 / SLPS-00040 / SLPS-91020 / SLUS-00006
+NPHJ00292	Xenogears	ASIA	exact	Xenogears (Disc 1) | Xenogears (Disc 2) | Xenogears (Elhaym Van Houten Version) [Square Millennium Collection] (Disc 1) | Xenogears (Elhaym Van Houten Version) [Square Millennium Collection] (Disc 2) | Xenogears [PSOne Books] (Disc 2)	SCPS-45170 / SCPS-45171 / SLPS-01160 / SLPS-01161 / SLPS-02773 / SLPS-02774 / SLPS-02775 / SLPS-02776 / SLPS-91436 / SLPS-91437 / SLUS-00664 / SLUS-00669
+NPHJ00293	BREATH OF FIRE IV	ASIA	exact	Breath of Fire IV | Breath of Fire IV (Beta)	SLES-03552 / SLPS-02728 / SLUS-01324
+NPHJ00294	ROCKMAN	ASIA	exact	Rockman	SLPM-87250 / SLPS-02220
+NPHJ00295	ROCKMAN 2	ASIA	fuzzy:0.95	Rockman | Rockman 1 [Complete Works] [Capcom Game Books] | Rockman X3 | Rockman X4 | Rockman X5 | Rockman X6	SLPM-86666 / SLPM-86959 / SLPM-87021 / SLPM-87183 / SLPM-87250 / SLPM-87315 / SLPM-87409 / SLPS-00283 / SLPS-00901 / SLPS-00902 / SLPS-02220 / SLPS-91106 / SLPS-91192
+NPHJ00296	ROCKMAN 3	ASIA	fuzzy:0.95	Rockman | Rockman 1 [Complete Works] [Capcom Game Books] | Rockman X3 | Rockman X4 | Rockman X5 | Rockman X6	SLPM-86666 / SLPM-86959 / SLPM-87021 / SLPM-87183 / SLPM-87250 / SLPM-87315 / SLPM-87409 / SLPS-00283 / SLPS-00901 / SLPS-00902 / SLPS-02220 / SLPS-91106 / SLPS-91192
+NPHJ00297	ROCKMAN 4	ASIA	fuzzy:0.95	Rockman | Rockman 1 [Complete Works] [Capcom Game Books] | Rockman X3 | Rockman X4 | Rockman X5 | Rockman X6	SLPM-86666 / SLPM-86959 / SLPM-87021 / SLPM-87183 / SLPM-87250 / SLPM-87315 / SLPM-87409 / SLPS-00283 / SLPS-00901 / SLPS-00902 / SLPS-02220 / SLPS-91106 / SLPS-91192
+NPHJ00298	ROCKMAN 5	ASIA	fuzzy:0.95	Rockman | Rockman 1 [Complete Works] [Capcom Game Books] | Rockman X3 | Rockman X4 | Rockman X5 | Rockman X6	SLPM-86666 / SLPM-86959 / SLPM-87021 / SLPM-87183 / SLPM-87250 / SLPM-87315 / SLPM-87409 / SLPS-00283 / SLPS-00901 / SLPS-00902 / SLPS-02220 / SLPS-91106 / SLPS-91192
+NPHJ00299	CHRONO TRIGGER	ASIA	exact	Chrono Trigger	SCPS-45446 / SLPM-87374 / SLPS-02430 / SLPS-91446
+NPHJ00300	CHRONO CROSS	ASIA	exact	Chrono Cross (Disc 1) | Chrono Cross (Disc 2)	SCPS-45447 / SCPS-45448 / SLPM-87395 / SLPM-87396 / SLPS-02364 / SLPS-02365 / SLPS-02777 / SLPS-02778 / SLPS-91464 / SLPS-91465 / SLUS-01041 / SLUS-01080
+NPHJ00301	Parasite Eve	ASIA	exact	Parasite Eve (Disc 1) | Parasite Eve (Disc 2)	SCPS-45203 / SCPS-45204 / SLPS-01230 / SLPS-01231 / SLUS-00662 / SLUS-00668
+NPHJ00302	Parasite Eve II	ASIA	exact	Parasite Eve II (Disc 1) | Parasite Eve II (Disc 2)	SCPS-45467 / SCPS-45468 / SLES-02558 / SLES-02559 / SLES-02560 / SLES-02561 / SLES-02562 / SLES-12558 / SLES-12559 / SLES-12560 / SLES-12561 / SLES-12562 / SLPS-02480 / SLPS-02481 / SLUS-01042 / SLUS-01055
+NPHJ00303	Dragon Seeds	ASIA	exact	Dragon Seeds	SLUS-00734
+NPHJ00304	Slam Dragon	ASIA	exact	Slam Dragon	SLPS-00246
+NPHJ00305	DIORAMOS	ASIA	exact	Dioramos	SLPM-80587 / SLPS-02797
+NPHJ00306	DOUBLE DRAGON	ASIA	exact	Double Dragon	SLPS-00191
+NPHJ00307	GEOM CUBE	ASIA	exact	Geom Cube	SLPS-00007 / SLUS-00024
+NPHJ00308	OCHANOMA BATTLE	ASIA	fuzzy:0.94	Ocha no Ma Battle	SLPM-86681
+NPHJ00309	Waiwai Sannin Uchi Mahjong	ASIA	fuzzy:0.81	Wai Wai 3-nin Uchi Mahjong | Wai Wai 3-nin Uchi Mahjong [Controller Set]	HPS-91 / SLPM-86696
+NPHJ00310	Waiwai Trump Taisen	ASIA	fuzzy:0.97	Wai Wai Trump Taisen | Wai Wai Trump Taisen [Controller Set]	HPS-105 / SLPM-86657
+NPHJ00311	MerbyBabyStory	ASIA	fuzzy:0.87	Marby Baby Story	SLPS-01738
+NPHJ00312	WINNING LURE	ASIA	exact	Winning Lure	SLPM-86548
+NPHJ00313	Voltage Fighter GOWCAIZWER	ASIA	fuzzy:0.62	Street Fighter Zero	SLPS-00176
+NPHJ00314	FINAL FANTASY V	ASIA	exact	Final Fantasy V	SCPS-45214 / SLPM-86081 / SLPS-01949
+NPHJ00315	FINAL FANTASY VI	ASIA	exact	Final Fantasy VI | Final Fantasy VI (Bonus Disc: Final Fantasy X Demo)	SCED-50642 / SCES-03828 / SCPS-45387 / SLPM-86198 / SLPS-01950
+NPHJ00316	Grandia	ASIA	exact	Grandia (Disc 1) | Grandia (Disc 2)	SCUS-94457 / SCUS-94465 / SLES-02397 / SLES-02398 / SLES-02399 / SLES-12397 / SLES-12398 / SLES-12399 / SLPS-02124 / SLPS-02125 / SLPS-91205 / SLPS-91206
+NPHJ00317	FINAL FANTASY IV	ASIA	exact	Final Fantasy IV	SCPS-45029 / SLPM-86028 / SLPS-01948
+NPHJ00318	Buster Bros. Collection	ASIA	exact	Buster Bros. Collection	SLUS-00208
+NPHJ00319	Warriors of Fate: Tenchi Wo Kurau II	ASIA	none		
+NPHJ00320	CYBER SLED	ASIA	fuzzy:0.63	Cyber Org	SCPS-45381 / SLPS-01910
+NPHJ00321	Mr. DRILLER G	ASIA	exact	Mr. Driller G	SLPS-03336
+NPHJ00322	PAC-MAN WORLD 20th ANNIVERSARY	ASIA	exact	Pac-Man World 20th Anniversary | Pac-Man World: 20th Anniversary	SCES-00934 / SCES-02277 / SCES-02278 / SCES-02279 / SCES-02280 / SLPM-80491 / SLPS-02345 / SLUS-00439
+NPHJ00323	SMASH COURT	ASIA	exact	Smash Court	SLPS-00450 / SLPS-91053 / SLPS-91407
+NPHJ00324	XEVIOUS 3D/G+	ASIA	exact	Xevious 3D/G+	SLPS-00750
+NPHJ00325	Namco Museum Vol. 1	ASIA	exact	Namco Museum Vol. 1 | Namco Museum Vol. 1 (Rev 1)	SCES-00243 / SLPS-00107 / SLPS-91158 / SLUS-00215
+NPHJ00326	Namco Museum Vol. 2	ASIA	exact	Namco Museum Vol. 2	SCES-00267 / SLPS-00209 / SLPS-00210 / SLPS-91159 / SLUS-00216
+NPHJ00327	Namco Museum Vol. 3	ASIA	exact	Namco Museum Vol. 3	SCES-00268 / SLPS-00390 / SLPS-91160 / SLUS-00398
+NPHJ00328	Namco Museum Vol. 4	ASIA	exact	Namco Museum Vol. 4	SCES-00701 / SLPS-00540 / SLPS-91161 / SLUS-00416
+NPHJ00329	Namco Anthology 1	ASIA	exact	Namco Anthology 1	SLPS-01220
+NPHJ00330	Namco Anthology 2	ASIA	exact	Namco Anthology 2	SLPS-01221
+NPHJ00331	Namco Museum Encore	ASIA	exact	Namco Museum Encore	SLPS-00765 / SLPS-01050 / SLPS-91163
+NPHJ00332	Namco Museum Vol. 5	ASIA	exact	Namco Museum Vol. 5	SCES-00702 / SLPS-00705 / SLPS-91162 / SLUS-00417
+NPHJ00335	Starblade α	ASIA	exact	Starblade α	SLPS-00022
+NPHJ00336	Galaxian 3	ASIA	fuzzy:0.88	SD Gundam: Over Galaxian	SLPS-00385

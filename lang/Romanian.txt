@@ -1,6 +1,6 @@
 # AutoBleem Store - Romanian translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 56
+# Untranslated: 0 / Total: 60
 A secure connection failed - try http://=Conexiunea securizată a eșuat - încearcă http://
 A source is an http:// or https:// address=O sursă este o adresă http:// sau https://
 A TSV list of downloads, on any web server=O listă TSV de descărcări, pe orice server web
@@ -30,6 +30,8 @@ Nothing here yet=Încă nimic aici
 Nothing is downloading=Nu se descarcă nimic
 Nothing matches=Niciun rezultat
 Page=Pagina
+Players=Jucători
+Publisher=Editor
 Queued=În coadă
 Reading the sources...=Se citesc sursele...
 Reading...=Se citește...
@@ -40,6 +42,7 @@ Remove this source=Elimină această sursă
 Rename=Redenumeste
 Retry=Reîncearcă
 Search=Căutare
+Serial=Număr de serie
 Size=Dimensiune
 Source=Sursă
 Sources=Surse
@@ -56,4 +59,5 @@ Update=Actualizează
 Update available=Actualizare disponibilă
 Version=Versiune
 waiting=în așteptare
+Year=An
 You are responsible for what your sources contain=Ești responsabil pentru conținutul surselor tale
