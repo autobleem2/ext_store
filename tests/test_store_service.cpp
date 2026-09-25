@@ -198,6 +198,30 @@ TEST_CASE("StoreService installs an App, remembers it, offers an update, removes
     CHECK_FALSE(again.remove(key, error));
 }
 
+TEST_CASE("StoreService forgets a game deleted behind its back (the Game Manager) - on the next open") {
+    Setup s;
+    s.tmp.writeFile("System/Extensions/store/sources/g.tsv",
+                    "# name: G\nkind\ttitle\turl\nps1\tOne Disc\thttps://g/d1.chd\n");
+    s.site.bodies["https://g/d1.chd"] = "disc one";
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue("G|ps1/One Disc"));
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), "G|ps1/One Disc")->state == StoreState::Installed; }));
+    store.poll();
+
+    // the Game Manager deletes the folder while the service goes on in the background
+    DirEntry::removeDirAndContents(s.tmp.at("Games/One Disc"));
+    CHECK(s.entry(store.entries(), "G|ps1/One Disc")->state == StoreState::Installed); // not noticed by itself
+    store.forgetMissingInstalls();
+    CHECK(s.entry(store.entries(), "G|ps1/One Disc")->state == StoreState::Available);
+    CHECK(s.entry(store.entries(), "G|ps1/One Disc")->installedPath.empty());
+    CHECK(store.poll().listChanged);
+    CHECK(s.tmp.readFile("System/Extensions/store/installed.tsv").find("One Disc") == string::npos);
+    store.forgetMissingInstalls(); // nothing left to forget: nothing written, nothing announced
+    CHECK_FALSE(store.poll().listChanged);
+}
+
 TEST_CASE("StoreService installs a two-disc game from a TSV source into one folder") {
     Setup s;
     s.tmp.writeFile("System/Extensions/store/sources/g.tsv",
@@ -485,10 +509,15 @@ TEST_CASE("StoreService: source URLs, and file names") {
     CHECK_FALSE(store.addSourceUrl("http://192.168.1.2:8 126/store.tsv", error)); // a blank: curl's "3"
     CHECK(error == "The address is not valid");
     CHECK_FALSE(store.addSourceUrl("http:///store.tsv", error)); // no server
-    CHECK_FALSE(store.addSourceUrl("192.168.1.2/store.tsv", error));
+    CHECK_FALSE(store.addSourceUrl("ftp://192.168.1.2/store.tsv", error));
     CHECK(error == "A source is an http:// or https:// address");
-    CHECK(store.sourceUrls() == vector<string>{"https://acme/list.tsv"});
+    // no scheme typed: https://, as a browser does; http:// only when it is typed
+    CHECK(store.addSourceUrl(" lists.example/store.tsv ", error));
+    CHECK(StoreService::normalizeSourceUrl("http://192.168.1.2/s.tsv") == "http://192.168.1.2/s.tsv");
+    CHECK(StoreService::normalizeSourceUrl("") == "");
+    CHECK(store.sourceUrls() == vector<string>{"https://acme/list.tsv", "https://lists.example/store.tsv"});
     CHECK(store.removeSourceUrl("https://acme/list.tsv"));
+    CHECK(store.removeSourceUrl("https://lists.example/store.tsv"));
     CHECK(store.sourceUrls().empty());
 
     ableem::StoreFile f;

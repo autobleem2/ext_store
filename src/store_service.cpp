@@ -801,6 +801,28 @@ bool StoreService::remove(const string &key, string &error) {
 }
 
 //*******************************
+// StoreService::forgetMissingInstalls
+//*******************************
+void StoreService::forgetMissingInstalls() {
+    lock_guard<mutex> lock(mutex_);
+    bool forgot = false;
+    for (auto it = installed_.begin(); it != installed_.end();) {
+        if (!it->second.path.empty() && !DirEntry::exists(it->second.path)) {
+            PLOG_INFO << it->first << ": " << it->second.path << " is gone - not installed any more";
+            it = installed_.erase(it);
+            forgot = true;
+        } else {
+            ++it;
+        }
+    }
+    if (!forgot)
+        return;
+    writeInstalled();
+    rebuildEntries();
+    events_.listChanged = true;
+}
+
+//*******************************
 // StoreService: sources.txt
 //*******************************
 vector<string> StoreService::sourceUrls() const {
@@ -825,8 +847,13 @@ bool StoreService::validSourceUrl(const string &url, string &error) {
     return true;
 }
 
-bool StoreService::addSourceUrl(const string &url, string &error) {
+string StoreService::normalizeSourceUrl(const string &url) {
     const string u = Strings::trim(url);
+    return u.empty() || u.find("://") != string::npos ? u : "https://" + u;
+}
+
+bool StoreService::addSourceUrl(const string &url, string &error) {
+    const string u = normalizeSourceUrl(url);
     if (!validSourceUrl(u, error))
         return false;
     vector<string> urls = sourceUrls();
@@ -877,7 +904,7 @@ bool StoreService::renameSource(const string &url, const string &name) {
 }
 
 bool StoreService::changeSourceUrl(const string &url, const string &newUrl, string &error) {
-    const string u = Strings::trim(newUrl);
+    const string u = normalizeSourceUrl(newUrl);
     if (!validSourceUrl(u, error))
         return false;
     vector<SourceLine> lines = readSourceLines(sourcesFile());

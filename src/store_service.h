@@ -137,6 +137,10 @@ public:
     bool enqueue(const std::string &key);
     bool cancel(const std::string &key);                     // out of the queue; the one being downloaded is stopped
     bool remove(const std::string &key, std::string &error); // an installed item, uninstalled
+    // what was installed and is gone since - a game deleted in the Game Manager, an App's folder removed by
+    // hand - is forgotten (installed.tsv too), so it is offered again and leaves the Downloads tab. The screen
+    // asks on every open; the service lives on in the background and would not notice by itself.
+    void forgetMissingInstalls();
     // a game is starting: the download in flight is stopped (its bytes kept) until resume()
     void pause();
     void resume();
@@ -155,6 +159,9 @@ public:
     // an http:// or https:// address with a server and no blanks; error says why not (English - the screen
     // translates it)
     static bool validSourceUrl(const std::string &url, std::string &error);
+    // an address as typed, trimmed; one with no scheme at all ("example.com/list.tsv") gets https:// - the
+    // default, as in a browser. A home server's plain http:// has to be typed (or switched to in its menu).
+    static std::string normalizeSourceUrl(const std::string &url);
 
     std::string sourcesDir() const;
     std::string sourcesFile() const;

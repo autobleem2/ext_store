@@ -95,6 +95,8 @@ string GuiStore::sizeText(uint64_t bytes) {
 //*******************************
 void GuiStore::init() {
     style = gui->panelStyle();
+    // a game deleted in the Game Manager (or an App by hand) since the last visit is not installed any more
+    store.forgetMissingInstalls();
     reload();
 }
 
@@ -566,7 +568,9 @@ void GuiStore::cross() {
     if (rows[selected].action) {
         GuiKeyboard keyboard(*gui);
         keyboard.label = _("Add a source URL");
-        keyboard.result = "http://"; // a server on the home network is plain http; https:// is a key away
+        // https:// is the default (and what a bare address gets); a server on the home network is plain http -
+        // typed, or one press away in the source's own menu (Cross on it: "Switch to http://")
+        keyboard.result = "https://";
         keyboard.show();
         string error;
         if (!keyboard.cancelled && !store.addSourceUrl(keyboard.result, error)) {
