@@ -1,8 +1,12 @@
 # ext_store CI: the Store's tests on the host, then the extension for every platform and abstored (its LAN
 # server) for the machines that serve, all in the shared image with ci/build.sh. The Store is built with the
 # launcher (AB_EXTENSION_DIRS - the launcher's docs/store-plan.md, until the SDK package exists), so the
-# launcher is checked out next to this repository: its develop for a branch build, its master for a v* tag -
-# the launcher the packages are for, whose AB_SDK_ABI the plugin then carries by construction.
+# launcher is checked out next to this repository, develop always (R20, 2026-09-26: a v* tag used to check
+# out autobleem's master, which has no autobleem-core submodule yet during a promotion - ext_store's own
+# v1.0.0 tag build failed on it, "no autobleem-core submodule"). develop is also the launcher the next
+# promotion actually ships, since ext_store keeps a version of its own and is never tagged alongside the
+# unified vX.Y.Z (docs/decisions.md); the appliance's SDK-stamp check in stage_extension guards a mismatch
+# between the launcher this built against and the one it is bundled with.
 #
 # Packages: ext_store-<key>-<v>.zip (Extensions/store/, key psc|rpi|rpi64|pcusb|win) and
 # abstored-<os>-<arch>-<v>.tar.gz|.zip. A v* tag publishes them as a release; develop keeps the rolling
@@ -45,7 +49,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: autobleem2/autobleem
-          ref: ${{ startsWith(github.ref, 'refs/tags/v') && 'master' || 'develop' }}
+          ref: develop
           path: autobleem
           submodules: recursive
           fetch-depth: 0
