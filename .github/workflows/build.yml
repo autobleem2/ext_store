@@ -113,9 +113,20 @@ jobs:
     steps:
       - uses: actions/download-artifact@v8
         with: { name: store-packages, path: out }
+      # the admin App's token, so the new nightly starts autobleem-appliance's assembly at once (a repository
+      # without AB_ADMIN_APP_ID skips this, and the appliance's schedule assembles it instead)
+      - id: app
+        if: vars.AB_ADMIN_APP_ID != ''
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.AB_ADMIN_APP_ID }}
+          private-key: ${{ secrets.AB_ADMIN_APP_KEY }}
+          owner: autobleem2
+          repositories: autobleem-appliance
       - uses: autobleem2/autobleem-build/.github/actions/nightly-release@develop
         with:
           files: out/*
+          dispatch-token: ${{ steps.app.outputs.token }}
 
   # the packages on the download site: autobleem-repo's extensions/store/<version>/, which its Store page shows
   # (the Store per system, abstored in a LAN server tab) - a develop build as the development build, a v* tag
