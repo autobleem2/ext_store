@@ -84,7 +84,8 @@ public:
     void stop();
 
     // asked for - again when the item was installed or removed, or its source now names another picture; cheap
-    // to call every frame
+    // to call every frame. A request that settled empty (nothing found, or the fetch failed) stays that way
+    // until retryFailed() asks again - want() alone never repeats an unchanged request.
     void want(const Request &request);
     // the picture's file, "" while it is being looked for or when there is none
     std::string path(const std::string &key) const;
@@ -92,6 +93,12 @@ public:
     bool pending(const std::string &key) const;
     // changes whenever a picture was found - the screen loads new textures then
     uint64_t generation() const { return generation_; }
+
+    // every request that last settled empty (a source's favicon that failed to fetch, a cover nothing was
+    // found for, ...) is asked for again - a success is left alone. The screen calls this from its Refresh
+    // action, and once when the Sources tab is opened (a favicon that failed while the network was not up
+    // yet recovers without the user pressing anything).
+    void retryFailed();
 
     // what was found about a PS1 game with its picture; false while it is being looked for or when nothing is known
     bool facts(const std::string &key, GameFacts &out) const;
@@ -141,10 +148,11 @@ private:
     Config config_;
     mutable std::mutex mutex_;
     std::deque<Request> pending_;
-    std::map<std::string, std::string> asked_; // key -> what it was asked with (folder, image URL, serial)
-    std::map<std::string, std::string> found_; // key -> file ("" = none)
-    std::set<std::string> inFlight_;           // asked for, not answered yet
-    std::map<std::string, GameFacts> facts_;   // key -> what the databases know (PS1 games they know only)
+    std::map<std::string, std::string> asked_;   // key -> what it was asked with (folder, image URL, serial)
+    std::map<std::string, Request> lastRequest_; // key -> the request itself, for retryFailed() to requeue
+    std::map<std::string, std::string> found_;   // key -> file ("" = none)
+    std::set<std::string> inFlight_;             // asked for, not answered yet
+    std::map<std::string, GameFacts> facts_;     // key -> what the databases know (PS1 games they know only)
     std::atomic<uint64_t> generation_{0};
     std::atomic<bool> stop_{false};
     std::thread worker_;

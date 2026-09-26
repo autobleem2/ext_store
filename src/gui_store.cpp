@@ -908,6 +908,8 @@ void GuiStore::switchTab(Tab to) {
     left.selected = selected;
     left.firstVisible = firstVisible;
     tab = to;
+    if (to == Tab::Sources) // a favicon that failed while the network was not up yet gets another try, unasked
+        pictures.retryFailed();
     const Place &back = places[tab];
     selected = back.selected;
     firstVisible = back.firstVisible;
@@ -986,6 +988,7 @@ void GuiStore::loop() {
                 } else if (e.button == Button::Square) {
                     app.audio().cursor.play();
                     store.refresh();
+                    pictures.retryFailed(); // every picture that failed - a source's favicon included
                 } else if (e.button == Button::L1 || e.button == Button::R1) {
                     app.audio().cursor.play();
                     const int step = e.button == Button::L1 ? 3 : 1; // four tabs, round

@@ -234,6 +234,56 @@ TEST_CASE("StorePictures: asked for on the screen's thread, found on its own") {
     pictures.stop();
 }
 
+TEST_CASE("StorePictures::retryFailed: a failed request is retried, a success is left alone") {
+    Setup s;
+    StorePictures pictures(s.config());
+    pictures.start();
+
+    // a favicon that fails to fetch (no body at all: the runner returns 22, as a refused connection would)
+    StorePictures::Request favicon;
+    favicon.key = "favicon|https://down/";
+    favicon.kind = "favicon";
+    favicon.imageUrl = "https://down/";
+    pictures.want(favicon);
+    for (int i = 0; i < 500 && pictures.pending(favicon.key); i++)
+        this_thread::sleep_for(chrono::milliseconds(10));
+    CHECK(pictures.path(favicon.key).empty());
+    CHECK_FALSE(pictures.pending(favicon.key)); // settled empty, not still being looked for
+
+    // a game whose cover nothing knows: settles empty too, the same way
+    StorePictures::Request nobody = s.game("Nobody Knows");
+    pictures.want(nobody);
+    for (int i = 0; i < 500 && pictures.pending(nobody.key); i++)
+        this_thread::sleep_for(chrono::milliseconds(10));
+    CHECK(pictures.path(nobody.key).empty());
+
+    // an item that did find its picture: must not be touched by a retry
+    StorePictures::Request found = s.game("Anything", "SCUS-94900");
+    pictures.want(found);
+    for (int i = 0; i < 500 && pictures.path(found.key).empty(); i++)
+        this_thread::sleep_for(chrono::milliseconds(10));
+    const string foundFile = pictures.path(found.key);
+    REQUIRE_FALSE(foundFile.empty());
+
+    // want() alone never repeats an unchanged, already-settled request - still empty, still not pending
+    pictures.want(favicon);
+    this_thread::sleep_for(chrono::milliseconds(50));
+    CHECK(pictures.path(favicon.key).empty());
+    CHECK_FALSE(pictures.pending(favicon.key));
+
+    // now the site is up: retryFailed() asks the failed ones again, the found one is left as it was
+    s.bodies[favicon.imageUrl] = "<html><head><link rel=\"icon\" href=\"/icon.png\"></head></html>";
+    s.bodies["https://down/icon.png"] = Png + "now-up";
+    pictures.retryFailed();
+    CHECK(pictures.pending(favicon.key)); // asked again at once
+    for (int i = 0; i < 500 && pictures.pending(favicon.key); i++)
+        this_thread::sleep_for(chrono::milliseconds(10));
+    CHECK(fileText(pictures.path(favicon.key)) == Png + "now-up");
+    CHECK(pictures.path(found.key) == foundFile); // untouched - it was never asked again
+
+    pictures.stop();
+}
+
 namespace {
 // an ICO file: a directory of (width, image bytes), the images after it
 string icoFile(const vector<pair<int, string>> &images) {

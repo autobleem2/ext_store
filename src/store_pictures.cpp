@@ -191,6 +191,7 @@ void StorePictures::stop() {
 //*******************************
 void StorePictures::want(const Request &request) {
     lock_guard<mutex> lock(mutex_);
+    lastRequest_[request.key] = request; // kept up to date even when the signature below dedupes the ask
     // asked again when what it is found by changed: installed or removed, another picture after a refresh
     const string signature = request.installedPath + "|" + request.imageUrl + "|" + request.serial;
     auto asked = asked_.find(request.key);
@@ -201,6 +202,24 @@ void StorePictures::want(const Request &request) {
                    pending_.end());
     pending_.push_back(request);
     inFlight_.insert(request.key);
+}
+
+//*******************************
+// StorePictures::retryFailed
+//*******************************
+void StorePictures::retryFailed() {
+    lock_guard<mutex> lock(mutex_);
+    for (const auto &kv : found_) {
+        if (!kv.second.empty() || inFlight_.count(kv.first) > 0)
+            continue; // a success stays cached; already being looked for again
+        auto reqIt = lastRequest_.find(kv.first);
+        if (reqIt == lastRequest_.end())
+            continue;
+        pending_.erase(remove_if(pending_.begin(), pending_.end(), [&](const Request &r) { return r.key == kv.first; }),
+                       pending_.end());
+        pending_.push_back(reqIt->second);
+        inFlight_.insert(kv.first);
+    }
 }
 
 string StorePictures::path(const string &key) const {
