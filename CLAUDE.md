@@ -34,9 +34,14 @@ separate downloads, repository names `ext_<name>`).
   honors `<base href>` and resolves relative/absolute/protocol-relative hrefs, prefers larger `sizes=` (skips `.svg`),
   then falls back to `<root>/favicon.ico` if no link is found or the fetch fails (`iconUrlFromHtml` is a pure function).
   The result (an ICO's largest PNG extracted, or a PNG/GIF/JPEG/BMP as served) is cached as `favicon2-<md5>` in
-  `cache/pictures/`; fetch failures are not cached but deduped by signature until `retryFailed()` is called—
-  from Refresh (Square) or when switching to the Sources tab, so a favicon that failed while the network was down recovers on its own.
-  Fetched pictures go to `cache/pictures/`. Tested in `tests/test_store_pictures.cpp`.
+  `cache/pictures/` only after `validPicture()` confirms it is decodable: PNG chunks' CRC-32 (every one, from
+  IHDR to IEND), ICO directory bounds, GIF/JPG/BMP signature and minimum size. Validation runs on every
+  cache-hit read too, so a pre-existing corrupt file is thrown out and refetched. `GuiStore::textureFor()`
+  calls `forget(key)` when a texture load still fails, deleting the cache file and clearing the result so
+  even a corrupt file `validPicture()` somehow missed heals itself and counts as failed for retry. Fetch
+  failures are not cached but deduped by signature until `retryFailed()` is called—from Refresh (Square) or
+  when switching to the Sources tab, so a favicon that failed while the network was down recovers on its own.
+  Tested in `tests/test_store_pictures.cpp`.
 - `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item with
   its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the launcher's
   `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are the extension's
