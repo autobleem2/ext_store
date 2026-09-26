@@ -34,7 +34,8 @@ separate downloads, repository names `ext_<name>`).
   honors `<base href>` and resolves relative/absolute/protocol-relative hrefs, prefers larger `sizes=` (skips `.svg`),
   then falls back to `<root>/favicon.ico` if no link is found or the fetch fails (`iconUrlFromHtml` is a pure function).
   The result (an ICO's largest PNG extracted, or a PNG/GIF/JPEG/BMP as served) is cached as `favicon2-<md5>` in
-  `cache/pictures/`; fetch failures are not cached and retried on the next run.
+  `cache/pictures/`; fetch failures are not cached but deduped by signature until `retryFailed()` is called—
+  from Refresh (Square) or when switching to the Sources tab, so a favicon that failed while the network was down recovers on its own.
   Fetched pictures go to `cache/pictures/`. Tested in `tests/test_store_pictures.cpp`.
 - `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item with
   its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the launcher's
