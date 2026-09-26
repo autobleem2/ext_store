@@ -55,6 +55,7 @@ private:
         bool action = false; // the Sources tab's "Add a source URL"
         bool remoteSource = false;
         bool loading = false; // a source being read: a spinner at the row's end
+        std::string favicon;  // a remote source's: its server's favicon URL (StorePictures::faviconUrl)
     };
 
     void reload(); // the rows of the tab, from the service
@@ -95,6 +96,11 @@ private:
     void drawPicture(const StoreEntry &entry, const ableem::Rect &box, bool frame);
     // discPicture as a texture (the screen's own, kept with the covers); invalid when there is none
     ableem::Texture discTexture();
+    // a Sources row's picture: the server's favicon once it is fetched, else a list drawn in the theme's colours
+    // (a "+" for "Add a source URL")
+    void drawSourceIcon(const Row &row, const ableem::Rect &box);
+    // the texture of a picture file, loaded once (invalid when the file is no picture it can read)
+    ableem::Texture textureFor(const std::string &file);
 
     StoreService &store;
     StorePictures &pictures;

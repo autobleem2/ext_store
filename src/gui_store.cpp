@@ -166,6 +166,7 @@ void GuiStore::reload() {
             r.title = s.displayName.empty() ? s.name : s.displayName;
             r.remoteSource = s.remote && !s.ours;
             r.loading = s.loading;
+            r.favicon = s.remote ? StorePictures::faviconUrl(s.where) : "";
             r.detail = to_string(s.items) + " " + _("items");
             if (s.loading && s.items == 0)
                 r.detail = _("Reading...");
@@ -340,10 +341,48 @@ ableem::Texture GuiStore::pictureFor(const StoreEntry &entry) {
     const string file = pictures.path(entry.key);
     if (file.empty())
         return ableem::Texture();
+    return textureFor(file);
+}
+
+ableem::Texture GuiStore::textureFor(const string &file) {
     auto it = textures.find(file);
     if (it == textures.end())
         it = textures.emplace(file, ableem::Texture::loadFile(renderer, file)).first;
     return it->second;
+}
+
+void GuiStore::drawSourceIcon(const Row &row, const ableem::Rect &box) {
+    if (!row.favicon.empty()) {
+        StorePictures::Request request;
+        request.key = "favicon|" + row.favicon;
+        request.kind = "favicon";
+        request.imageUrl = row.favicon;
+        pictures.want(request);
+        const string file = pictures.path(request.key);
+        const ableem::Texture icon = file.empty() ? ableem::Texture() : textureFor(file);
+        if (icon.valid()) {
+            // a favicon is small (16 or 32 px): at 32 unless it is as big as the box, not blown up to a blur
+            const int side = icon.size().w >= box.w ? box.w : min(box.w, 32);
+            drawFitted(icon, ableem::Rect(box.x + (box.w - side) / 2, box.y + (box.h - side) / 2, side, side));
+            return;
+        }
+    }
+    renderer.setBlendMode(ableem::BlendMode::Blend);
+    renderer.setDrawColor(style.secondary);
+    const int cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+    if (row.action) { // "Add a source URL": a plus
+        renderer.fillRect(ableem::Rect(cx - 12, cy - 2, 24, 4));
+        renderer.fillRect(ableem::Rect(cx - 2, cy - 12, 4, 24));
+        return;
+    }
+    // a list: a sheet with three lines, each with its bullet
+    const ableem::Rect sheet(cx - 15, cy - 18, 30, 36);
+    renderer.drawRect(sheet);
+    for (int i = 0; i < 3; i++) {
+        const int ly = sheet.y + 8 + i * 9;
+        renderer.fillRect(ableem::Rect(sheet.x + 6, ly, 3, 3));
+        renderer.fillRect(ableem::Rect(sheet.x + 12, ly, 12, 3));
+    }
 }
 
 void GuiStore::drawPicture(const StoreEntry &entry, const ableem::Rect &box, bool frame) {
@@ -500,6 +539,9 @@ void GuiStore::render() {
                 renderer.setDrawColor(style.secondary);
                 renderer.drawRect(box);
             }
+            textX += ThumbSpace;
+        } else {
+            drawSourceIcon(rows[i], ableem::Rect(textX, y + (RowHeight - Thumb) / 2, Thumb, Thumb));
             textX += ThumbSpace;
         }
         const int textWidth = listWidth - (textX - panel.x) - RowInset - 8;

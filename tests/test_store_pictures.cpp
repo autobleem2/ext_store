@@ -232,3 +232,90 @@ TEST_CASE("StorePictures: asked for on the screen's thread, found on its own") {
     CHECK(fileText(pictures.path(app.key)) == "second");
     pictures.stop();
 }
+
+namespace {
+// an ICO file: a directory of (width, image bytes), the images after it
+string icoFile(const vector<pair<int, string>> &images) {
+    string out;
+    auto u16 = [&out](uint32_t v) {
+        out += static_cast<char>(v & 0xff);
+        out += static_cast<char>((v >> 8) & 0xff);
+    };
+    auto u32 = [&u16](uint32_t v) {
+        u16(v & 0xffff);
+        u16(v >> 16);
+    };
+    u16(0);
+    u16(1);
+    u16(static_cast<uint32_t>(images.size()));
+    uint32_t offset = static_cast<uint32_t>(6 + 16 * images.size());
+    for (const auto &image : images) {
+        out += static_cast<char>(image.first & 0xff); // 256 is written as 0
+        out += static_cast<char>(image.first & 0xff);
+        out += string(2, '\0');
+        u16(1);
+        u16(32);
+        u32(static_cast<uint32_t>(image.second.size()));
+        u32(offset);
+        offset += static_cast<uint32_t>(image.second.size());
+    }
+    for (const auto &image : images)
+        out += image.second;
+    return out;
+}
+} // namespace
+
+TEST_CASE("StorePictures: a source's favicon address is its server's /favicon.ico") {
+    CHECK(StorePictures::faviconUrl("https://example.org/lists/games.tsv") == "https://example.org/favicon.ico");
+    CHECK(StorePictures::faviconUrl("http://192.168.1.5:8124/list.tsv?x=1") == "http://192.168.1.5:8124/favicon.ico");
+    CHECK(StorePictures::faviconUrl("HTTPS://Example.org") == "https://Example.org/favicon.ico");
+    CHECK(StorePictures::faviconUrl("https://user:secret@host.net/a") == "https://host.net/favicon.ico");
+    CHECK(StorePictures::faviconUrl("ftp://example.org/list.tsv").empty());
+    CHECK(StorePictures::faviconUrl("https:///list.tsv").empty());
+    CHECK(StorePictures::faviconUrl("/media/list.tsv").empty());
+}
+
+TEST_CASE("StorePictures: what a favicon holds - a picture as it is, an ICO's largest PNG, an ICO of bitmaps") {
+    string image, extension;
+    REQUIRE(StorePictures::iconImage(Png + "rest", image, extension));
+    CHECK(image == Png + "rest");
+    CHECK(extension == "png");
+    REQUIRE(StorePictures::iconImage("GIF89a...", image, extension));
+    CHECK(extension == "gif");
+
+    const string bitmap = string("\x28\0\0\0", 4) + "pixels";
+    REQUIRE(StorePictures::iconImage(icoFile({{16, bitmap}, {16, Png + "16"}, {0, Png + "256"}, {32, Png + "32"}}),
+                                     image, extension));
+    CHECK(image == Png + "256"); // a width of 0 is 256
+    CHECK(extension == "png");
+
+    const string bitmaps = icoFile({{16, bitmap}, {32, bitmap}});
+    REQUIRE(StorePictures::iconImage(bitmaps, image, extension));
+    CHECK(image == bitmaps); // SDL_image reads those itself
+    CHECK(extension == "ico");
+
+    CHECK_FALSE(StorePictures::iconImage("<html><body>Not Found</body></html>", image, extension));
+    CHECK_FALSE(StorePictures::iconImage(icoFile({{16, Png + "16"}}).substr(0, 12), image, extension)); // cut short
+    CHECK_FALSE(StorePictures::iconImage("", image, extension));
+}
+
+TEST_CASE("StorePictures: a source's favicon is fetched once and cached as the picture inside it") {
+    Setup s;
+    StorePictures pictures(s.config());
+    StorePictures::Request r;
+    r.key = "favicon|https://site/favicon.ico";
+    r.kind = "favicon";
+    r.imageUrl = "https://site/favicon.ico";
+    s.bodies[r.imageUrl] = icoFile({{32, Png + "32"}});
+    const string file = pictures.resolve(r);
+    CHECK(DirEntry::getFileExtension(file) == "png");
+    CHECK(fileText(file) == Png + "32");
+    CHECK(pictures.resolve(r) == file);
+    CHECK(s.fetches.size() == 1); // the cache answers the second time
+
+    r.imageUrl = "https://other/favicon.ico"; // a server without one (404), or with a page instead
+    CHECK(pictures.resolve(r).empty());
+    s.bodies["https://third/favicon.ico"] = "<html></html>";
+    r.imageUrl = "https://third/favicon.ico";
+    CHECK(pictures.resolve(r).empty());
+}

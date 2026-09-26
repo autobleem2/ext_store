@@ -143,6 +143,10 @@ void StorePictures::workerMain() {
 // StorePictures::resolve
 //*******************************
 string StorePictures::resolve(const Request &request, GameFacts *facts) {
+    if (facts != nullptr)
+        *facts = GameFacts();
+    if (request.kind == "favicon")
+        return request.imageUrl.empty() ? "" : fetchFavicon(request.imageUrl);
     GameFacts found;
     string file = installedPicture(request);
     // a game's facts are wanted even when its folder has a picture already
@@ -293,6 +297,125 @@ string StorePictures::fetchUrl(const string &url) {
         return target;
     PLOG_DEBUG << "no picture from " << url << ": " << error;
     return "";
+}
+
+//*******************************
+// StorePictures::faviconUrl / iconImage / fetchFavicon
+//*******************************
+string StorePictures::faviconUrl(const string &sourceUrl) {
+    const string url = Strings::trim(sourceUrl);
+    const string lower = ableem::toLowerCopy(url);
+    const size_t scheme = lower.compare(0, 7, "http://") == 0 ? 7 : lower.compare(0, 8, "https://") == 0 ? 8 : 0;
+    if (scheme == 0)
+        return "";
+    const size_t end = url.find_first_of("/?#", scheme);
+    string host = url.substr(scheme, end == string::npos ? string::npos : end - scheme);
+    const size_t at = host.rfind('@'); // user:password@ - not the server's name
+    if (at != string::npos)
+        host = host.substr(at + 1);
+    if (host.empty())
+        return "";
+    return lower.substr(0, scheme) + host + "/favicon.ico";
+}
+
+bool StorePictures::iconImage(const string &bytes, string &image, string &extension) {
+    auto startsWith = [&bytes](size_t at, const char *magic, size_t length) {
+        return bytes.size() >= at + length && bytes.compare(at, length, magic, length) == 0;
+    };
+    auto u16 = [&bytes](size_t at) {
+        return static_cast<uint32_t>(static_cast<unsigned char>(bytes[at])) |
+               static_cast<uint32_t>(static_cast<unsigned char>(bytes[at + 1])) << 8;
+    };
+    auto u32 = [&u16](size_t at) { return u16(at) | u16(at + 2) << 16; };
+    // a picture of its own under the name favicon.ico - common, and what the texture loader reads as it is
+    const struct {
+        const char *magic;
+        size_t length;
+        const char *extension;
+    } plain[] = {{"\x89PNG", 4, "png"}, {"GIF8", 4, "gif"}, {"\xFF\xD8\xFF", 3, "jpg"}, {"BM", 2, "bmp"}};
+    for (const auto &p : plain)
+        if (startsWith(0, p.magic, p.length)) {
+            image = bytes;
+            extension = p.extension;
+            return true;
+        }
+    // an ICO: a directory of images (16 bytes each after a 6-byte header), each a PNG or a headerless bitmap
+    if (bytes.size() < 6 || u16(0) != 0 || u16(2) != 1 || u16(4) == 0)
+        return false;
+    const size_t count = u16(4);
+    if (bytes.size() < 6 + 16 * count)
+        return false;
+    size_t bestArea = 0, bestOffset = 0, bestSize = 0;
+    bool bitmaps = false;
+    for (size_t i = 0; i < count; i++) {
+        const size_t entry = 6 + 16 * i;
+        const size_t width = bytes[entry] == 0 ? 256 : static_cast<unsigned char>(bytes[entry]);
+        const size_t height = bytes[entry + 1] == 0 ? 256 : static_cast<unsigned char>(bytes[entry + 1]);
+        const size_t size = u32(entry + 8), offset = u32(entry + 12);
+        if (size == 0 || offset >= bytes.size() || size > bytes.size() - offset)
+            continue;
+        if (!startsWith(offset, "\x89PNG", 4)) {
+            bitmaps = true;
+            continue;
+        }
+        if (width * height >= bestArea) {
+            bestArea = width * height;
+            bestOffset = offset;
+            bestSize = size;
+        }
+    }
+    if (bestSize > 0) {
+        image = bytes.substr(bestOffset, bestSize);
+        extension = "png";
+        return true;
+    }
+    if (!bitmaps)
+        return false;
+    image = bytes; // SDL_image reads an ICO's bitmaps itself
+    extension = "ico";
+    return true;
+}
+
+// into the cache under the URL's md5, as the picture inside it, once - a server with none is asked again next run
+string StorePictures::fetchFavicon(const string &url) {
+    const string base = config_.cacheDir + sep + "favicon-" + ableem::Md5::ofString(url);
+    for (const char *e : {".png", ".ico", ".gif", ".jpg", ".bmp"})
+        if (DirEntry::exists(base + e))
+            return base + e;
+    if (config_.fetchCommand.empty() || !online())
+        return "";
+    const string download = base + ".download";
+    Downloader downloader(config_.fetchCommand, "",
+                          [this](const string &line) { return config_.runner(line, [this] { return stop_.load(); }); });
+    DownloadRequest fetch;
+    fetch.url = url;
+    fetch.target = download;
+    string error;
+    const Downloader::Result r = downloader.fetch(fetch, error);
+    if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere) {
+        PLOG_DEBUG << "no favicon from " << url << ": " << error;
+        return "";
+    }
+    string bytes;
+    {
+        ifstream in(download, ios::binary);
+        bytes.assign(istreambuf_iterator<char>(in), istreambuf_iterator<char>());
+    }
+    DirEntry::removeFile(download);
+    string image, extension;
+    if (!iconImage(bytes, image, extension)) {
+        PLOG_DEBUG << "no favicon from " << url << ": not a picture";
+        return "";
+    }
+    const string target = base + "." + extension;
+    ofstream out(target, ios::binary);
+    out.write(image.data(), static_cast<streamsize>(image.size()));
+    out.close();
+    if (!out.good()) {
+        DirEntry::removeFile(target);
+        return "";
+    }
+    return target;
 }
 
 //*******************************

@@ -29,18 +29,20 @@ separate downloads, repository names `ext_<name>`).
   databases by serial (the source's, or the one the PlayStation rdb gives for the title), then RetroArch's
   local box art by the rdb's record name; the source's `image` URL only for a game none of them knows, and
   never libretro's servers. An App's icon is the installed `app.ini`'s `Image=`, else the catalog's `image`.
+  A remote source's picture is its server's favicon (`faviconUrl`: `<scheme>://<host>/favicon.ico`), kept as the
+  image inside it (`iconImage`: an ICO's largest PNG taken out - SDL_image reads only an ICO's bitmaps).
   Fetched pictures go to `cache/pictures/`. Tested in `tests/test_store_pictures.cpp`.
-- `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item
-  with its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the
-  launcher's `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are
-  the extension's (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the
-  keyless "Add a source URL" row and for a row that went (a removed source). The Apps and Games lists jump to the
-  next/previous first letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) and page with
-  Left/Right, show one source at a time with Select (round to all of them), and filter by a search
-  with Start (any case, part of the title); Circle widens a narrowed list before it closes the Store. An item installed and up to date is greyed in the Apps and Games lists
-  (`PanelStyle::disabled`, the launcher's locked row) and stays selectable. A spinner
-  turns in the line under the header while sources are read, and at the end of a source's row. Removing a
-  source asks first.
+- `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item with
+  its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the launcher's
+  `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are the extension's
+  (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the keyless "Add a source
+  URL" row and for a row that went (a removed source). The Apps and Games lists jump to the next/previous first
+  letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) and page with Left/Right, show one
+  source at a time with Select (round to all of them), and filter by a search with Start (any case, part of the
+  title); Circle widens a narrowed list before it closes the Store. An item installed and up to date is greyed in
+  the Apps and Games lists (`PanelStyle::disabled`, the launcher's locked row) and stays selectable. A spinner turns
+  in the line under the header while sources are read, and at the end of a source's row. Each source's row has its
+  favicon (a list drawn in the theme's colours until it arrives, or without one). Removing a source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
   URL, `store_download_command`, the platform keys; `AB_STORE_CATALOG` overrides the catalog), `poll()` →
   the launcher's bubble, `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
