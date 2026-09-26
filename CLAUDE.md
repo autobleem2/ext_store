@@ -29,8 +29,12 @@ separate downloads, repository names `ext_<name>`).
   databases by serial (the source's, or the one the PlayStation rdb gives for the title), then RetroArch's
   local box art by the rdb's record name; the source's `image` URL only for a game none of them knows, and
   never libretro's servers. An App's icon is the installed `app.ini`'s `Image=`, else the catalog's `image`.
-  A remote source's picture is its server's favicon (`faviconUrl`: `<scheme>://<host>/favicon.ico`), kept as the
-  image inside it (`iconImage`: an ICO's largest PNG taken out - SDL_image reads only an ICO's bitmaps).
+  A remote source's picture is its server's icon: `fetchSiteIcon()` reads the site's root page (from `rootUrl()`
+  = `<scheme>://<host[:port]>/`), parses the `<head>` for a `<link rel="icon"|"shortcut icon"|"apple-touch-icon">`,
+  honors `<base href>` and resolves relative/absolute/protocol-relative hrefs, prefers larger `sizes=` (skips `.svg`),
+  then falls back to `<root>/favicon.ico` if no link is found or the fetch fails (`iconUrlFromHtml` is a pure function).
+  The result (an ICO's largest PNG extracted, or a PNG/GIF/JPEG/BMP as served) is cached as `favicon2-<md5>` in
+  `cache/pictures/`; fetch failures are not cached and retried on the next run.
   Fetched pictures go to `cache/pictures/`. Tested in `tests/test_store_pictures.cpp`.
 - `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item with
   its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the launcher's
