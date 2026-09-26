@@ -229,6 +229,9 @@ private:
     std::string current_;      // the key being worked on
     std::string currentPart_;  // its file being downloaded, for the progress
     uint64_t currentDone_ = 0; // its files already finished
+    // the part's last good size, for progress(): a reading that fails keeps it (mutex_ held)
+    mutable std::string lastPart_;
+    mutable uint64_t lastPartSize_ = 0;
     uint64_t currentTotal_ = 0;
     StoreState currentState_ = StoreState::Available;
     std::map<std::string, std::string> failed_; // key -> why, until it is queued again

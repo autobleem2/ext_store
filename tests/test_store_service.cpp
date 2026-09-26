@@ -293,6 +293,26 @@ TEST_CASE("StoreService: paused mid-download keeps the bytes and the place in th
     CHECK(fileText(s.tmp.at("Apps/opentyrian/bin/psc/tyrian")) == "binary"); // the halves joined right
 }
 
+TEST_CASE("StoreService: the progress keeps its place while the part cannot be read") {
+    Setup s;
+    s.site.stalls.insert("https://site/tyrian.zip");
+    const string key = "AutoBleem|app/opentyrian";
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return store.progress().done > 0; }));
+    const uint64_t half = s.tyrian.size() / 2;
+    CHECK(store.progress().done == half);
+    CHECK(store.progress().total == s.tyrian.size());
+    // a reading that fails (a file curl holds open on Windows, a stat past 2 GB on a 32-bit build): the last one
+    // stands, the bar does not fall back to 0 and jump up again
+    DirEntry::removeFile(store.downloadsDir() + "/tyrian.zip.part");
+    CHECK(store.progress().done == half);
+    REQUIRE(store.cancel(key));
+    REQUIRE(waitFor([&] { return !store.progress().busy; }));
+}
+
 TEST_CASE("StoreService: a stop (power off) mid-download leaves it queued for the next start") {
     Setup s;
     s.site.stalls.insert("https://site/tyrian.zip");
