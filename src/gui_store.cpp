@@ -520,6 +520,10 @@ void GuiStore::render() {
             renderer.setDrawColor(style.text);
             renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, done, 3));
         }
+        // what is installed already (and up to date) steps back, as a locked row does in the launcher's menus -
+        // still selectable: its details, and Triangle to remove it
+        if (entry != nullptr && entry->state == StoreState::Installed && (tab == Tab::Apps || tab == Tab::Games))
+            style.disabled(renderer, row);
         y += RowHeight;
     }
     const int markerX = panel.x + listWidth - RowInset;

@@ -37,7 +37,8 @@ separate downloads, repository names `ext_<name>`).
   keyless "Add a source URL" row and for a row that went (a removed source). The Apps and Games lists jump to the
   next/previous first letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) and page with
   Left/Right, show one source at a time with Select (round to all of them), and filter by a search
-  with Start (any case, part of the title); Circle widens a narrowed list before it closes the Store. A spinner
+  with Start (any case, part of the title); Circle widens a narrowed list before it closes the Store. An item installed and up to date is greyed in the Apps and Games lists
+  (`PanelStyle::disabled`, the launcher's locked row) and stays selectable. A spinner
   turns in the line under the header while sources are read, and at the end of a source's row. Removing a
   source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
