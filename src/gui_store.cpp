@@ -172,7 +172,7 @@ void GuiStore::reload() {
             r.title = s.displayName.empty() ? s.name : s.displayName;
             r.remoteSource = s.remote && !s.ours;
             r.loading = s.loading;
-            r.favicon = s.remote ? StorePictures::faviconUrl(s.where) : "";
+            r.favicon = s.remote ? StorePictures::rootUrl(s.where) : "";
             r.detail = to_string(s.items) + " " + _("items");
             if (s.loading && s.items == 0)
                 r.detail = _("Reading...");

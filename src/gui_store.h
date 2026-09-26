@@ -55,7 +55,7 @@ private:
         bool action = false; // the Sources tab's "Add a source URL"
         bool remoteSource = false;
         bool loading = false; // a source being read: a spinner at the row's end
-        std::string favicon;  // a remote source's: its server's favicon URL (StorePictures::faviconUrl)
+        std::string favicon;  // a remote source's: its server's root URL (StorePictures::rootUrl)
     };
 
     void reload(); // the rows of the tab, from the service

@@ -10,8 +10,10 @@
 //               record name), then RetroArch's box art on this machine by that record name; the source's own
 //               image URL only for a game none of them knows. A PSN Title ID (NoPayStation's "NPUF30001") is
 //               no disc serial: data/psn_serials.tsv, shipped with the Store, names the disc's ("SLPS-00624")
-//   a source    the favicon of its server (<scheme>://<host>/favicon.ico - kind "favicon", imageUrl
-//               faviconUrl()), fetched once and cached as the image inside it (iconImage())
+//   a source    the favicon of its server (kind "favicon", imageUrl rootUrl()): the root page
+//               (<scheme>://<host[:port]>/) is read for a <link rel="icon"|"shortcut icon"|"apple-touch-icon">
+//               in its <head> (iconUrlFromHtml()), else <root>/favicon.ico as before; fetched once and cached
+//               as the image inside it (iconImage())
 // The databases' facts about a PS1 game (publisher, year, players, the disc serial) are found on the way and
 // kept for the details pane (facts()).
 // Nothing is asked of libretro's servers. What is fetched or taken out of a database goes into the Store's
@@ -57,7 +59,7 @@ public:
     // what an item's picture is found by
     struct Request {
         std::string key;  // the Store entry's key
-        std::string kind; // "app", "ps1", "favicon" (a source's: imageUrl is faviconUrl())
+        std::string kind; // "app", "ps1", "favicon" (a source's: imageUrl is rootUrl())
         std::string title, serial;
         std::string imageUrl;      // the source's picture, "" = none
         std::string installedPath; // the App's or the game's folder once installed
@@ -109,8 +111,19 @@ public:
     // the list does, as one of "US", "EU", "JP", "ASIA" - "" for anything else
     static std::string regionCode(const std::string &region);
 
-    // a source's favicon: <scheme>://<host[:port]>/favicon.ico of an http(s) URL, "" for anything else
+    // a source's favicon file, as it always was: <scheme>://<host[:port]>/favicon.ico of an http(s) URL, ""
+    // for anything else. Still the last resort (fetchSiteIcon falls back to it) and the tests' known-good URL.
     static std::string faviconUrl(const std::string &sourceUrl);
+    // the same URL's root: <scheme>://<host[:port]>/ - what a source's picture is actually looked up from
+    // (iconUrlFromHtml is tried against it first), "" for anything else
+    static std::string rootUrl(const std::string &sourceUrl);
+    // the best icon <link> in `html`'s <head> (rel="icon"/"shortcut icon"/"apple-touch-icon"[-precomposed],
+    // case-insensitive, quoted any way, several rel tokens; a `sizes` attribute picked by its largest side; an
+    // apple-touch-icon is a fallback behind a plain icon of the same size), resolved to an absolute URL against
+    // `pageUrl` and any <base href> the page gives; "" when none qualifies (none present, or all are .svg - the
+    // texture loader cannot read those) or `html`/`pageUrl` make no sense. Stops at </head> or 256 KB, whichever
+    // is first. A pure function - no fetching, no cache - so it is tested directly on HTML snippets.
+    static std::string iconUrlFromHtml(const std::string &html, const std::string &pageUrl);
     // what a favicon file holds, as a picture the texture loader reads: a PNG, GIF, JPEG or BMP as it is; an ICO's
     // largest PNG image taken out of it (SDL_image reads an ICO's bitmaps, not its PNGs), an ICO of bitmaps as
     // it is. `extension` says which ("png", "ico", ...); false for anything else (an HTML error page)
@@ -119,7 +132,7 @@ public:
 private:
     void workerMain();
     std::string fetchUrl(const std::string &url);
-    std::string fetchFavicon(const std::string &url);
+    std::string fetchSiteIcon(const std::string &rootUrl);
     std::string installedPicture(const Request &request);
     std::string gameCover(const Request &request, GameFacts &facts);
     void readPsnList();

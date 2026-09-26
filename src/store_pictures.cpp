@@ -41,6 +41,118 @@ string serialFileName(const string &serial) {
     return "cover-" + name + ".png";
 }
 
+// how much of a page's HTML is worth scanning for its icon links
+constexpr size_t HeadScanCap = 256 * 1024;
+
+// the first `cap` bytes of `path`, or "" when it cannot be opened - used to cap what a fetched page's HTML
+// costs to parse, whatever curl actually pulled over the wire
+string readFilePrefix(const string &path, size_t cap) {
+    ifstream in(path, ios::binary);
+    if (!in)
+        return "";
+    string buf(cap, '\0');
+    in.read(&buf[0], static_cast<streamsize>(cap));
+    buf.resize(static_cast<size_t>(in.gcount()));
+    return buf;
+}
+
+// finds attribute `name`'s value inside `tag` (the text from '<' to '>' of one element), case-insensitive,
+// quoted with '"', with '\'' or bare; false when the attribute is absent. A word boundary is required on
+// both sides of the name, so "href" does not match inside "hreflang".
+bool tagAttr(const string &tag, const string &name, string &value) {
+    const string lowerTag = ableem::toLowerCopy(tag);
+    const string lowerName = ableem::toLowerCopy(name);
+    auto isNameChar = [](char c) { return isalnum(static_cast<unsigned char>(c)) != 0 || c == '-'; };
+    size_t pos = 0;
+    while ((pos = lowerTag.find(lowerName, pos)) != string::npos) {
+        const bool boundaryBefore = pos == 0 || !isNameChar(tag[pos - 1]);
+        size_t p = pos + lowerName.size();
+        const bool boundaryAfter = p >= tag.size() || !isNameChar(tag[p]);
+        if (!boundaryBefore || !boundaryAfter) {
+            pos = p;
+            continue;
+        }
+        while (p < tag.size() && isspace(static_cast<unsigned char>(tag[p])))
+            p++;
+        if (p >= tag.size() || tag[p] != '=') {
+            pos = p;
+            continue;
+        }
+        p++;
+        while (p < tag.size() && isspace(static_cast<unsigned char>(tag[p])))
+            p++;
+        if (p < tag.size() && (tag[p] == '"' || tag[p] == '\'')) {
+            const char quote = tag[p];
+            p++;
+            const size_t end = tag.find(quote, p);
+            value = tag.substr(p, end == string::npos ? tag.size() - p : end - p);
+        } else {
+            size_t end = p;
+            while (end < tag.size() && !isspace(static_cast<unsigned char>(tag[end])) && tag[end] != '>' &&
+                   tag[end] != '/')
+                end++;
+            value = tag.substr(p, end - p);
+        }
+        return true;
+    }
+    return false;
+}
+
+// "Foo &amp; Bar" -> "Foo & Bar" - the one entity an href realistically carries
+string decodeAmp(string s) {
+    size_t pos = 0;
+    while ((pos = s.find("&amp;", pos)) != string::npos)
+        s.replace(pos, 5, "&"), pos += 1;
+    return s;
+}
+
+// a link's rel="..." holds one or more space-separated tokens; true when one of them names an icon
+bool relNamesIcon(const string &rel) {
+    const string lowerRel = ableem::toLowerCopy(rel);
+    size_t start = 0;
+    while (start < lowerRel.size()) {
+        while (start < lowerRel.size() && isspace(static_cast<unsigned char>(lowerRel[start])))
+            start++;
+        size_t end = start;
+        while (end < lowerRel.size() && !isspace(static_cast<unsigned char>(lowerRel[end])))
+            end++;
+        const string token = lowerRel.substr(start, end - start);
+        if (token == "icon" || token == "apple-touch-icon" || token == "apple-touch-icon-precomposed")
+            return true;
+        start = end;
+    }
+    return false;
+}
+
+bool relIsAppleTouch(const string &rel) {
+    return ableem::toLowerCopy(rel).find("apple-touch-icon") != string::npos;
+}
+
+bool hrefIsSvg(const string &href) {
+    const string plain = href.substr(0, href.find_first_of("?#"));
+    const string lower = ableem::toLowerCopy(plain);
+    return lower.size() >= 4 && lower.compare(lower.size() - 4, 4, ".svg") == 0;
+}
+
+// "32x32", "16x16 32x32", "any" -> the largest side named, 0 when none parses
+int sizesScore(const string &sizes) {
+    int best = 0;
+    size_t start = 0;
+    while (start < sizes.size()) {
+        while (start < sizes.size() && isspace(static_cast<unsigned char>(sizes[start])))
+            start++;
+        size_t end = start;
+        while (end < sizes.size() && !isspace(static_cast<unsigned char>(sizes[end])))
+            end++;
+        const string token = sizes.substr(start, end - start);
+        const size_t x = token.find_first_of("xX");
+        if (x != string::npos)
+            best = max(best, atoi(token.substr(0, x).c_str()));
+        start = end;
+    }
+    return best;
+}
+
 } // namespace
 
 //*******************************
@@ -146,7 +258,7 @@ string StorePictures::resolve(const Request &request, GameFacts *facts) {
     if (facts != nullptr)
         *facts = GameFacts();
     if (request.kind == "favicon")
-        return request.imageUrl.empty() ? "" : fetchFavicon(request.imageUrl);
+        return request.imageUrl.empty() ? "" : fetchSiteIcon(request.imageUrl);
     GameFacts found;
     string file = installedPicture(request);
     // a game's facts are wanted even when its folder has a picture already
@@ -300,9 +412,14 @@ string StorePictures::fetchUrl(const string &url) {
 }
 
 //*******************************
-// StorePictures::faviconUrl / iconImage / fetchFavicon
+// StorePictures::faviconUrl / rootUrl / iconUrlFromHtml / iconImage / fetchSiteIcon
 //*******************************
 string StorePictures::faviconUrl(const string &sourceUrl) {
+    const string root = rootUrl(sourceUrl);
+    return root.empty() ? "" : root + "favicon.ico";
+}
+
+string StorePictures::rootUrl(const string &sourceUrl) {
     const string url = Strings::trim(sourceUrl);
     const string lower = ableem::toLowerCopy(url);
     const size_t scheme = lower.compare(0, 7, "http://") == 0 ? 7 : lower.compare(0, 8, "https://") == 0 ? 8 : 0;
@@ -315,7 +432,94 @@ string StorePictures::faviconUrl(const string &sourceUrl) {
         host = host.substr(at + 1);
     if (host.empty())
         return "";
-    return lower.substr(0, scheme) + host + "/favicon.ico";
+    return lower.substr(0, scheme) + host + "/";
+}
+
+// href resolved against `base` (an absolute http(s) URL): itself if already absolute, "//host/x" against
+// base's scheme, "/x" against base's origin, else against base's directory. "" when base is not http(s) or
+// href is empty.
+static string resolveIconHref(const string &base, const string &href) {
+    const string h = decodeAmp(Strings::trim(href));
+    if (h.empty())
+        return "";
+    const string lowerH = ableem::toLowerCopy(h);
+    if (lowerH.compare(0, 7, "http://") == 0 || lowerH.compare(0, 8, "https://") == 0)
+        return h;
+    const string lowerBase = ableem::toLowerCopy(base);
+    const size_t schemeLen = lowerBase.compare(0, 7, "http://") == 0    ? 7
+                             : lowerBase.compare(0, 8, "https://") == 0 ? 8
+                                                                        : 0;
+    if (schemeLen == 0)
+        return "";
+    if (h.compare(0, 2, "//") == 0)
+        return base.substr(0, schemeLen - 2) + h; // "http:" / "https:" + "//host/x"
+    const size_t hostEnd = base.find_first_of("/?#", schemeLen);
+    const string origin = base.substr(0, hostEnd == string::npos ? base.size() : hostEnd);
+    if (h[0] == '/')
+        return origin + h;
+    string path = hostEnd == string::npos ? "/" : base.substr(hostEnd);
+    const size_t cut = path.find_first_of("?#");
+    if (cut != string::npos)
+        path = path.substr(0, cut);
+    const size_t slash = path.rfind('/');
+    string dir = slash == string::npos ? "/" : path.substr(0, slash + 1);
+    string rel = h;
+    while (rel.compare(0, 2, "./") == 0)
+        rel = rel.substr(2);
+    return origin + dir + rel;
+}
+
+string StorePictures::iconUrlFromHtml(const string &html, const string &pageUrl) {
+    if (pageUrl.empty())
+        return "";
+    const string prefix = html.substr(0, min(html.size(), HeadScanCap));
+    const string lowerPrefix = ableem::toLowerCopy(prefix);
+    const size_t headEnd = lowerPrefix.find("</head>");
+    const string region = headEnd == string::npos ? prefix : prefix.substr(0, headEnd);
+    const string lowerRegion = headEnd == string::npos ? lowerPrefix : lowerPrefix.substr(0, headEnd);
+
+    // <base href="...">, itself resolved against pageUrl when it is relative
+    string baseUrl = pageUrl;
+    const size_t basePos = lowerRegion.find("<base");
+    if (basePos != string::npos) {
+        const size_t close = region.find('>', basePos);
+        const string tag =
+            region.substr(basePos, close == string::npos ? region.size() - basePos : close - basePos + 1);
+        string href;
+        if (tagAttr(tag, "href", href) && !href.empty()) {
+            const string resolved = resolveIconHref(pageUrl, href);
+            if (!resolved.empty())
+                baseUrl = resolved;
+        }
+    }
+
+    struct Candidate {
+        string href;
+        int score;
+    };
+    vector<Candidate> candidates;
+    size_t pos = 0;
+    while ((pos = lowerRegion.find("<link", pos)) != string::npos) {
+        const size_t close = region.find('>', pos);
+        if (close == string::npos)
+            break;
+        const string tag = region.substr(pos, close - pos + 1);
+        pos = close + 1;
+
+        string rel, href, sizes;
+        if (!tagAttr(tag, "rel", rel) || !relNamesIcon(rel))
+            continue;
+        if (!tagAttr(tag, "href", href) || href.empty() || hrefIsSvg(href))
+            continue;
+        tagAttr(tag, "sizes", sizes);
+        int score = (relIsAppleTouch(rel) ? 500 : 1000) + sizesScore(sizes);
+        candidates.push_back({href, score});
+    }
+    if (candidates.empty())
+        return "";
+    const Candidate &best = *max_element(candidates.begin(), candidates.end(),
+                                         [](const Candidate &a, const Candidate &b) { return a.score < b.score; });
+    return resolveIconHref(baseUrl, best.href);
 }
 
 bool StorePictures::iconImage(const string &bytes, string &image, string &extension) {
@@ -376,24 +580,52 @@ bool StorePictures::iconImage(const string &bytes, string &image, string &extens
     return true;
 }
 
-// into the cache under the URL's md5, as the picture inside it, once - a server with none is asked again next run
-string StorePictures::fetchFavicon(const string &url) {
-    const string base = config_.cacheDir + sep + "favicon-" + ableem::Md5::ofString(url);
+// into the cache under the root URL's md5 ("favicon2-": a new key, so a plain favicon.ico result cached under
+// the pre-2026-09-26 scheme never blocks the icon-in-<head> lookup for a source whose TSV is not at the
+// root), as the picture inside it, once - a server with neither is asked again next run (nothing is cached
+// on failure)
+string StorePictures::fetchSiteIcon(const string &rootUrl) {
+    const string base = config_.cacheDir + sep + "favicon2-" + ableem::Md5::ofString(rootUrl);
     for (const char *e : {".png", ".ico", ".gif", ".jpg", ".bmp"})
         if (DirEntry::exists(base + e))
             return base + e;
     if (config_.fetchCommand.empty() || !online())
         return "";
-    const string download = base + ".download";
     Downloader downloader(config_.fetchCommand, "",
                           [this](const string &line) { return config_.runner(line, [this] { return stop_.load(); }); });
+
+    // 1) the root page's <head>, for a <link rel="icon"|"shortcut icon"|"apple-touch-icon">
+    string iconUrl;
+    {
+        const string page = base + ".page";
+        DownloadRequest fetch;
+        fetch.url = rootUrl;
+        fetch.target = page;
+        string error;
+        if (downloader.fetch(fetch, error) == Downloader::Result::Downloaded)
+            iconUrl = iconUrlFromHtml(readFilePrefix(page, HeadScanCap), rootUrl);
+        DirEntry::removeFile(page);
+    }
+    const string plainFavicon = rootUrl + "favicon.ico";
+    if (iconUrl.empty())
+        iconUrl = plainFavicon;
+
+    // 2) that icon, falling back to the plain favicon.ico when the page named one that could not be fetched
+    const string download = base + ".download";
     DownloadRequest fetch;
-    fetch.url = url;
+    fetch.url = iconUrl;
     fetch.target = download;
     string error;
-    const Downloader::Result r = downloader.fetch(fetch, error);
+    Downloader::Result r = downloader.fetch(fetch, error);
+    if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere && iconUrl != plainFavicon) {
+        DirEntry::removeFile(download);
+        fetch.url = plainFavicon;
+        r = downloader.fetch(fetch, error);
+        iconUrl = plainFavicon;
+    }
     if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere) {
-        PLOG_DEBUG << "no favicon from " << url << ": " << error;
+        PLOG_DEBUG << "no icon from " << rootUrl << ": " << error;
+        DirEntry::removeFile(download);
         return "";
     }
     string bytes;
@@ -404,7 +636,7 @@ string StorePictures::fetchFavicon(const string &url) {
     DirEntry::removeFile(download);
     string image, extension;
     if (!iconImage(bytes, image, extension)) {
-        PLOG_DEBUG << "no favicon from " << url << ": not a picture";
+        PLOG_DEBUG << "no icon from " << rootUrl << " (" << iconUrl << "): not a picture";
         return "";
     }
     const string target = base + "." + extension;

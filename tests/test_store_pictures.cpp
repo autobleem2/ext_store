@@ -10,6 +10,7 @@
 #include "../src/store_pictures.h"
 
 #include <ableem/engine/game_database.h>
+#include <ableem/engine/md5.h>
 
 #include <chrono>
 #include <fstream>
@@ -265,7 +266,7 @@ string icoFile(const vector<pair<int, string>> &images) {
 }
 } // namespace
 
-TEST_CASE("StorePictures: a source's favicon address is its server's /favicon.ico") {
+TEST_CASE("StorePictures: a source's favicon address is its server's /favicon.ico; rootUrl is the same, bare") {
     CHECK(StorePictures::faviconUrl("https://example.org/lists/games.tsv") == "https://example.org/favicon.ico");
     CHECK(StorePictures::faviconUrl("http://192.168.1.5:8124/list.tsv?x=1") == "http://192.168.1.5:8124/favicon.ico");
     CHECK(StorePictures::faviconUrl("HTTPS://Example.org") == "https://Example.org/favicon.ico");
@@ -273,6 +274,82 @@ TEST_CASE("StorePictures: a source's favicon address is its server's /favicon.ic
     CHECK(StorePictures::faviconUrl("ftp://example.org/list.tsv").empty());
     CHECK(StorePictures::faviconUrl("https:///list.tsv").empty());
     CHECK(StorePictures::faviconUrl("/media/list.tsv").empty());
+
+    CHECK(StorePictures::rootUrl("https://example.org/deep/lists/games.tsv") == "https://example.org/");
+    CHECK(StorePictures::rootUrl("http://192.168.1.5:8124/list.tsv?x=1") == "http://192.168.1.5:8124/");
+    CHECK(StorePictures::rootUrl("ftp://example.org/list.tsv").empty());
+}
+
+TEST_CASE("StorePictures::iconUrlFromHtml: rel tokens, quoting, and absolute/protocol-relative/relative hrefs") {
+    const string pageUrl = "https://example.org/deep/path/list.tsv";
+
+    // double quotes, a relative href against the page's own directory (not its own file name)
+    CHECK(StorePictures::iconUrlFromHtml("<html><head><link rel=\"icon\" href=\"icon.png\"></head><body></body></html>",
+                                         pageUrl) == "https://example.org/deep/path/icon.png");
+
+    // single quotes, rel holding two tokens ("shortcut icon"), an unquoted href
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel='shortcut icon' href=favicon.png></head>", pageUrl) ==
+          "https://example.org/deep/path/favicon.png");
+
+    // an absolute href is used as it is
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"icon\" href=\"https://cdn.example.org/x.png\"></head>",
+                                         pageUrl) == "https://cdn.example.org/x.png");
+
+    // a protocol-relative href takes the page's scheme
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"icon\" href=\"//cdn.example.org/x.png\"></head>",
+                                         pageUrl) == "https://cdn.example.org/x.png");
+
+    // a root-relative href goes against the origin, not the page's directory
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"icon\" href=\"/static/x.png\"></head>", pageUrl) ==
+          "https://example.org/static/x.png");
+
+    // attribute order and case do not matter, and a self-closing tag is read the same as an open one
+    CHECK(StorePictures::iconUrlFromHtml("<head><link href=\"/a.ico\" REL=\"ICON\" type=\"image/x-icon\" /></head>",
+                                         pageUrl) == "https://example.org/a.ico");
+}
+
+TEST_CASE("StorePictures::iconUrlFromHtml: base href, apple-touch fallback, sizes, svg skipped, none found") {
+    const string pageUrl = "https://example.org/deep/path/list.tsv";
+
+    // <base href> redirects a relative href to itself, not to the page's own directory
+    CHECK(StorePictures::iconUrlFromHtml(
+              "<head><base href=\"https://cdn.example.net/assets/\"><link rel=\"icon\" href=\"x.png\"></head>",
+              pageUrl) == "https://cdn.example.net/assets/x.png");
+
+    // no plain icon: an apple-touch-icon (usually a big one) is a fine fallback
+    CHECK(StorePictures::iconUrlFromHtml(
+              "<head><link rel=\"apple-touch-icon\" href=\"/apple.png\" sizes=\"180x180\"></head>", pageUrl) ==
+          "https://example.org/apple.png");
+
+    // a plain icon on the same page wins over an apple-touch-icon, even a bigger one
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"apple-touch-icon\" href=\"/apple.png\" sizes=\"180x180\">"
+                                         "<link rel=\"icon\" href=\"/icon.png\" sizes=\"32x32\"></head>",
+                                         pageUrl) == "https://example.org/icon.png");
+
+    // sizes= picks the largest of several plain icons
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"icon\" href=\"/small.png\" sizes=\"16x16\">"
+                                         "<link rel=\"icon\" href=\"/big.png\" sizes=\"48x48\"></head>",
+                                         pageUrl) == "https://example.org/big.png");
+
+    // an .svg icon is skipped - the texture loader cannot read it - even when it is the only one offered
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"icon\" href=\"/icon.svg\" type=\"image/svg+xml\"></head>",
+                                         pageUrl)
+              .empty());
+    CHECK(StorePictures::iconUrlFromHtml(
+              "<head><link rel=\"icon\" href=\"/icon.svg\"><link rel=\"icon\" href=\"/icon.png\"></head>", pageUrl) ==
+          "https://example.org/icon.png"); // skipped, a usable one further down still wins
+
+    // &amp; in an href is decoded
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"icon\" href=\"/icon.php?a=1&amp;b=2\"></head>", pageUrl) ==
+          "https://example.org/icon.php?a=1&b=2");
+
+    // nothing that qualifies: no <link> at all, one with an unrelated rel, or one only past </head>
+    CHECK(StorePictures::iconUrlFromHtml("<head><title>Nothing here</title></head>", pageUrl).empty());
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"stylesheet\" href=\"/site.css\"></head>", pageUrl).empty());
+    CHECK(StorePictures::iconUrlFromHtml("<head></head><body><link rel=\"icon\" href=\"/late.png\"></body>", pageUrl)
+              .empty());
+    CHECK(StorePictures::iconUrlFromHtml("", pageUrl).empty());
+    CHECK(StorePictures::iconUrlFromHtml("<head><link rel=\"icon\" href=\"/icon.png\"></head>", "").empty());
 }
 
 TEST_CASE("StorePictures: what a favicon holds - a picture as it is, an ICO's largest PNG, an ICO of bitmaps") {
@@ -299,23 +376,85 @@ TEST_CASE("StorePictures: what a favicon holds - a picture as it is, an ICO's la
     CHECK_FALSE(StorePictures::iconImage("", image, extension));
 }
 
-TEST_CASE("StorePictures: a source's favicon is fetched once and cached as the picture inside it") {
+TEST_CASE("StorePictures: a source's icon comes from a <link> on its root page, favicon.ico only a fallback") {
     Setup s;
     StorePictures pictures(s.config());
     StorePictures::Request r;
-    r.key = "favicon|https://site/favicon.ico";
+    r.key = "favicon|https://site/";
     r.kind = "favicon";
-    r.imageUrl = "https://site/favicon.ico";
-    s.bodies[r.imageUrl] = icoFile({{32, Png + "32"}});
+    r.imageUrl = StorePictures::rootUrl("https://site/lists/deep/games.tsv");
+    REQUIRE(r.imageUrl == "https://site/");
+    s.bodies[r.imageUrl] = "<html><head><link rel=\"icon\" href=\"/static/icon.png\"></head></html>";
+    s.bodies["https://site/static/icon.png"] = icoFile({{32, Png + "32"}});
     const string file = pictures.resolve(r);
     CHECK(DirEntry::getFileExtension(file) == "png");
     CHECK(fileText(file) == Png + "32");
+    CHECK(s.fetches.size() == 2); // the root page, then the icon it named - never favicon.ico
     CHECK(pictures.resolve(r) == file);
-    CHECK(s.fetches.size() == 1); // the cache answers the second time
+    CHECK(s.fetches.size() == 2); // the cache answers the second time
+}
 
-    r.imageUrl = "https://other/favicon.ico"; // a server without one (404), or with a page instead
+TEST_CASE("StorePictures: no root page (or nothing usable in it) falls back to favicon.ico") {
+    Setup s;
+    StorePictures pictures(s.config());
+    StorePictures::Request r;
+    r.key = "favicon|https://noroot/";
+    r.kind = "favicon";
+    r.imageUrl = "https://noroot/"; // no body: the runner fails it, as a 404 or a refused connection would
+    s.bodies["https://noroot/favicon.ico"] = Png + "plain";
+    const string file = pictures.resolve(r);
+    CHECK(fileText(file) == Png + "plain");
+    CHECK(s.fetches.size() == 2); // the root page (failed), then favicon.ico
+
+    StorePictures::Request page;
+    page.key = "favicon|https://pagenoicon/";
+    page.kind = "favicon";
+    page.imageUrl = "https://pagenoicon/";
+    s.bodies[page.imageUrl] = "<html><head><title>No icon here</title></head></html>";
+    s.bodies["https://pagenoicon/favicon.ico"] = Png + "plain2";
+    CHECK(fileText(pictures.resolve(page)) == Png + "plain2");
+}
+
+TEST_CASE("StorePictures: an icon the root page named but could not fetch also falls back to favicon.ico") {
+    Setup s;
+    StorePictures pictures(s.config());
+    StorePictures::Request r;
+    r.key = "favicon|https://partial/";
+    r.kind = "favicon";
+    r.imageUrl = "https://partial/";
+    s.bodies[r.imageUrl] = "<html><head><link rel=\"shortcut icon\" href=\"missing.png\"></head></html>";
+    // https://partial/missing.png has no body, so it fails
+    s.bodies["https://partial/favicon.ico"] = Png + "fallback";
+    const string file = pictures.resolve(r);
+    CHECK(fileText(file) == Png + "fallback");
+    CHECK(s.fetches.size() == 3); // the page, the icon it named (failed), then favicon.ico
+}
+
+TEST_CASE("StorePictures: neither the page nor favicon.ico give anything - nothing is cached, so it is retried") {
+    Setup s;
+    StorePictures pictures(s.config());
+    StorePictures::Request r;
+    r.key = "favicon|https://nothing/";
+    r.kind = "favicon";
+    r.imageUrl = "https://nothing/";
+    s.bodies[r.imageUrl] = "<html></html>";
+    // no https://nothing/favicon.ico body either
     CHECK(pictures.resolve(r).empty());
-    s.bodies["https://third/favicon.ico"] = "<html></html>";
-    r.imageUrl = "https://third/favicon.ico";
-    CHECK(pictures.resolve(r).empty());
+    CHECK(DirEntry::listNames(s.tmp.at("cache")).empty()); // no ".page"/".download" leftovers, no cache file
+}
+
+TEST_CASE("StorePictures: a cache file from before the root-page lookup existed never blocks the new one") {
+    Setup s;
+    StorePictures pictures(s.config());
+    // a leftover under the pre-2026-09-26 scheme (keyed by the plain favicon.ico URL): must never be reused
+    s.tmp.writeFile("cache/favicon-" + ableem::Md5::ofString(string("https://old/favicon.ico")) + ".png", "stale");
+
+    StorePictures::Request r;
+    r.key = "favicon|https://old/";
+    r.kind = "favicon";
+    r.imageUrl = "https://old/";
+    s.bodies[r.imageUrl] = "<html><head><link rel=\"icon\" href=\"https://cdn.old/icon.png\"></head></html>";
+    s.bodies["https://cdn.old/icon.png"] = Png + "fresh";
+    const string file = pictures.resolve(r);
+    CHECK(fileText(file) == Png + "fresh"); // not "stale" - a different cache key altogether
 }
