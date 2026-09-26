@@ -34,8 +34,9 @@ separate downloads, repository names `ext_<name>`).
   with its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the
   launcher's `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are
   the extension's (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the
-  keyless "Add a source URL" row and for a row that went (a removed source). The Apps and Games lists page with
-  L2/R2 and Left/Right, show one source at a time with Select (round to all of them), and filter by a search
+  keyless "Add a source URL" row and for a row that went (a removed source). The Apps and Games lists jump to the
+  next/previous first letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) and page with
+  Left/Right, show one source at a time with Select (round to all of them), and filter by a search
   with Start (any case, part of the title); Circle widens a narrowed list before it closes the Store. A spinner
   turns in the line under the header while sources are read, and at the end of a source's row. Removing a
   source asks first.

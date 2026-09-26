@@ -267,6 +267,49 @@ void GuiStore::moveSelection(int step) {
         firstVisible = selected - visible + 1;
 }
 
+//*******************************
+// GuiStore::letterOf / jumpLetter / step
+//*******************************
+string GuiStore::letterOf(const string &title) {
+    if (title.empty())
+        return "";
+    const unsigned char first = static_cast<unsigned char>(title[0]);
+    if (first < 0x80)
+        return string(1, static_cast<char>(toupper(first)));
+    // a UTF-8 character whole: its lead byte and the continuation bytes after it
+    size_t length = 1;
+    while (length < title.size() && (static_cast<unsigned char>(title[length]) & 0xC0) == 0x80)
+        length++;
+    return title.substr(0, length);
+}
+
+void GuiStore::jumpLetter(int direction) {
+    const int count = static_cast<int>(rows.size());
+    if (count == 0)
+        return;
+    // where each letter's rows start - the rows are sorted by title, so a letter's rows are together
+    vector<int> starts;
+    for (int i = 0; i < count; i++)
+        if (i == 0 || letterOf(rows[i].title) != letterOf(rows[i - 1].title))
+            starts.push_back(i);
+    int current = 0; // the letter the selected row is under
+    for (size_t i = 0; i < starts.size(); i++)
+        if (starts[i] <= selected)
+            current = static_cast<int>(i);
+    const int letters = static_cast<int>(starts.size());
+    const int target = (current + (direction > 0 ? 1 : -1) + letters) % letters;
+    moveSelection(starts[static_cast<size_t>(target)] - selected);
+}
+
+void GuiStore::step(int steps) {
+    if ((holdSource == HoldSource::L2 || holdSource == HoldSource::R2) && jumpsByLetter()) {
+        for (int i = 0; i < abs(steps); i++)
+            jumpLetter(steps);
+        return;
+    }
+    moveSelection(steps);
+}
+
 const StoreEntry *GuiStore::selectedEntry() const {
     if (selected >= static_cast<int>(rows.size()))
         return nullptr;
@@ -527,7 +570,7 @@ void GuiStore::render() {
     hints.push_back({{"S"}, _("Refresh")});
     hints.push_back({{"L1", "R1"}, _("Tab")});
     if (tab == Tab::Apps || tab == Tab::Games) {
-        hints.push_back({{"L2", "R2"}, _("Page")});
+        hints.push_back({{"L2", "R2"}, _("Letter")});
         hints.push_back({{"Select"}, _("Source")});
         hints.push_back({{"Start"}, _("Search")});
     }
@@ -788,13 +831,13 @@ void GuiStore::switchTab(Tab to) {
 // GuiStore::startHold / endHold
 //*******************************
 // the step taken now, and again and again while it is held (HoldRepeat) - a new direction replaces the old one
-void GuiStore::startHold(HoldSource source, int step, HoldRepeat::Timing timing) {
-    if (holdSource == source && hold.step() == step)
+void GuiStore::startHold(HoldSource source, int distance, HoldRepeat::Timing timing) {
+    if (holdSource == source && hold.step() == distance)
         return; // the same one still held (another axis of the d-pad moved)
     app.audio().cursor.play();
-    moveSelection(step);
-    hold.press(step, gui->platform().ticks(), timing);
     holdSource = source;
+    step(distance);
+    hold.press(distance, gui->platform().ticks(), timing);
 }
 
 void GuiStore::endHold() {
@@ -816,7 +859,7 @@ void GuiStore::loop() {
             endHold();
         if (const int steps = hold.due(gui->platform().ticks())) {
             app.audio().cursor.play();
-            moveSelection(steps);
+            step(steps);
         }
         render();
         Event e;
@@ -858,10 +901,10 @@ void GuiStore::loop() {
                     app.audio().cursor.play();
                     const int step = e.button == Button::L1 ? 3 : 1; // four tabs, round
                     switchTab(static_cast<Tab>((static_cast<int>(tab) + step) % 4));
-                } else if (e.button == Button::L2) {
-                    startHold(HoldSource::L2, -visibleRows(), HoldRepeat::pages());
+                } else if (e.button == Button::L2) { // a letter back (Apps, Games), else a page
+                    startHold(HoldSource::L2, jumpsByLetter() ? -1 : -visibleRows(), HoldRepeat::pages());
                 } else if (e.button == Button::R2) {
-                    startHold(HoldSource::R2, visibleRows(), HoldRepeat::pages());
+                    startHold(HoldSource::R2, jumpsByLetter() ? 1 : visibleRows(), HoldRepeat::pages());
                 } else if (e.button == Button::Select && (tab == Tab::Apps || tab == Tab::Games)) {
                     app.audio().cursor.play();
                     nextSourceFilter();
