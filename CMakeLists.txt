@@ -8,6 +8,7 @@ endif()
 ab_add_extension(store HOST ${AB_EXTENSION_HOST}
         SOURCES src/store_extension.cpp src/store_service.cpp src/store_pictures.cpp src/gui_store.cpp
         INI ${CMAKE_CURRENT_SOURCE_DIR}/extension.ini
+        ICON ${CMAKE_CURRENT_SOURCE_DIR}/icon.png
         LANG ${CMAKE_CURRENT_SOURCE_DIR}/lang)
 # data/ goes into the staged folder with the plugin (psn_serials.tsv, disc.png - data/README.md); the package
 # takes the folder whole

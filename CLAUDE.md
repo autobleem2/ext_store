@@ -29,16 +29,33 @@ separate downloads, repository names `ext_<name>`).
   databases by serial (the source's, or the one the PlayStation rdb gives for the title), then RetroArch's
   local box art by the rdb's record name; the source's `image` URL only for a game none of them knows, and
   never libretro's servers. An App's icon is the installed `app.ini`'s `Image=`, else the catalog's `image`.
-  Fetched pictures go to `cache/pictures/`. Tested in `tests/test_store_pictures.cpp`.
-- `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item
-  with its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the
-  launcher's `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are
-  the extension's (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the
-  keyless "Add a source URL" row and for a row that went (a removed source). The Apps and Games lists page with
-  L2/R2 and Left/Right, show one source at a time with Select (round to all of them), and filter by a search
-  with Start (any case, part of the title); Circle widens a narrowed list before it closes the Store. A spinner
-  turns in the line under the header while sources are read, and at the end of a source's row. Removing a
-  source asks first.
+  A remote source's picture is its server's icon: `fetchSiteIcon()` reads the site's root page (from `rootUrl()`
+  = `<scheme>://<host[:port]>/`), parses the `<head>` for a `<link rel="icon"|"shortcut icon"|"apple-touch-icon">`,
+  honors `<base href>` and resolves relative/absolute/protocol-relative hrefs, prefers larger `sizes=` (skips `.svg`),
+  then falls back to `<root>/favicon.ico` if no link is found or the fetch fails (`iconUrlFromHtml` is a pure function).
+  The result (an ICO's largest PNG extracted, or a PNG/GIF/JPEG/BMP as served) is cached as `favicon2-<md5>` in
+  `cache/pictures/` only after `validPicture()` confirms it is decodable: PNG chunks' CRC-32 (every one, from
+  IHDR to IEND), ICO directory bounds, GIF/JPG/BMP signature and minimum size. Validation runs on every
+  cache-hit read too, so a pre-existing corrupt file is thrown out and refetched. `GuiStore::textureFor()`
+  calls `forget(key)` when a texture load still fails, deleting the cache file and clearing the result so
+  even a corrupt file `validPicture()` somehow missed heals itself and counts as failed for retry. Fetch
+  failures are not cached but deduped by signature until `retryFailed()` is called—from Refresh (Square) or
+  when switching to the Sources tab, so a favicon that failed while the network was down recovers on its own.
+  Tested in `tests/test_store_pictures.cpp`.
+- `src/gui_store.*` - `GuiStore`, the screen: the tabs Apps / Games / Downloads / Sources, the list (each item with
+  its picture, the one downloading with a progress bar) and the detail pane (the picture on top), in the launcher's
+  `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are the extension's
+  (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the keyless "Add a source
+  URL" row and for a row that went (a removed source). The Apps and Games lists jump to the next/previous first
+  letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) - a big letter shows briefly at the
+  top-right corner while it does (`renderLetterJump()`: the launcher's own `NotificationBubble` is `ab_evoui`, not
+  part of the extension SDK, so this is PanelStyle's sheet drawn by hand, held then faded the same way) - and page
+  with Left/Right, show one source at a time with Select (round to all of them), and filter by a search with Start
+  (any case, part of the title); Circle widens a narrowed list before it closes the Store. An item installed and up
+  to date is greyed in the Apps and Games lists (`PanelStyle::disabled`, the launcher's locked row) and stays
+  selectable. A spinner turns
+  in the line under the header while sources are read, and at the end of a source's row. Each source's row has its
+  favicon (a list drawn in the theme's colours until it arrives, or without one). Removing a source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
   URL, `store_download_command`, the platform keys; `AB_STORE_CATALOG` overrides the catalog), `poll()` →
   the launcher's bubble, `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
@@ -46,6 +63,9 @@ separate downloads, repository names `ext_<name>`).
 - `lang/` - its strings in the 16 languages (English is the source). It also carries the strings the launcher
   translates already, copied from the launcher's files so the wording is the same. Every string change goes
   into all 16 files in the same commit.
+- `icon.png` - the Store's picture in the launcher's Extensions list (`Icon=`, staged by `ab_add_extension`'s
+  `ICON`): a gold shop front on PSC-Bios's blue card, 256x219 as the other icons. Our own, drawn by
+  `tools/make_store_icon.py` - rerun it after changing the drawing.
 
 ## Building and testing
 

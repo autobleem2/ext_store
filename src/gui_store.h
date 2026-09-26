@@ -1,8 +1,9 @@
 //
 // GuiStore: the AutoBleem Store's screen - four tabs (Apps, Games, Downloads, Sources), a list and the selected
 // item's details, drawn with the launcher's own classic panel in the user's theme. The Apps and Games lists
-// page with L2/R2 (and Left/Right) - held, any of them goes on moving, faster the longer - show one source at a time
-// with Select, and filter by a search with Start. Each item has its picture (an App's icon, a game's cover -
+// jump to the next/previous first letter with L2/R2 (as the carousel's L1/R1) and page with Left/Right - held, any
+// of them goes on moving, faster the longer - show one source at a time with Select, and filter by a search with
+// Start. Each item has its picture (an App's icon, a game's cover -
 // StorePictures finds them) beside it in the list and above its details. It only shows and asks: StoreService does the
 // work, on its own thread, and goes on after the screen is closed.
 //
@@ -54,10 +55,24 @@ private:
         bool action = false; // the Sources tab's "Add a source URL"
         bool remoteSource = false;
         bool loading = false; // a source being read: a spinner at the row's end
+        std::string favicon;  // a remote source's: its server's root URL (StorePictures::rootUrl)
     };
 
     void reload(); // the rows of the tab, from the service
     void moveSelection(int step);
+    // the first row of the next (direction 1) or previous (-1) first letter, round - the Apps and Games lists'
+    // L2/R2, which the carousel does with L1/R1
+    void jumpLetter(int direction);
+    // L2/R2 jump by letters on the Apps and Games tabs (sorted by title) and page on the others
+    bool jumpsByLetter() const { return tab == Tab::Apps || tab == Tab::Games; }
+    // `steps` of the held control: rows or pages, or letters for L2/R2 where they jump by letters
+    void step(int steps);
+    // what a title is filed under: its first character, a letter in upper case
+    static std::string letterOf(const std::string &title);
+    // the big letter jumpLetter() just landed on, shown briefly the way the launcher's carousel shows its
+    // L1/R1 jump (a corner panel, held then fading) - the Store cannot reach NotificationBubble (ab_evoui,
+    // not part of the extension SDK), so this is PanelStyle's own look drawn by hand
+    void renderLetterJump();
     int visibleRows() const;
     void cross();
     void triangle();
@@ -85,6 +100,15 @@ private:
     void drawPicture(const StoreEntry &entry, const ableem::Rect &box, bool frame);
     // discPicture as a texture (the screen's own, kept with the covers); invalid when there is none
     ableem::Texture discTexture();
+    // a Sources row's picture: the server's favicon once it is fetched, else a list drawn in the theme's colours
+    // (a "+" for "Add a source URL")
+    void drawSourceIcon(const Row &row, const ableem::Rect &box);
+    // the texture of a picture file, loaded once (invalid when the file is no picture it can read). `key` is
+    // the StorePictures request this file came from ("" for one not fetched through it, e.g. discPicture): a
+    // file that fails to load is a cache gone bad (StorePictures::validPicture() should have caught it before
+    // caching, but this heals it too) - the cache file is dropped and the request counted as failed again, so
+    // a later retry fetches it afresh instead of failing to load the same broken file forever.
+    ableem::Texture textureFor(const std::string &file, const std::string &key = "");
 
     StoreService &store;
     StorePictures &pictures;
@@ -113,7 +137,10 @@ private:
     enum class HoldSource { None, Dpad, L2, R2 };
     HoldRepeat hold;
     HoldSource holdSource = HoldSource::None;
-    void startHold(HoldSource source, int step, HoldRepeat::Timing timing);
+    void startHold(HoldSource source, int distance, HoldRepeat::Timing timing);
     void endHold();
     PanelStyle style;
+    // the jumpLetter() overlay: which letter, and when it was last (re)shown - "" while nothing is showing
+    std::string letterShown;
+    uint32_t letterShownAt = 0;
 };

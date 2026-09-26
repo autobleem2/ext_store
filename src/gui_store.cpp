@@ -3,6 +3,7 @@
 //
 #include "gui_store.h"
 
+#include "core/model/timing.h"
 #include "gui/gui.h"
 #include "gui/screens/gui_action_menu.h"
 #include "gui/screens/gui_confirm.h"
@@ -25,6 +26,11 @@ const int Thumb = 48;              // a row's picture, square
 const int ThumbSpace = Thumb + 14; // what it takes of the row's text
 const int PanePictureHeight = 160; // the details pane's picture
 const uint32_t ReloadEvery = 500;  // ms: the worker's news, often enough for a progress to move
+// jumpLetter()'s overlay: shown at full strength, then fades out over this long (DefaultShowingTimeout is
+// the launcher notification lines' hold - the fade here is on top of it, not instead of it)
+const uint32_t LetterHoldMs = DefaultShowingTimeout;
+const uint32_t LetterFadeMs = 250;
+const int LetterBoxMargin = 16; // from the screen's edge, as NotificationBubble sits
 } // namespace
 
 //*******************************
@@ -166,6 +172,7 @@ void GuiStore::reload() {
             r.title = s.displayName.empty() ? s.name : s.displayName;
             r.remoteSource = s.remote && !s.ours;
             r.loading = s.loading;
+            r.favicon = s.remote ? StorePictures::rootUrl(s.where) : "";
             r.detail = to_string(s.items) + " " + _("items");
             if (s.loading && s.items == 0)
                 r.detail = _("Reading...");
@@ -267,6 +274,51 @@ void GuiStore::moveSelection(int step) {
         firstVisible = selected - visible + 1;
 }
 
+//*******************************
+// GuiStore::letterOf / jumpLetter / step
+//*******************************
+string GuiStore::letterOf(const string &title) {
+    if (title.empty())
+        return "";
+    const unsigned char first = static_cast<unsigned char>(title[0]);
+    if (first < 0x80)
+        return string(1, static_cast<char>(toupper(first)));
+    // a UTF-8 character whole: its lead byte and the continuation bytes after it
+    size_t length = 1;
+    while (length < title.size() && (static_cast<unsigned char>(title[length]) & 0xC0) == 0x80)
+        length++;
+    return title.substr(0, length);
+}
+
+void GuiStore::jumpLetter(int direction) {
+    const int count = static_cast<int>(rows.size());
+    if (count == 0)
+        return;
+    // where each letter's rows start - the rows are sorted by title, so a letter's rows are together
+    vector<int> starts;
+    for (int i = 0; i < count; i++)
+        if (i == 0 || letterOf(rows[i].title) != letterOf(rows[i - 1].title))
+            starts.push_back(i);
+    int current = 0; // the letter the selected row is under
+    for (size_t i = 0; i < starts.size(); i++)
+        if (starts[i] <= selected)
+            current = static_cast<int>(i);
+    const int letters = static_cast<int>(starts.size());
+    const int target = (current + (direction > 0 ? 1 : -1) + letters) % letters;
+    moveSelection(starts[static_cast<size_t>(target)] - selected);
+    letterShown = letterOf(rows[static_cast<size_t>(starts[static_cast<size_t>(target)])].title);
+    letterShownAt = gui->platform().ticks();
+}
+
+void GuiStore::step(int steps) {
+    if ((holdSource == HoldSource::L2 || holdSource == HoldSource::R2) && jumpsByLetter()) {
+        for (int i = 0; i < abs(steps); i++)
+            jumpLetter(steps);
+        return;
+    }
+    moveSelection(steps);
+}
+
 const StoreEntry *GuiStore::selectedEntry() const {
     if (selected >= static_cast<int>(rows.size()))
         return nullptr;
@@ -297,10 +349,52 @@ ableem::Texture GuiStore::pictureFor(const StoreEntry &entry) {
     const string file = pictures.path(entry.key);
     if (file.empty())
         return ableem::Texture();
+    return textureFor(file, entry.key);
+}
+
+ableem::Texture GuiStore::textureFor(const string &file, const string &key) {
     auto it = textures.find(file);
-    if (it == textures.end())
-        it = textures.emplace(file, ableem::Texture::loadFile(renderer, file)).first;
+    if (it == textures.end()) {
+        ableem::Texture texture = ableem::Texture::loadFile(renderer, file);
+        if (!texture.valid() && !key.empty())
+            pictures.forget(key); // a cache file gone bad - heal it, a later retry fetches it afresh
+        it = textures.emplace(file, texture).first;
+    }
     return it->second;
+}
+
+void GuiStore::drawSourceIcon(const Row &row, const ableem::Rect &box) {
+    if (!row.favicon.empty()) {
+        StorePictures::Request request;
+        request.key = "favicon|" + row.favicon;
+        request.kind = "favicon";
+        request.imageUrl = row.favicon;
+        pictures.want(request);
+        const string file = pictures.path(request.key);
+        const ableem::Texture icon = file.empty() ? ableem::Texture() : textureFor(file, request.key);
+        if (icon.valid()) {
+            // a favicon is small (16 or 32 px): at 32 unless it is as big as the box, not blown up to a blur
+            const int side = icon.size().w >= box.w ? box.w : min(box.w, 32);
+            drawFitted(icon, ableem::Rect(box.x + (box.w - side) / 2, box.y + (box.h - side) / 2, side, side));
+            return;
+        }
+    }
+    renderer.setBlendMode(ableem::BlendMode::Blend);
+    renderer.setDrawColor(style.secondary);
+    const int cx = box.x + box.w / 2, cy = box.y + box.h / 2;
+    if (row.action) { // "Add a source URL": a plus
+        renderer.fillRect(ableem::Rect(cx - 12, cy - 2, 24, 4));
+        renderer.fillRect(ableem::Rect(cx - 2, cy - 12, 4, 24));
+        return;
+    }
+    // a list: a sheet with three lines, each with its bullet
+    const ableem::Rect sheet(cx - 15, cy - 18, 30, 36);
+    renderer.drawRect(sheet);
+    for (int i = 0; i < 3; i++) {
+        const int ly = sheet.y + 8 + i * 9;
+        renderer.fillRect(ableem::Rect(sheet.x + 6, ly, 3, 3));
+        renderer.fillRect(ableem::Rect(sheet.x + 12, ly, 12, 3));
+    }
 }
 
 void GuiStore::drawPicture(const StoreEntry &entry, const ableem::Rect &box, bool frame) {
@@ -357,6 +451,40 @@ void GuiStore::drawFitted(const ableem::Texture &texture, const ableem::Rect &bo
     const int w = static_cast<int>(size.w * scale), h = static_cast<int>(size.h * scale);
     const ableem::Rect target(box.x + (box.w - w) / 2, box.y + (box.h - h) / 2, w, h);
     renderer.copy(texture, nullptr, &target);
+}
+
+//*******************************
+// GuiStore::renderLetterJump
+//*******************************
+// jumpLetter()'s letter, top-right at the screen's edge - the same corner the launcher's NotificationBubble
+// uses for its own jump letter - held at full strength for LetterHoldMs, then fading over LetterFadeMs. A
+// small sheet in PanelStyle's colours (drawn by hand: PanelStyle::sheet has no alpha of its own to fade)
+void GuiStore::renderLetterJump() {
+    if (letterShown.empty())
+        return;
+    const uint32_t now = gui->platform().ticks();
+    const uint32_t elapsed = now - letterShownAt;
+    if (elapsed >= LetterHoldMs + LetterFadeMs) {
+        letterShown.clear();
+        return;
+    }
+    const float fade =
+        elapsed <= LetterHoldMs ? 1.0f : 1.0f - easeOutCubic(static_cast<float>(elapsed - LetterHoldMs) / LetterFadeMs);
+    Fonts &fonts = gui->assets().themeFonts;
+    ableem::Font &big = fonts.boldAtSize(64);
+    const int textWidth = gui->text().textWidth(big, letterShown);
+    const int boxSize = max(88, textWidth + 40);
+    const ableem::Rect box(SCREEN_WIDTH - LetterBoxMargin - boxSize, LetterBoxMargin, boxSize, boxSize);
+
+    renderer.setBlendMode(ableem::BlendMode::Blend);
+    renderer.setDrawColor(ableem::Color(0, 0, 0, static_cast<unsigned char>(200 * fade)));
+    renderer.fillRect(box);
+    renderer.setDrawColor(
+        ableem::Color(style.secondary.r, style.secondary.g, style.secondary.b, static_cast<unsigned char>(160 * fade)));
+    renderer.drawRect(box);
+    gui->text().renderText_WithColor(
+        big, letterShown, box.x + (box.w - textWidth) / 2, box.y + (box.h - big.lineHeight()) / 2,
+        ableem::Color(style.text.r, style.text.g, style.text.b, static_cast<unsigned char>(255 * fade)), XALIGN_LEFT);
 }
 
 //*******************************
@@ -458,6 +586,9 @@ void GuiStore::render() {
                 renderer.drawRect(box);
             }
             textX += ThumbSpace;
+        } else {
+            drawSourceIcon(rows[i], ableem::Rect(textX, y + (RowHeight - Thumb) / 2, Thumb, Thumb));
+            textX += ThumbSpace;
         }
         const int textWidth = listWidth - (textX - panel.x) - RowInset - 8;
         gui->text().renderText_WithColor(fonts[FONT_22_MED],
@@ -477,6 +608,10 @@ void GuiStore::render() {
             renderer.setDrawColor(style.text);
             renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, done, 3));
         }
+        // what is installed already (and up to date) steps back, as a locked row does in the launcher's menus -
+        // still selectable: its details, and Triangle to remove it
+        if (entry != nullptr && entry->state == StoreState::Installed && (tab == Tab::Apps || tab == Tab::Games))
+            style.disabled(renderer, row);
         y += RowHeight;
     }
     const int markerX = panel.x + listWidth - RowInset;
@@ -527,12 +662,13 @@ void GuiStore::render() {
     hints.push_back({{"S"}, _("Refresh")});
     hints.push_back({{"L1", "R1"}, _("Tab")});
     if (tab == Tab::Apps || tab == Tab::Games) {
-        hints.push_back({{"L2", "R2"}, _("Page")});
+        hints.push_back({{"L2", "R2"}, _("Letter")});
         hints.push_back({{"Select"}, _("Source")});
         hints.push_back({{"Start"}, _("Search")});
     }
     style.footer(*gui, ableem::Rect(panel.x, panel.y + panel.h - FooterHeight, panel.w, FooterHeight), hints,
                  rows.empty() ? "" : to_string(selected + 1) + "/" + to_string(rows.size()), true);
+    renderLetterJump();
 
     gui->text().setShadow(classicShadow);
     renderer.present();
@@ -776,6 +912,8 @@ void GuiStore::switchTab(Tab to) {
     left.selected = selected;
     left.firstVisible = firstVisible;
     tab = to;
+    if (to == Tab::Sources) // a favicon that failed while the network was not up yet gets another try, unasked
+        pictures.retryFailed();
     const Place &back = places[tab];
     selected = back.selected;
     firstVisible = back.firstVisible;
@@ -788,13 +926,13 @@ void GuiStore::switchTab(Tab to) {
 // GuiStore::startHold / endHold
 //*******************************
 // the step taken now, and again and again while it is held (HoldRepeat) - a new direction replaces the old one
-void GuiStore::startHold(HoldSource source, int step, HoldRepeat::Timing timing) {
-    if (holdSource == source && hold.step() == step)
+void GuiStore::startHold(HoldSource source, int distance, HoldRepeat::Timing timing) {
+    if (holdSource == source && hold.step() == distance)
         return; // the same one still held (another axis of the d-pad moved)
     app.audio().cursor.play();
-    moveSelection(step);
-    hold.press(step, gui->platform().ticks(), timing);
     holdSource = source;
+    step(distance);
+    hold.press(distance, gui->platform().ticks(), timing);
 }
 
 void GuiStore::endHold() {
@@ -816,7 +954,7 @@ void GuiStore::loop() {
             endHold();
         if (const int steps = hold.due(gui->platform().ticks())) {
             app.audio().cursor.play();
-            moveSelection(steps);
+            step(steps);
         }
         render();
         Event e;
@@ -854,14 +992,15 @@ void GuiStore::loop() {
                 } else if (e.button == Button::Square) {
                     app.audio().cursor.play();
                     store.refresh();
+                    pictures.retryFailed(); // every picture that failed - a source's favicon included
                 } else if (e.button == Button::L1 || e.button == Button::R1) {
                     app.audio().cursor.play();
                     const int step = e.button == Button::L1 ? 3 : 1; // four tabs, round
                     switchTab(static_cast<Tab>((static_cast<int>(tab) + step) % 4));
-                } else if (e.button == Button::L2) {
-                    startHold(HoldSource::L2, -visibleRows(), HoldRepeat::pages());
+                } else if (e.button == Button::L2) { // a letter back (Apps, Games), else a page
+                    startHold(HoldSource::L2, jumpsByLetter() ? -1 : -visibleRows(), HoldRepeat::pages());
                 } else if (e.button == Button::R2) {
-                    startHold(HoldSource::R2, visibleRows(), HoldRepeat::pages());
+                    startHold(HoldSource::R2, jumpsByLetter() ? 1 : visibleRows(), HoldRepeat::pages());
                 } else if (e.button == Button::Select && (tab == Tab::Apps || tab == Tab::Games)) {
                     app.audio().cursor.play();
                     nextSourceFilter();

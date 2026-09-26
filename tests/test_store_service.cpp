@@ -136,6 +136,22 @@ struct Setup {
 
 } // namespace
 
+TEST_CASE("StoreService: a TSV line without an http(s) URL is skipped quietly, any other problem is shown") {
+    Setup s;
+    s.tmp.writeFile("System/Extensions/store/sources/nps.tsv", "title\turl\tsize\n"
+                                                               "Cart Only\tCART ONLY\n"
+                                                               "Missing\tMISSING\n"
+                                                               "Bad Size\thttps://site/b.chd\tlots\n");
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    vector<StoreSourceInfo> sources = store.sources();
+    REQUIRE(sources.size() == 2);
+    CHECK(sources[1].items == 1);
+    REQUIRE(sources[1].problems.size() == 1);
+    CHECK(sources[1].problems[0].find("line 4: size") == 0);
+}
+
 TEST_CASE("StoreService reads our catalog and the user's sources, local and remote") {
     Setup s;
     s.tmp.writeFile("System/Extensions/store/sources/mine.tsv",
@@ -151,7 +167,7 @@ TEST_CASE("StoreService reads our catalog and the user's sources, local and remo
     CHECK(sources[0].ours);
     CHECK(sources[0].items == 2);
     CHECK(sources[1].name == "My Games");
-    CHECK(sources[1].problems.size() == 1);
+    CHECK(sources[1].problems.empty()); // "broken line" has no URL: skipped quietly
     CHECK(sources[2].name == "Acme");
     CHECK(sources[2].remote);
 
@@ -275,6 +291,26 @@ TEST_CASE("StoreService: paused mid-download keeps the bytes and the place in th
     store.resume();
     REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Installed; }));
     CHECK(fileText(s.tmp.at("Apps/opentyrian/bin/psc/tyrian")) == "binary"); // the halves joined right
+}
+
+TEST_CASE("StoreService: the progress keeps its place while the part cannot be read") {
+    Setup s;
+    s.site.stalls.insert("https://site/tyrian.zip");
+    const string key = "AutoBleem|app/opentyrian";
+    StoreService store(s.config());
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return store.progress().done > 0; }));
+    const uint64_t half = s.tyrian.size() / 2;
+    CHECK(store.progress().done == half);
+    CHECK(store.progress().total == s.tyrian.size());
+    // a reading that fails (a file curl holds open on Windows, a stat past 2 GB on a 32-bit build): the last one
+    // stands, the bar does not fall back to 0 and jump up again
+    DirEntry::removeFile(store.downloadsDir() + "/tyrian.zip.part");
+    CHECK(store.progress().done == half);
+    REQUIRE(store.cancel(key));
+    REQUIRE(waitFor([&] { return !store.progress().busy; }));
 }
 
 TEST_CASE("StoreService: a stop (power off) mid-download leaves it queued for the next start") {

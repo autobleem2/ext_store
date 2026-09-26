@@ -14,6 +14,9 @@
 #include <cctype>
 #include <chrono>
 #include <fstream>
+#ifdef __linux__
+#include <sys/stat.h>
+#endif
 
 using namespace std;
 using ableem::StoreCatalog;
@@ -73,8 +76,39 @@ string appNameFromId(const string &id) {
     return id.compare(0, 4, "app/") == 0 ? id.substr(4) : "";
 }
 
+// the size of a download's .part while curl writes it, -1 when it cannot be read. 64-bit everywhere: the console's
+// and the 32-bit Pi's builds have a 32-bit off_t, where stat() (DirEntry::fileSize) fails with EOVERFLOW once a file
+// passes 2 GB - the progress fell back to the finished files alone. On Windows DirEntry::liveFileSize opens the
+// file (a plain stat says 0 until curl closes it)
+long long partSize(const string &path) {
+#ifdef __GLIBC__
+    struct stat64 st{};
+    if (stat64(path.c_str(), &st) != 0 || S_ISDIR(st.st_mode))
+        return -1;
+    return static_cast<long long>(st.st_size);
+#else
+    return DirEntry::liveFileSize(path);
+#endif
+}
+
 bool supported(const string &kind) {
     return kind == "app" || kind == "ps1";
+}
+
+// the TSV's skipped lines worth showing: a line without an http(s) URL is left out quietly - a list in the
+// NoPayStation layout has hundreds of them ("MISSING", "CART ONLY"), and the Sources tab showed the first as the
+// source's problem
+vector<string> reportedProblems(const vector<string> &problems, const string &source) {
+    static const string NoUrl = ": no http(s) url";
+    vector<string> out;
+    for (const string &p : problems) {
+        if (p.size() >= NoUrl.size() && p.compare(p.size() - NoUrl.size(), NoUrl.size(), NoUrl) == 0) {
+            PLOG_DEBUG << source << ": " << p;
+            continue;
+        }
+        out.push_back(p);
+    }
+    return out;
 }
 } // namespace
 
@@ -310,7 +344,7 @@ StoreService::LoadedSource StoreService::readLocal(const string &path) {
                              error)) {
         s.info.name = tsv.name;
         s.info.items = static_cast<int>(tsv.items.size());
-        s.info.problems = tsv.problems;
+        s.info.problems = reportedProblems(tsv.problems, s.info.where);
         s.items = tsv.items;
     } else {
         s.info.name = DirEntry::getFileNameFromPath(path);
@@ -335,7 +369,7 @@ StoreService::LoadedSource StoreService::readRemote(const string &url, bool fetc
     if (DirEntry::exists(cached) && StoreSourceTsv::load(cached, fallbackName, tsv, error)) {
         s.info.name = tsv.name;
         s.info.items = static_cast<int>(tsv.items.size());
-        s.info.problems = tsv.problems;
+        s.info.problems = reportedProblems(tsv.problems, s.info.where);
         s.items = tsv.items;
     } else {
         s.info.name = fallbackName;
@@ -612,8 +646,12 @@ void StoreService::work(const string &key) {
             return;
         }
         local.push_back(target);
+        // a file of no given size counts what it came to - the part being gone now, it would drop out of the
+        // progress
+        const long long got = file.size > 0 ? static_cast<long long>(file.size) : partSize(target);
         lock_guard<mutex> lock(mutex_);
-        currentDone_ += file.size;
+        currentDone_ += got > 0 ? static_cast<uint64_t>(got) : 0;
+        currentPart_.clear(); // counted in currentDone_ now, not twice
     }
 
     {
@@ -736,11 +774,21 @@ StoreService::Progress StoreService::progress() const {
     p.total = currentTotal_;
     p.done = currentDone_;
     if (!currentPart_.empty()) {
-        // (live: curl still has it open - on Windows a plain stat says 0 until it is done)
-        const long long part = DirEntry::liveFileSize(currentPart_);
+        // a reading that fails (0 or -1 for a part that had bytes a moment ago - a file opened by curl on
+        // Windows, a stat that cannot say) keeps the last one: the progress must not drop to the finished files
+        // and come back, frame after frame. A new part (the next disc, a download started over) starts afresh
+        const long long part = partSize(currentPart_);
+        if (currentPart_ != lastPart_) {
+            lastPart_ = currentPart_;
+            lastPartSize_ = 0;
+        }
         if (part > 0)
-            p.done += static_cast<uint64_t>(part);
+            lastPartSize_ = static_cast<uint64_t>(part);
+        p.done += lastPartSize_;
     }
+    // never past the whole: a server sending more than the list says is refused at the end, not shown as 140%
+    if (p.total > 0 && p.done > p.total)
+        p.done = p.total;
     return p;
 }
 

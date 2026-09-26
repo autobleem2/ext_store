@@ -16,7 +16,8 @@ Raspberry Pi, the PC USB stick, Windows).
 - **Pictures**: a game shows its cover from AutoBleem's own covers databases and PlayStation rdb (by the
   `serial` a source gives, else by the title the rdb knows), an App its icon (the catalog's `image`, then the
   installed App's own). A source's `image` is used only for a game those databases do not know. Nothing is
-  fetched from libretro's servers.
+  fetched from libretro's servers. A source shows its server's icon in the Sources tab: a `<link>` from the
+  site's root page, or `favicon.ico` as a fallback.
 - Downloads run in the background, also after you leave the Store. A game launch or a power-off only pauses
   them, and a stopped download resumes where it stopped.
 
