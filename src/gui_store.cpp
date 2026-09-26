@@ -3,6 +3,7 @@
 //
 #include "gui_store.h"
 
+#include "core/model/timing.h"
 #include "gui/gui.h"
 #include "gui/screens/gui_action_menu.h"
 #include "gui/screens/gui_confirm.h"
@@ -25,6 +26,11 @@ const int Thumb = 48;              // a row's picture, square
 const int ThumbSpace = Thumb + 14; // what it takes of the row's text
 const int PanePictureHeight = 160; // the details pane's picture
 const uint32_t ReloadEvery = 500;  // ms: the worker's news, often enough for a progress to move
+// jumpLetter()'s overlay: shown at full strength, then fades out over this long (DefaultShowingTimeout is
+// the launcher notification lines' hold - the fade here is on top of it, not instead of it)
+const uint32_t LetterHoldMs = DefaultShowingTimeout;
+const uint32_t LetterFadeMs = 250;
+const int LetterBoxMargin = 16; // from the screen's edge, as NotificationBubble sits
 } // namespace
 
 //*******************************
@@ -300,6 +306,8 @@ void GuiStore::jumpLetter(int direction) {
     const int letters = static_cast<int>(starts.size());
     const int target = (current + (direction > 0 ? 1 : -1) + letters) % letters;
     moveSelection(starts[static_cast<size_t>(target)] - selected);
+    letterShown = letterOf(rows[static_cast<size_t>(starts[static_cast<size_t>(target)])].title);
+    letterShownAt = gui->platform().ticks();
 }
 
 void GuiStore::step(int steps) {
@@ -439,6 +447,40 @@ void GuiStore::drawFitted(const ableem::Texture &texture, const ableem::Rect &bo
     const int w = static_cast<int>(size.w * scale), h = static_cast<int>(size.h * scale);
     const ableem::Rect target(box.x + (box.w - w) / 2, box.y + (box.h - h) / 2, w, h);
     renderer.copy(texture, nullptr, &target);
+}
+
+//*******************************
+// GuiStore::renderLetterJump
+//*******************************
+// jumpLetter()'s letter, top-right at the screen's edge - the same corner the launcher's NotificationBubble
+// uses for its own jump letter - held at full strength for LetterHoldMs, then fading over LetterFadeMs. A
+// small sheet in PanelStyle's colours (drawn by hand: PanelStyle::sheet has no alpha of its own to fade)
+void GuiStore::renderLetterJump() {
+    if (letterShown.empty())
+        return;
+    const uint32_t now = gui->platform().ticks();
+    const uint32_t elapsed = now - letterShownAt;
+    if (elapsed >= LetterHoldMs + LetterFadeMs) {
+        letterShown.clear();
+        return;
+    }
+    const float fade =
+        elapsed <= LetterHoldMs ? 1.0f : 1.0f - easeOutCubic(static_cast<float>(elapsed - LetterHoldMs) / LetterFadeMs);
+    Fonts &fonts = gui->assets().themeFonts;
+    ableem::Font &big = fonts.boldAtSize(64);
+    const int textWidth = gui->text().textWidth(big, letterShown);
+    const int boxSize = max(88, textWidth + 40);
+    const ableem::Rect box(SCREEN_WIDTH - LetterBoxMargin - boxSize, LetterBoxMargin, boxSize, boxSize);
+
+    renderer.setBlendMode(ableem::BlendMode::Blend);
+    renderer.setDrawColor(ableem::Color(0, 0, 0, static_cast<unsigned char>(200 * fade)));
+    renderer.fillRect(box);
+    renderer.setDrawColor(
+        ableem::Color(style.secondary.r, style.secondary.g, style.secondary.b, static_cast<unsigned char>(160 * fade)));
+    renderer.drawRect(box);
+    gui->text().renderText_WithColor(
+        big, letterShown, box.x + (box.w - textWidth) / 2, box.y + (box.h - big.lineHeight()) / 2,
+        ableem::Color(style.text.r, style.text.g, style.text.b, static_cast<unsigned char>(255 * fade)), XALIGN_LEFT);
 }
 
 //*******************************
@@ -622,6 +664,7 @@ void GuiStore::render() {
     }
     style.footer(*gui, ableem::Rect(panel.x, panel.y + panel.h - FooterHeight, panel.w, FooterHeight), hints,
                  rows.empty() ? "" : to_string(selected + 1) + "/" + to_string(rows.size()), true);
+    renderLetterJump();
 
     gui->text().setShadow(classicShadow);
     renderer.present();

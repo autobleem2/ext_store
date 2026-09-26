@@ -69,6 +69,10 @@ private:
     void step(int steps);
     // what a title is filed under: its first character, a letter in upper case
     static std::string letterOf(const std::string &title);
+    // the big letter jumpLetter() just landed on, shown briefly the way the launcher's carousel shows its
+    // L1/R1 jump (a corner panel, held then fading) - the Store cannot reach NotificationBubble (ab_evoui,
+    // not part of the extension SDK), so this is PanelStyle's own look drawn by hand
+    void renderLetterJump();
     int visibleRows() const;
     void cross();
     void triangle();
@@ -132,4 +136,7 @@ private:
     void startHold(HoldSource source, int distance, HoldRepeat::Timing timing);
     void endHold();
     PanelStyle style;
+    // the jumpLetter() overlay: which letter, and when it was last (re)shown - "" while nothing is showing
+    std::string letterShown;
+    uint32_t letterShownAt = 0;
 };

@@ -37,10 +37,13 @@ separate downloads, repository names `ext_<name>`).
   `PanelStyle`. It re-reads the service twice a second and never calls `poll()`, whose events are the extension's
   (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the keyless "Add a source
   URL" row and for a row that went (a removed source). The Apps and Games lists jump to the next/previous first
-  letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) and page with Left/Right, show one
-  source at a time with Select (round to all of them), and filter by a search with Start (any case, part of the
-  title); Circle widens a narrowed list before it closes the Store. An item installed and up to date is greyed in
-  the Apps and Games lists (`PanelStyle::disabled`, the launcher's locked row) and stays selectable. A spinner turns
+  letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) - a big letter shows briefly at the
+  top-right corner while it does (`renderLetterJump()`: the launcher's own `NotificationBubble` is `ab_evoui`, not
+  part of the extension SDK, so this is PanelStyle's sheet drawn by hand, held then faded the same way) - and page
+  with Left/Right, show one source at a time with Select (round to all of them), and filter by a search with Start
+  (any case, part of the title); Circle widens a narrowed list before it closes the Store. An item installed and up
+  to date is greyed in the Apps and Games lists (`PanelStyle::disabled`, the launcher's locked row) and stays
+  selectable. A spinner turns
   in the line under the header while sources are read, and at the end of a source's row. Each source's row has its
   favicon (a list drawn in the theme's colours until it arrives, or without one). Removing a source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
