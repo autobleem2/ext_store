@@ -103,8 +103,12 @@ private:
     // a Sources row's picture: the server's favicon once it is fetched, else a list drawn in the theme's colours
     // (a "+" for "Add a source URL")
     void drawSourceIcon(const Row &row, const ableem::Rect &box);
-    // the texture of a picture file, loaded once (invalid when the file is no picture it can read)
-    ableem::Texture textureFor(const std::string &file);
+    // the texture of a picture file, loaded once (invalid when the file is no picture it can read). `key` is
+    // the StorePictures request this file came from ("" for one not fetched through it, e.g. discPicture): a
+    // file that fails to load is a cache gone bad (StorePictures::validPicture() should have caught it before
+    // caching, but this heals it too) - the cache file is dropped and the request counted as failed again, so
+    // a later retry fetches it afresh instead of failing to load the same broken file forever.
+    ableem::Texture textureFor(const std::string &file, const std::string &key = "");
 
     StoreService &store;
     StorePictures &pictures;

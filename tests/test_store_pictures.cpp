@@ -9,6 +9,7 @@
 #include "core/main.h"
 #include "../src/store_pictures.h"
 
+#include <ableem/engine/crc32.h>
 #include <ableem/engine/game_database.h>
 #include <ableem/engine/md5.h>
 
@@ -23,7 +24,47 @@ using namespace test_support;
 
 namespace {
 
+// a bare signature - fine for the tests that never reach validPicture() (a covers-database blob, iconImage()
+// tested directly): those paths trust their source and never touch the texture loader through StorePictures.
 const string Png = "\x89PNG";
+
+string be32(uint32_t v) {
+    return string({static_cast<char>((v >> 24) & 0xff), static_cast<char>((v >> 16) & 0xff),
+                   static_cast<char>((v >> 8) & 0xff), static_cast<char>(v & 0xff)});
+}
+
+// one PNG chunk with a correct CRC-32 over its type and data, as validPng() (store_pictures.cpp) checks it
+string pngChunk(const string &type, const string &data) {
+    const uint32_t crc = ableem::Crc32::update(0, (type + data).data(), type.size() + data.size());
+    return be32(static_cast<uint32_t>(data.size())) + type + data + be32(crc);
+}
+
+// a real, valid, tiny PNG every chunk CRC checks out on - what a fetched picture must be to be cached and
+// shown now. `tag` goes into IDAT: our own validPng() only checks the chunk structure and CRCs, never decodes
+// pixels, so any bytes there still let two pictures compare unequal in a test, exactly as the old bare "Png +
+// tag" fixtures did before pictures were validated.
+string realPng(const string &tag) {
+    string ihdr(13, '\0');
+    ihdr[3] = 1; // width = 1
+    ihdr[7] = 1; // height = 1
+    ihdr[8] = 8; // bit depth 8, colour type/compression/filter/interlace 0
+    return string("\x89PNG\r\n\x1a\n", 8) + pngChunk("IHDR", ihdr) + pngChunk("IDAT", tag) + pngChunk("IEND", "");
+}
+
+// what the owner's install actually had cached: a PNG with the right signature and IHDR, but every chunk's
+// CRC left at zero - SDL_image's libpng refuses it, our validPng() must too
+string corruptPng() {
+    string ihdr(13, '\0');
+    ihdr[3] = 32;
+    ihdr[7] = 32;
+    ihdr[8] = 8;
+    ihdr[9] = 2;
+    auto zeroCrc = [](const string &type, const string &data) {
+        return be32(static_cast<uint32_t>(data.size())) + type + data + be32(0);
+    };
+    return string("\x89PNG\r\n\x1a\n", 8) + zeroCrc("IHDR", ihdr) + zeroCrc("IDAT", string(29, '\0')) +
+           zeroCrc("IEND", "");
+}
 
 string fileText(const string &path) {
     ifstream in(path, ios::binary);
@@ -168,14 +209,14 @@ TEST_CASE("StorePictures: the installed game's own cover first; the source's pic
     CHECK(fileText(pictures.resolve(installed)) == "mine");
 
     StorePictures::Request known = s.game("Anything", "SCUS-94900");
-    known.imageUrl = "https://site/cover.jpg";
-    s.bodies["https://site/cover.jpg"] = "theirs";
+    known.imageUrl = "https://site/cover.png";
+    s.bodies["https://site/cover.png"] = realPng("theirs");
     CHECK(fileText(pictures.resolve(known)) == Png); // our database wins over the source's picture
     CHECK(s.fetches.empty());
 
     StorePictures::Request unknown = s.game("Homebrew Thing");
-    unknown.imageUrl = "https://site/cover.jpg";
-    CHECK(fileText(pictures.resolve(unknown)) == "theirs");
+    unknown.imageUrl = "https://site/cover.png";
+    CHECK(fileText(pictures.resolve(unknown)) == realPng("theirs"));
     CHECK(pictures.resolve(s.game("Nobody Knows")).empty());
 }
 
@@ -187,9 +228,9 @@ TEST_CASE("StorePictures: an App's icon - its app.ini's Image= once installed, e
     app.kind = "app";
     app.title = "OpenTyrian";
     app.imageUrl = "https://site/store/psc/tyrian.png";
-    s.bodies[app.imageUrl] = "icon";
+    s.bodies[app.imageUrl] = realPng("icon");
     const string fetched = pictures.resolve(app);
-    CHECK(fileText(fetched) == "icon");
+    CHECK(fileText(fetched) == realPng("icon"));
     CHECK(pictures.resolve(app) == fetched);
     CHECK(s.fetches.size() == 1); // the cache answers the second time
 
@@ -220,17 +261,17 @@ TEST_CASE("StorePictures: asked for on the screen's thread, found on its own") {
     app.key = "src|app/x";
     app.kind = "app";
     app.imageUrl = "https://site/a.png";
-    s.bodies["https://site/a.png"] = "first";
-    s.bodies["https://site/b.png"] = "second";
+    s.bodies["https://site/a.png"] = realPng("first");
+    s.bodies["https://site/b.png"] = realPng("second");
     pictures.want(app);
     for (int i = 0; i < 500 && pictures.path(app.key).empty(); i++)
         this_thread::sleep_for(chrono::milliseconds(10));
-    CHECK(fileText(pictures.path(app.key)) == "first");
+    CHECK(fileText(pictures.path(app.key)) == realPng("first"));
     app.imageUrl = "https://site/b.png";
     pictures.want(app);
-    for (int i = 0; i < 500 && fileText(pictures.path(app.key)) != "second"; i++)
+    for (int i = 0; i < 500 && fileText(pictures.path(app.key)) != realPng("second"); i++)
         this_thread::sleep_for(chrono::milliseconds(10));
-    CHECK(fileText(pictures.path(app.key)) == "second");
+    CHECK(fileText(pictures.path(app.key)) == realPng("second"));
     pictures.stop();
 }
 
@@ -273,12 +314,12 @@ TEST_CASE("StorePictures::retryFailed: a failed request is retried, a success is
 
     // now the site is up: retryFailed() asks the failed ones again, the found one is left as it was
     s.bodies[favicon.imageUrl] = "<html><head><link rel=\"icon\" href=\"/icon.png\"></head></html>";
-    s.bodies["https://down/icon.png"] = Png + "now-up";
+    s.bodies["https://down/icon.png"] = realPng("now-up");
     pictures.retryFailed();
     CHECK(pictures.pending(favicon.key)); // asked again at once
     for (int i = 0; i < 500 && pictures.pending(favicon.key); i++)
         this_thread::sleep_for(chrono::milliseconds(10));
-    CHECK(fileText(pictures.path(favicon.key)) == Png + "now-up");
+    CHECK(fileText(pictures.path(favicon.key)) == realPng("now-up"));
     CHECK(pictures.path(found.key) == foundFile); // untouched - it was never asked again
 
     pictures.stop();
@@ -435,10 +476,10 @@ TEST_CASE("StorePictures: a source's icon comes from a <link> on its root page, 
     r.imageUrl = StorePictures::rootUrl("https://site/lists/deep/games.tsv");
     REQUIRE(r.imageUrl == "https://site/");
     s.bodies[r.imageUrl] = "<html><head><link rel=\"icon\" href=\"/static/icon.png\"></head></html>";
-    s.bodies["https://site/static/icon.png"] = icoFile({{32, Png + "32"}});
+    s.bodies["https://site/static/icon.png"] = icoFile({{32, realPng("32")}});
     const string file = pictures.resolve(r);
     CHECK(DirEntry::getFileExtension(file) == "png");
-    CHECK(fileText(file) == Png + "32");
+    CHECK(fileText(file) == realPng("32"));
     CHECK(s.fetches.size() == 2); // the root page, then the icon it named - never favicon.ico
     CHECK(pictures.resolve(r) == file);
     CHECK(s.fetches.size() == 2); // the cache answers the second time
@@ -451,9 +492,9 @@ TEST_CASE("StorePictures: no root page (or nothing usable in it) falls back to f
     r.key = "favicon|https://noroot/";
     r.kind = "favicon";
     r.imageUrl = "https://noroot/"; // no body: the runner fails it, as a 404 or a refused connection would
-    s.bodies["https://noroot/favicon.ico"] = Png + "plain";
+    s.bodies["https://noroot/favicon.ico"] = realPng("plain");
     const string file = pictures.resolve(r);
-    CHECK(fileText(file) == Png + "plain");
+    CHECK(fileText(file) == realPng("plain"));
     CHECK(s.fetches.size() == 2); // the root page (failed), then favicon.ico
 
     StorePictures::Request page;
@@ -461,8 +502,8 @@ TEST_CASE("StorePictures: no root page (or nothing usable in it) falls back to f
     page.kind = "favicon";
     page.imageUrl = "https://pagenoicon/";
     s.bodies[page.imageUrl] = "<html><head><title>No icon here</title></head></html>";
-    s.bodies["https://pagenoicon/favicon.ico"] = Png + "plain2";
-    CHECK(fileText(pictures.resolve(page)) == Png + "plain2");
+    s.bodies["https://pagenoicon/favicon.ico"] = realPng("plain2");
+    CHECK(fileText(pictures.resolve(page)) == realPng("plain2"));
 }
 
 TEST_CASE("StorePictures: an icon the root page named but could not fetch also falls back to favicon.ico") {
@@ -474,9 +515,9 @@ TEST_CASE("StorePictures: an icon the root page named but could not fetch also f
     r.imageUrl = "https://partial/";
     s.bodies[r.imageUrl] = "<html><head><link rel=\"shortcut icon\" href=\"missing.png\"></head></html>";
     // https://partial/missing.png has no body, so it fails
-    s.bodies["https://partial/favicon.ico"] = Png + "fallback";
+    s.bodies["https://partial/favicon.ico"] = realPng("fallback");
     const string file = pictures.resolve(r);
-    CHECK(fileText(file) == Png + "fallback");
+    CHECK(fileText(file) == realPng("fallback"));
     CHECK(s.fetches.size() == 3); // the page, the icon it named (failed), then favicon.ico
 }
 
@@ -504,7 +545,61 @@ TEST_CASE("StorePictures: a cache file from before the root-page lookup existed 
     r.kind = "favicon";
     r.imageUrl = "https://old/";
     s.bodies[r.imageUrl] = "<html><head><link rel=\"icon\" href=\"https://cdn.old/icon.png\"></head></html>";
-    s.bodies["https://cdn.old/icon.png"] = Png + "fresh";
+    s.bodies["https://cdn.old/icon.png"] = realPng("fresh");
     const string file = pictures.resolve(r);
-    CHECK(fileText(file) == Png + "fresh"); // not "stale" - a different cache key altogether
+    CHECK(fileText(file) == realPng("fresh")); // not "stale" - a different cache key altogether
+}
+
+TEST_CASE("StorePictures::validPicture: a corrupt PNG (zero CRC) is refused, a valid one is not") {
+    CHECK(StorePictures::validPicture(realPng("x"), "png"));
+    CHECK_FALSE(StorePictures::validPicture(corruptPng(), "png")); // the owner's install had exactly this
+    CHECK_FALSE(StorePictures::validPicture("not a picture at all", "png"));
+    CHECK_FALSE(StorePictures::validPicture("", "png"));
+    CHECK_FALSE(StorePictures::validPicture(realPng("x"), "made-up-extension"));
+}
+
+TEST_CASE("StorePictures: a corrupt fetched picture is never cached, and counts as a failed fetch") {
+    Setup s;
+    StorePictures pictures(s.config());
+    StorePictures::Request r;
+    r.key = "favicon|https://badsite/";
+    r.kind = "favicon";
+    r.imageUrl = "https://badsite/";
+    s.bodies[r.imageUrl] = "<html><head><link rel=\"icon\" href=\"/icon.png\"></head></html>";
+    s.bodies["https://badsite/icon.png"] = corruptPng();
+    CHECK(pictures.resolve(r).empty());
+    CHECK(DirEntry::listNames(s.tmp.at("cache")).empty()); // nothing left behind - a plain failed fetch
+
+    // an App/game picture from fetchUrl() is checked the same way
+    StorePictures::Request app;
+    app.key = "src|app/bad";
+    app.kind = "app";
+    app.imageUrl = "https://badsite/icon.png";
+    CHECK(pictures.resolve(app).empty());
+}
+
+TEST_CASE("StorePictures: a pre-existing corrupt cache file - the owner's exact bug - is healed and refetched") {
+    Setup s;
+    StorePictures pictures(s.config());
+    StorePictures::Request r;
+    r.key = "favicon|https://healme/";
+    r.kind = "favicon";
+    r.imageUrl = "https://healme/";
+    // as if an older build had cached this before a picture was validated on the way in - the owner's
+    // System/Extensions/store/cache/pictures/ had exactly this, under exactly this naming
+    s.tmp.writeFile("cache/favicon2-" + ableem::Md5::ofString(r.imageUrl) + ".png", corruptPng());
+    s.bodies[r.imageUrl] = "<html><head><link rel=\"icon\" href=\"/icon.png\"></head></html>";
+    s.bodies["https://healme/icon.png"] = realPng("healed");
+    const string file = pictures.resolve(r);
+    CHECK(fileText(file) == realPng("healed")); // the corrupt file was thrown out, a good one fetched instead
+
+    // fetchUrl()'s own cache (an App/game picture) heals the same way
+    const string url = "https://healme/app.png";
+    s.tmp.writeFile("cache/url-" + ableem::Md5::ofString(url) + ".png", corruptPng());
+    s.bodies[url] = realPng("healed-app");
+    StorePictures::Request app;
+    app.key = "src|app/heal";
+    app.kind = "app";
+    app.imageUrl = url;
+    CHECK(fileText(pictures.resolve(app)) == realPng("healed-app"));
 }

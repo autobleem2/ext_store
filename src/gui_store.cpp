@@ -349,13 +349,17 @@ ableem::Texture GuiStore::pictureFor(const StoreEntry &entry) {
     const string file = pictures.path(entry.key);
     if (file.empty())
         return ableem::Texture();
-    return textureFor(file);
+    return textureFor(file, entry.key);
 }
 
-ableem::Texture GuiStore::textureFor(const string &file) {
+ableem::Texture GuiStore::textureFor(const string &file, const string &key) {
     auto it = textures.find(file);
-    if (it == textures.end())
-        it = textures.emplace(file, ableem::Texture::loadFile(renderer, file)).first;
+    if (it == textures.end()) {
+        ableem::Texture texture = ableem::Texture::loadFile(renderer, file);
+        if (!texture.valid() && !key.empty())
+            pictures.forget(key); // a cache file gone bad - heal it, a later retry fetches it afresh
+        it = textures.emplace(file, texture).first;
+    }
     return it->second;
 }
 
@@ -367,7 +371,7 @@ void GuiStore::drawSourceIcon(const Row &row, const ableem::Rect &box) {
         request.imageUrl = row.favicon;
         pictures.want(request);
         const string file = pictures.path(request.key);
-        const ableem::Texture icon = file.empty() ? ableem::Texture() : textureFor(file);
+        const ableem::Texture icon = file.empty() ? ableem::Texture() : textureFor(file, request.key);
         if (icon.valid()) {
             // a favicon is small (16 or 32 px): at 32 unless it is as big as the box, not blown up to a blur
             const int side = icon.size().w >= box.w ? box.w : min(box.w, 32);

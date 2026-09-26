@@ -7,6 +7,7 @@
 #include "core/services/downloader.h"
 #include "core/services/system.h"
 
+#include <ableem/engine/crc32.h>
 #include <ableem/engine/md5.h>
 #include <ableem/engine/metadata_lookup.h>
 #include <ableem/engine/serial_scanner.h>
@@ -39,6 +40,66 @@ string serialFileName(const string &serial) {
     for (char c : serial)
         name += isalnum(static_cast<unsigned char>(c)) || c == '-' ? c : '_';
     return "cover-" + name + ".png";
+}
+
+uint32_t beU32(const string &bytes, size_t at) {
+    return static_cast<uint32_t>(static_cast<unsigned char>(bytes[at])) << 24 |
+           static_cast<uint32_t>(static_cast<unsigned char>(bytes[at + 1])) << 16 |
+           static_cast<uint32_t>(static_cast<unsigned char>(bytes[at + 2])) << 8 |
+           static_cast<uint32_t>(static_cast<unsigned char>(bytes[at + 3]));
+}
+
+// a real PNG, not a file that merely starts with the signature: every chunk's CRC-32 (the type and data, as
+// the spec defines it) is checked against what the file itself claims, and an IHDR before an IEND is required.
+// SDL_image's libpng is stricter than our earlier bare-signature sniff (iconImage()) and rejects a chunk whose
+// CRC is wrong - a truncated download or a hand-made placeholder with the CRC left as zero, say - so this is
+// what actually predicts whether the texture loader will accept the file.
+bool validPng(const string &bytes) {
+    if (bytes.size() < 8 || bytes.compare(0, 8, "\x89PNG\r\n\x1a\n", 8) != 0)
+        return false;
+    size_t pos = 8;
+    bool sawIHDR = false;
+    while (pos + 12 <= bytes.size()) {
+        const uint32_t length = beU32(bytes, pos);
+        if (length > bytes.size() || pos + 12 + length > bytes.size())
+            return false;
+        const uint32_t crc = ableem::Crc32::update(0, bytes.data() + pos + 4, 4 + length);
+        if (crc != beU32(bytes, pos + 8 + length))
+            return false;
+        const string type = bytes.substr(pos + 4, 4);
+        if (type == "IHDR")
+            sawIHDR = true;
+        if (type == "IEND")
+            return sawIHDR;
+        pos += 12 + length;
+    }
+    return false; // ran out of bytes before IEND
+}
+
+uint32_t leU16(const string &bytes, size_t at) {
+    return static_cast<uint32_t>(static_cast<unsigned char>(bytes[at])) |
+           static_cast<uint32_t>(static_cast<unsigned char>(bytes[at + 1])) << 8;
+}
+uint32_t leU32(const string &bytes, size_t at) {
+    return leU16(bytes, at) | leU16(bytes, at + 2) << 16;
+}
+
+// the same directory bounds iconImage() extracts an ICO's images by (ICO fields are little-endian), checked
+// on the whole file - for the "bitmaps, no embedded PNG" case, where there is nothing else to validate a
+// texture loader would decode.
+bool validIco(const string &bytes) {
+    if (bytes.size() < 6 || leU16(bytes, 0) != 0 || leU16(bytes, 2) != 1 || leU16(bytes, 4) == 0)
+        return false;
+    const size_t count = leU16(bytes, 4);
+    if (bytes.size() < 6 + 16 * count)
+        return false;
+    for (size_t i = 0; i < count; i++) {
+        const size_t entry = 6 + 16 * i;
+        const size_t size = leU32(bytes, entry + 8), offset = leU32(bytes, entry + 12);
+        if (size == 0 || offset >= bytes.size() || size > bytes.size() - offset)
+            return false;
+    }
+    return true;
 }
 
 // how much of a page's HTML is worth scanning for its icon links
@@ -222,6 +283,18 @@ void StorePictures::retryFailed() {
     }
 }
 
+//*******************************
+// StorePictures::forget
+//*******************************
+void StorePictures::forget(const string &key) {
+    lock_guard<mutex> lock(mutex_);
+    auto it = found_.find(key);
+    if (it == found_.end() || it->second.empty())
+        return;
+    DirEntry::removeFile(it->second);
+    it->second.clear(); // counts as failed again - retryFailed() picks it up
+}
+
 string StorePictures::path(const string &key) const {
     lock_guard<mutex> lock(mutex_);
     auto it = found_.find(key);
@@ -403,17 +476,33 @@ bool StorePictures::online() const {
 // StorePictures::fetchUrl
 //*******************************
 // into the cache under the URL's md5, once - a picture that could not be fetched is asked for again next run
+// reads `path` back and checks it is a picture the texture loader will actually accept (see validPicture());
+// an invalid file is removed - a stale cache from before this check existed, or a download corrupted in
+// transit - and false is returned, so the caller treats it exactly as a fetch that never landed anything
+bool StorePictures::validCacheFile(const string &path, const string &extension) {
+    ifstream in(path, ios::binary);
+    if (!in)
+        return false;
+    const string bytes((istreambuf_iterator<char>(in)), istreambuf_iterator<char>());
+    in.close();
+    if (validPicture(bytes, extension))
+        return true;
+    DirEntry::removeFile(path);
+    return false;
+}
+
 string StorePictures::fetchUrl(const string &url) {
-    string extension = ".png";
-    for (const char *e : {".jpg", ".jpeg", ".png"}) {
+    string extension = "png";
+    for (const char *e : {"jpg", "jpeg", "png"}) {
         const string plain = url.substr(0, url.find('?'));
         const size_t n = strlen(e);
-        string tail = plain.size() > n ? plain.substr(plain.size() - n) : "";
-        if (lcase(tail) == e)
+        string tail = plain.size() > n + 1 ? plain.substr(plain.size() - n - 1) : "";
+        string rest = tail.empty() ? "" : tail.substr(1);
+        if (!tail.empty() && tail[0] == '.' && lcase(rest) == e)
             extension = e;
     }
-    const string target = config_.cacheDir + sep + "url-" + ableem::Md5::ofString(url) + extension;
-    if (DirEntry::exists(target))
+    const string target = config_.cacheDir + sep + "url-" + ableem::Md5::ofString(url) + "." + extension;
+    if (DirEntry::exists(target) && validCacheFile(target, extension))
         return target;
     if (config_.fetchCommand.empty() || !online())
         return "";
@@ -424,10 +513,15 @@ string StorePictures::fetchUrl(const string &url) {
     fetch.target = target;
     string error;
     const Downloader::Result r = downloader.fetch(fetch, error);
-    if (r == Downloader::Result::Downloaded || r == Downloader::Result::AlreadyThere)
-        return target;
-    PLOG_DEBUG << "no picture from " << url << ": " << error;
-    return "";
+    if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere) {
+        PLOG_DEBUG << "no picture from " << url << ": " << error;
+        return "";
+    }
+    if (!validCacheFile(target, extension)) {
+        PLOG_DEBUG << "no picture from " << url << ": a picture the texture loader would refuse - not cached";
+        return "";
+    }
+    return target;
 }
 
 //*******************************
@@ -599,15 +693,42 @@ bool StorePictures::iconImage(const string &bytes, string &image, string &extens
     return true;
 }
 
+//*******************************
+// StorePictures::validPicture
+//*******************************
+bool StorePictures::validPicture(const string &bytes, const string &extension) {
+    if (extension == "png")
+        return validPng(bytes);
+    if (extension == "ico")
+        return validIco(bytes);
+    // no cheap SDL-free decoder for these three is linked here - a signature and a size a real one could
+    // plausibly hold is the best this can check without one
+    if (extension == "gif")
+        return bytes.size() >= 32 && bytes.compare(0, 4, "GIF8", 4) == 0;
+    if (extension == "jpg" || extension == "jpeg")
+        return bytes.size() >= 32 && bytes.compare(0, 3, "\xFF\xD8\xFF", 3) == 0;
+    if (extension == "bmp")
+        return bytes.size() >= 32 && bytes.compare(0, 2, "BM", 2) == 0;
+    return false;
+}
+
 // into the cache under the root URL's md5 ("favicon2-": a new key, so a plain favicon.ico result cached under
 // the pre-2026-09-26 scheme never blocks the icon-in-<head> lookup for a source whose TSV is not at the
 // root), as the picture inside it, once - a server with neither is asked again next run (nothing is cached
 // on failure)
 string StorePictures::fetchSiteIcon(const string &rootUrl) {
     const string base = config_.cacheDir + sep + "favicon2-" + ableem::Md5::ofString(rootUrl);
-    for (const char *e : {".png", ".ico", ".gif", ".jpg", ".bmp"})
-        if (DirEntry::exists(base + e))
-            return base + e;
+    for (const string ext : {"png", "ico", "gif", "jpg", "bmp"}) {
+        const string cached = base + "." + ext;
+        if (!DirEntry::exists(cached))
+            continue;
+        ifstream in(cached, ios::binary);
+        const string bytes((istreambuf_iterator<char>(in)), istreambuf_iterator<char>());
+        in.close();
+        if (validPicture(bytes, ext))
+            return cached;
+        DirEntry::removeFile(cached); // a cache file from before a picture was validated on the way in - gone
+    }
     if (config_.fetchCommand.empty() || !online())
         return "";
     Downloader downloader(config_.fetchCommand, "",
@@ -656,6 +777,11 @@ string StorePictures::fetchSiteIcon(const string &rootUrl) {
     string image, extension;
     if (!iconImage(bytes, image, extension)) {
         PLOG_DEBUG << "no icon from " << rootUrl << " (" << iconUrl << "): not a picture";
+        return "";
+    }
+    if (!validPicture(image, extension)) {
+        PLOG_DEBUG << "no icon from " << rootUrl << " (" << iconUrl << "): a picture the texture loader "
+                   << "would refuse - not cached";
         return "";
     }
     const string target = base + "." + extension;
