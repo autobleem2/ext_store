@@ -46,6 +46,9 @@ separate downloads, repository names `ext_<name>`).
 - `lang/` - its strings in the 16 languages (English is the source). It also carries the strings the launcher
   translates already, copied from the launcher's files so the wording is the same. Every string change goes
   into all 16 files in the same commit.
+- `icon.png` - the Store's picture in the launcher's Extensions list (`Icon=`, staged by `ab_add_extension`'s
+  `ICON`): a gold shop front on PSC-Bios's blue card, 256x219 as the other icons. Our own, drawn by
+  `tools/make_store_icon.py` - rerun it after changing the drawing.
 
 ## Building and testing
 
