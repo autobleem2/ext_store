@@ -76,6 +76,22 @@ string appNameFromId(const string &id) {
 bool supported(const string &kind) {
     return kind == "app" || kind == "ps1";
 }
+
+// the TSV's skipped lines worth showing: a line without an http(s) URL is left out quietly - a list in the
+// NoPayStation layout has hundreds of them ("MISSING", "CART ONLY"), and the Sources tab showed the first as the
+// source's problem
+vector<string> reportedProblems(const vector<string> &problems, const string &source) {
+    static const string NoUrl = ": no http(s) url";
+    vector<string> out;
+    for (const string &p : problems) {
+        if (p.size() >= NoUrl.size() && p.compare(p.size() - NoUrl.size(), NoUrl.size(), NoUrl) == 0) {
+            PLOG_DEBUG << source << ": " << p;
+            continue;
+        }
+        out.push_back(p);
+    }
+    return out;
+}
 } // namespace
 
 //*******************************
@@ -310,7 +326,7 @@ StoreService::LoadedSource StoreService::readLocal(const string &path) {
                              error)) {
         s.info.name = tsv.name;
         s.info.items = static_cast<int>(tsv.items.size());
-        s.info.problems = tsv.problems;
+        s.info.problems = reportedProblems(tsv.problems, s.info.where);
         s.items = tsv.items;
     } else {
         s.info.name = DirEntry::getFileNameFromPath(path);
@@ -335,7 +351,7 @@ StoreService::LoadedSource StoreService::readRemote(const string &url, bool fetc
     if (DirEntry::exists(cached) && StoreSourceTsv::load(cached, fallbackName, tsv, error)) {
         s.info.name = tsv.name;
         s.info.items = static_cast<int>(tsv.items.size());
-        s.info.problems = tsv.problems;
+        s.info.problems = reportedProblems(tsv.problems, s.info.where);
         s.items = tsv.items;
     } else {
         s.info.name = fallbackName;
