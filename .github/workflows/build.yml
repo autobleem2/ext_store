@@ -134,14 +134,14 @@ jobs:
 
   # the packages on the download site: autobleem-repo's extensions/store/<version>/, which its Store page shows
   # (the Store per system, abstored in a LAN server tab) - a develop build as the development build, a v* tag
-  # as the release. On the self-hosted runner, where the site's tree is, in the build image: the way
+  # as the release. On the psc-build runner, where the site's tree is, in the build image: the way
   # autobleem-repo's page.yml publishes, the runner being a container itself (a sibling container over the
   # mounted docker.sock, not a container job). The publish tools come from autobleem-repo's develop, with its
   # history - the page generator is three-way merged with the site's copy on its merge base.
   site:
     if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/tags/v'))
     needs: build
-    runs-on: [self-hosted, linux, x64]
+    runs-on: [self-hosted, psc-build]
     env:
       AB_REPO_DIR: /home/claude/autobleem-repo
     steps:
