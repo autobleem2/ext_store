@@ -291,6 +291,28 @@ TEST_CASE("StoreService: paused mid-download keeps the bytes and the place in th
     store.resume();
     REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Installed; }));
     CHECK(fileText(s.tmp.at("Apps/opentyrian/bin/psc/tyrian")) == "binary"); // the halves joined right
+
+    // the resume command names the item's catalog URL exactly - the same string as the paused attempt, never
+    // one derived from an earlier answer (a GitHub signed redirect, say): a signed URL can expire by the
+    // time the player restarts a paused download, so every attempt re-reads file.url from the catalog.
+    // s.site.lines also holds the "get" calls the sources loader made for catalog.json - only the "dl"
+    // (download command) lines for the file itself are what this checks.
+    vector<string> allLines;
+    {
+        lock_guard<mutex> lock(s.site.m);
+        allLines = s.site.lines;
+    }
+    auto urlOf = [](const string &line) {
+        size_t a = line.find(' '), b = line.find(' ', a + 1);
+        return line.substr(a + 1, b - a - 1);
+    };
+    vector<string> downloadUrls;
+    for (const string &line : allLines)
+        if (line.compare(0, 3, "dl ") == 0)
+            downloadUrls.push_back(urlOf(line));
+    REQUIRE(downloadUrls.size() == 2); // the paused attempt, then the resume
+    CHECK(downloadUrls[0] == "https://site/tyrian.zip");
+    CHECK(downloadUrls[1] == downloadUrls[0]);
 }
 
 TEST_CASE("StoreService: the progress keeps its place while the part cannot be read") {
