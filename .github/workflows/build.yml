@@ -20,6 +20,12 @@ on:
   pull_request:
     branches: [develop, master]
   workflow_dispatch:
+    inputs:
+      force_fallback:
+        type: boolean
+        required: false
+        default: false
+        description: test-only - force the build job onto ubuntu-24.04 (see autobleem-build's route.yml)
 # a container job's steps run under sh unless told otherwise, and sh has no [[ ]]
 defaults:
   run:
@@ -28,9 +34,33 @@ concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  build:
+  # Which runner the build job below uses: the laptop, then the build server, then ubuntu-24.04 -
+  # see autobleem-build's route.yml for the order and every fallback (always hosted for a PR).
+  route:
+    if: vars.AB_CI_ENABLED == 'true'
+    uses: autobleem2/autobleem-build/.github/workflows/route.yml@develop
+    with:
+      force_fallback: ${{ inputs.force_fallback == true }}
+    secrets: inherit
+
+  # A job whose type is `uses: <reusable workflow>` cannot have its outputs read by a downstream
+  # job's `runs-on:` directly (GitHub rejects needs.route.outputs.* there at parse time: "Unrecognized
+  # named-value: 'needs'") - this plain job re-exports route's output so build's runs-on can see it.
+  route_runner:
+    needs: route
     if: vars.AB_CI_ENABLED == 'true'
     runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    outputs:
+      runs_on: ${{ needs.route.outputs.runs_on }}
+    steps:
+      - run: echo "routed to ${{ needs.route.outputs.runner }}"
+
+  build:
+    needs: route_runner
+    if: vars.AB_CI_ENABLED == 'true'
+    runs-on: ${{ fromJSON(needs.route_runner.outputs.runs_on) }}
+    timeout-minutes: 60
     outputs:
       version: ${{ steps.version.outputs.version }}
     container:
