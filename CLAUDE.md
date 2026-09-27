@@ -3,7 +3,8 @@
 The AutoBleem Store: an extension (a plugin) of the AutoBleem launcher. The design is the launcher's
 `docs/store-plan.md` and `docs/extensions-plan.md`; the project-wide rules are autobleem-main's `docs/decisions.md`
 (TSV sources are unlimited, the Store only pulls, no Project Eris code, extensions are installed by hand and are
-separate downloads, repository names `ext_<name>`).
+separate downloads - except the Store itself, which has shipped bundled with every package since 2026-09-25 -
+repository names `ext_<name>`).
 
 ## Layout
 
@@ -77,7 +78,8 @@ separate downloads, repository names `ext_<name>`).
   1. Serve a catalog with `python -m http.server`.
   2. Set `AB_STORE_CATALOG=http://127.0.0.1:<port>/catalog.json`.
   3. Stage the stick with `tools/make_usb.py`.
-  4. Drive it with `tools/ab_drive.py`: L2+R2 → menu item 6 → the Extensions list → Cross.
+  4. Drive it with `tools/ab_drive.py`: L2+R2 → `menu "Extensions"` (the System menu is grouped now, so
+     name the item rather than counting rows) → the Extensions list → Cross.
 
 ## Rules learnt while building it
 
