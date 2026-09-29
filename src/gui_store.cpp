@@ -389,7 +389,7 @@ void GuiStore::drawSourceIcon(const Row &row, const ableem::Rect &box) {
         }
     }
     renderer.setBlendMode(ableem::BlendMode::Blend);
-    renderer.setDrawColor(style.secondary);
+    renderer.setDrawColor(style.edge);
     const int cx = box.x + box.w / 2, cy = box.y + box.h / 2;
     if (row.action) { // "Add a source URL": a plus
         renderer.fillRect(ableem::Rect(cx - 12, cy - 2, 24, 4));
@@ -417,7 +417,7 @@ void GuiStore::drawPicture(const StoreEntry &entry, const ableem::Rect &box, boo
     } else if (entry.item.kind == "ps1" && discTexture().valid()) {
         drawFitted(discTexture(), box); // a game none of the sources has a cover for
     } else if (frame) {
-        renderer.setDrawColor(style.secondary);
+        renderer.setDrawColor(style.edge);
         renderer.drawRect(box);
     }
 }
@@ -486,7 +486,7 @@ void GuiStore::renderLetterJump() {
     renderer.setDrawColor(ableem::Color(0, 0, 0, static_cast<unsigned char>(200 * fade)));
     renderer.fillRect(box);
     renderer.setDrawColor(
-        ableem::Color(style.secondary.r, style.secondary.g, style.secondary.b, static_cast<unsigned char>(160 * fade)));
+        ableem::Color(style.edge.r, style.edge.g, style.edge.b, static_cast<unsigned char>(160 * fade)));
     renderer.drawRect(box);
     gui->text().renderText_WithColor(
         big, letterShown, box.x + (box.w - textWidth) / 2, box.y + (box.h - big.lineHeight()) / 2,
@@ -509,7 +509,7 @@ void GuiStore::render() {
     Fonts &fonts = gui->assets().themeFonts;
 
     int y = style.header(*gui, panel, _("Store"));
-    // the tabs, on the header's right: the current one in the text colour
+    // the tabs, on the header's right: the current one as the selected row, its bar the selection band's
     {
         const vector<pair<Tab, string>> tabs{{Tab::Apps, _("Apps")},
                                              {Tab::Games, _("Games")},
@@ -520,9 +520,9 @@ void GuiStore::render() {
             const int w = fonts[FONT_20_BOLD].width(it->second);
             x -= w;
             gui->text().renderText_WithColor(fonts[FONT_20_BOLD], it->second, x, panel.y + 26,
-                                             it->first == tab ? style.text : style.secondary, XALIGN_LEFT);
+                                             style.rowColor(it->first == tab), XALIGN_LEFT);
             if (it->first == tab) {
-                renderer.setDrawColor(style.text);
+                renderer.setDrawColor(style.selectionBand);
                 renderer.fillRect(ableem::Rect(x, panel.y + 56, w, 3));
             }
             x -= 28;
@@ -549,7 +549,7 @@ void GuiStore::render() {
         drawSpinner(ableem::Rect(lineX, y + 2, 20, 20));
         lineX += 28;
     }
-    gui->text().renderText_WithColor(fonts[FONT_15_BOLD], line, lineX, y + 4, style.secondary, XALIGN_LEFT);
+    gui->text().renderText_WithColor(fonts[FONT_15_BOLD], line, lineX, y + 4, style.description, XALIGN_LEFT);
     // what the list is narrowed to, at the line's right end
     if ((tab == Tab::Apps || tab == Tab::Games) && filtered()) {
         string narrowed;
@@ -573,7 +573,7 @@ void GuiStore::render() {
         const string empty = tab == Tab::Downloads ? _("Nothing is downloading")
                              : filtered()          ? _("Nothing matches")
                                                    : _("Nothing here yet");
-        gui->text().renderText_WithColor(fonts[FONT_22_MED], empty, panel.x + RowInset + 8, y + 16, style.secondary,
+        gui->text().renderText_WithColor(fonts[FONT_22_MED], empty, panel.x + RowInset + 8, y + 16, style.description,
                                          XALIGN_LEFT);
     }
     const bool withPictures = tab != Tab::Sources;
@@ -588,7 +588,7 @@ void GuiStore::render() {
             if (entry != nullptr) {
                 drawPicture(*entry, box, true);
             } else {
-                renderer.setDrawColor(style.secondary);
+                renderer.setDrawColor(style.edge);
                 renderer.drawRect(box);
             }
             textX += ThumbSpace;
@@ -599,17 +599,17 @@ void GuiStore::render() {
         const int textWidth = listWidth - (textX - panel.x) - RowInset - 8;
         gui->text().renderText_WithColor(fonts[FONT_22_MED],
                                          gui->text().elide(fonts[FONT_22_MED], rows[i].title, textWidth), textX, y + 6,
-                                         i == selected ? style.text : style.secondary, XALIGN_LEFT);
+                                         style.rowColor(i == selected), XALIGN_LEFT);
         gui->text().renderText_WithColor(fonts[FONT_15_BOLD],
                                          gui->text().elide(fonts[FONT_15_BOLD], rows[i].detail, textWidth), textX,
-                                         y + 34, style.secondary, XALIGN_LEFT);
+                                         y + 34, style.description, XALIGN_LEFT);
         if (rows[i].loading)
             drawSpinner(ableem::Rect(panel.x + listWidth - RowInset - 36, y + (RowHeight - 32) / 2, 32, 32));
         // the one downloading: how far, as a bar along the row's foot
         if (entry != nullptr && entry->state == StoreState::Downloading && progress.busy && progress.total > 0) {
             const int barWidth = textWidth;
             const int done = static_cast<int>(barWidth * min<uint64_t>(progress.done, progress.total) / progress.total);
-            renderer.setDrawColor(style.secondary);
+            renderer.setDrawColor(style.edge);
             renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, barWidth, 3));
             renderer.setDrawColor(style.text);
             renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, done, 3));
@@ -630,8 +630,8 @@ void GuiStore::render() {
                                  panel.h - HeaderHeight - FooterHeight));
     if (tab == Tab::Sources)
         gui->text().renderText_WithColor(fonts[FONT_15_BOLD], _("You are responsible for what your sources contain"),
-                                         panel.x + RowInset + 8, panel.y + panel.h - FooterHeight - 26, style.hint,
-                                         XALIGN_LEFT);
+                                         panel.x + RowInset + 8, panel.y + panel.h - FooterHeight - 26,
+                                         style.description, XALIGN_LEFT);
 
     // the footer: what Cross and Triangle do for this row
     vector<PanelStyle::HintItem> hints;
@@ -684,7 +684,7 @@ void GuiStore::render() {
 // GuiStore::drawDetails
 //*******************************
 void GuiStore::drawDetails(const ableem::Rect &pane) {
-    renderer.setDrawColor(style.secondary);
+    renderer.setDrawColor(style.edge);
     renderer.fillRect(ableem::Rect(pane.x, pane.y + 16, 1, pane.h - 32));
     const StoreEntry *e = selectedEntry();
     if (e == nullptr)
@@ -707,7 +707,7 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
         titleLines[1] = gui->text().elide(fonts[FONT_22_MED], rest, width);
     }
     for (const string &line : titleLines) {
-        gui->text().renderText_WithColor(fonts[FONT_22_MED], line, x, y, style.text, XALIGN_LEFT);
+        gui->text().renderText_WithColor(fonts[FONT_22_MED], line, x, y, style.rowSelected, XALIGN_LEFT);
         y += 30;
     }
     y += 8;
@@ -753,9 +753,9 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
         const int fx = x + column * (half + ColumnGap);
         const int fw = short_ ? half : width;
         gui->text().renderText_WithColor(fonts[FONT_15_BOLD], gui->text().elide(fonts[FONT_15_BOLD], f.label, fw), fx,
-                                         y, style.secondary, XALIGN_LEFT);
+                                         y, style.description, XALIGN_LEFT);
         gui->text().renderText_WithColor(fonts[FONT_20_BOLD], gui->text().elide(fonts[FONT_20_BOLD], f.value, fw), fx,
-                                         y + 18, style.text, XALIGN_LEFT);
+                                         y + 18, style.rowSelected, XALIGN_LEFT);
         if (short_ && column == 0) {
             column = 1;
         } else {
@@ -769,7 +769,7 @@ void GuiStore::drawDetails(const ableem::Rect &pane) {
         for (const string &line : gui->text().wrapLines(fonts[FONT_15_BOLD], e->item.description, width)) {
             if (y > pane.y + pane.h - 30)
                 break;
-            gui->text().renderText_WithColor(fonts[FONT_15_BOLD], line, x, y, style.secondary, XALIGN_LEFT);
+            gui->text().renderText_WithColor(fonts[FONT_15_BOLD], line, x, y, style.description, XALIGN_LEFT);
             y += 22;
         }
 }
