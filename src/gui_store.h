@@ -112,7 +112,15 @@ private:
 
     StoreService &store;
     StorePictures &pictures;
-    std::map<std::string, ableem::Texture> textures; // by file; the screen's own, gone with it
+    // by file; the screen's own, gone with it. At most MaxTextures: a list of thousands scrolled through would
+    // otherwise keep every cover it passed decoded (hundreds of MB), so the least recently drawn one goes
+    struct CachedTexture {
+        ableem::Texture texture;
+        uint64_t used = 0;
+    };
+    static constexpr size_t MaxTextures = 40; // a screenful of rows, the details pane, favicons, the disc
+    std::map<std::string, CachedTexture> textures;
+    uint64_t textureClock = 0;
     Tab tab = Tab::Apps;
     std::vector<StoreEntry> entries;
     std::vector<StoreSourceInfo> sources;

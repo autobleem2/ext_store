@@ -358,9 +358,18 @@ ableem::Texture GuiStore::textureFor(const string &file, const string &key) {
         ableem::Texture texture = ableem::Texture::loadFile(renderer, file);
         if (!texture.valid() && !key.empty())
             pictures.forget(key); // a cache file gone bad - heal it, a later retry fetches it afresh
-        it = textures.emplace(file, texture).first;
+        // the least recently drawn goes; one still in use lives on in its handle
+        while (textures.size() >= MaxTextures) {
+            auto oldest = textures.begin();
+            for (auto i = textures.begin(); i != textures.end(); ++i)
+                if (i->second.used < oldest->second.used)
+                    oldest = i;
+            textures.erase(oldest);
+        }
+        it = textures.emplace(file, CachedTexture{texture, 0}).first;
     }
-    return it->second;
+    it->second.used = ++textureClock;
+    return it->second.texture;
 }
 
 void GuiStore::drawSourceIcon(const Row &row, const ableem::Rect &box) {
@@ -416,10 +425,7 @@ void GuiStore::drawPicture(const StoreEntry &entry, const ableem::Rect &box, boo
 ableem::Texture GuiStore::discTexture() {
     if (discPicture.empty())
         return ableem::Texture();
-    auto it = textures.find(discPicture);
-    if (it == textures.end())
-        it = textures.emplace(discPicture, ableem::Texture::loadFile(renderer, discPicture)).first;
-    return it->second;
+    return textureFor(discPicture);
 }
 
 void GuiStore::drawSpinner(const ableem::Rect &box) {
