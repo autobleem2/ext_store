@@ -69,10 +69,10 @@ private:
     void step(int steps);
     // what a title is filed under: its first character, a letter in upper case
     static std::string letterOf(const std::string &title);
-    // the big letter jumpLetter() just landed on, shown briefly the way the launcher's carousel shows its
-    // L1/R1 jump (a corner panel, held then fading) - the Store cannot reach NotificationBubble (ab_evoui,
-    // not part of the extension SDK), so this is PanelStyle's own look drawn by hand
-    void renderLetterJump();
+    // the big letter jumpLetter() just landed on, shown briefly (held, then fading) in a box centred on the list
+    // panel `list` - the theme's `panel` frame when it has one, else PanelStyle's own box. The Store cannot reach
+    // NotificationBubble (ab_evoui, not part of the extension SDK), so this is drawn by hand
+    void renderLetterJump(const ableem::Rect &list);
     int visibleRows() const;
     void cross();
     void triangle();

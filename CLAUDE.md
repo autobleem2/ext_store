@@ -49,12 +49,16 @@ repository names `ext_<name>`).
   (the launcher's reloads). A reload keeps the cursor on its row - by key, or by place for the keyless "Add a source
   URL" row and for a row that went (a removed source). The Apps and Games lists jump to the next/previous first
   letter with L2/R2 (the carousel's L1/R1 jump; the other tabs page with them) - a big letter shows briefly at the
-  top-right corner while it does (`renderLetterJump()`: the launcher's own `NotificationBubble` is `ab_evoui`, not
-  part of the extension SDK, so this is PanelStyle's sheet drawn by hand, held then faded the same way) - and page
+  middle of the list panel while it does (`renderLetterJump(list)`: the launcher's own `NotificationBubble` is
+  `ab_evoui`, not part of the extension SDK, so it is drawn by hand - `abgui::centredIn` the rows' area, the theme's
+  `panel` frame at the fade's alpha when it has one, else PanelStyle's box; held then faded the same way) - and page
   with Left/Right, show one source at a time with Select (round to all of them), and filter by a search with Start
-  (any case, part of the title); Circle widens a narrowed list before it closes the Store. An item installed and up
-  to date is greyed in the Apps and Games lists (`PanelStyle::disabled`, the launcher's locked row) and stays
-  selectable. A spinner turns
+  (any case, part of the title); Circle widens a narrowed list before it closes the Store. The selected row goes
+  through `Style::selection(ctx, ...)` (the theme's `selection` frame, drawn under the row's text). An item installed
+  and up to date is a normal row with an "Installed" badge at its right end (G5t): vertically centred,
+  `abgui::BadgeInset` (24 px) in from the list's inner right edge (`abgui::trailingBadgeRect`), the theme's
+  `storeInstalled` icon (`ctx.icon`, its own size) or, with none, a check mark in the `edge` colour (no text, so no
+  string); the row's text stops short of it. No veil (it was `Style::disabled`). A spinner turns
   in the line under the header while sources are read, and at the end of a source's row. Each source's row has its
   favicon (a list drawn in the theme's colours until it arrives, or without one). Removing a source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog

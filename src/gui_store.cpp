@@ -9,6 +9,8 @@
 #include "gui/screens/gui_confirm.h"
 #include "gui/screens/gui_keyboard.h"
 
+#include <ab_gui/layout.h>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
@@ -30,7 +32,23 @@ const uint32_t ReloadEvery = 500;  // ms: the worker's news, often enough for a 
 // the launcher notification lines' hold - the fade here is on top of it, not instead of it)
 const uint32_t LetterHoldMs = DefaultShowingTimeout;
 const uint32_t LetterFadeMs = 250;
-const int LetterBoxMargin = 16; // from the screen's edge, as NotificationBubble sits
+const int CheckMark = 24; // the installed badge's code-drawn check, square (a theme without the icon)
+
+// the "Installed" badge in `box`: the theme's `storeInstalled` icon at its own size when it has one (`icon` valid),
+// else a check mark in the edge colour, code-drawn (three-pixel squares along the two arms)
+void drawInstalledBadge(ableem::Renderer &renderer, const abgui::Style &style, const ableem::Texture &icon,
+                        const ableem::Rect &box) {
+    if (icon.valid()) {
+        renderer.copy(icon, nullptr, &box);
+        return;
+    }
+    renderer.setBlendMode(ableem::BlendMode::Blend);
+    renderer.setDrawColor(style.edge);
+    for (int i = 0; i < 6; i++)
+        renderer.fillRect(ableem::Rect(box.x + 4 + i, box.y + 11 + i, 3, 3));
+    for (int i = 0; i < 12; i++)
+        renderer.fillRect(ableem::Rect(box.x + 9 + i, box.y + 16 - i, 3, 3));
+}
 } // namespace
 
 //*******************************
@@ -446,10 +464,11 @@ void GuiStore::drawFitted(const ableem::Texture &texture, const ableem::Rect &bo
 //*******************************
 // GuiStore::renderLetterJump
 //*******************************
-// jumpLetter()'s letter, top-right at the screen's edge - the same corner the launcher's NotificationBubble
-// uses for its own jump letter - held at full strength for LetterHoldMs, then fading over LetterFadeMs. A
-// small sheet in PanelStyle's colours (drawn by hand: PanelStyle::sheet has no alpha of its own to fade)
-void GuiStore::renderLetterJump() {
+// jumpLetter()'s letter, in a box centred on the list panel (it sat top-right at the screen's edge, over the
+// Sources tab), held at full strength for LetterHoldMs, then fading over LetterFadeMs. The box is the theme's
+// `panel` frame at the fade's alpha when it has one, else a small sheet in PanelStyle's colours (drawn by hand:
+// PanelStyle::sheet has no alpha of its own to fade)
+void GuiStore::renderLetterJump(const ableem::Rect &list) {
     if (letterShown.empty())
         return;
     const uint32_t now = gui->platform().ticks();
@@ -464,10 +483,11 @@ void GuiStore::renderLetterJump() {
     ableem::Font &big = fonts.boldAtSize(64);
     const int textWidth = gui->text().textWidth(big, letterShown);
     const int boxSize = max(88, textWidth + 40);
-    const ableem::Rect box(SCREEN_WIDTH - LetterBoxMargin - boxSize, LetterBoxMargin, boxSize, boxSize);
+    const ableem::Rect box = abgui::centredIn(list, boxSize, boxSize);
 
-    style.box(renderer, box, abgui::Tone::Black, static_cast<unsigned char>(200 * fade), abgui::Tone::Edge,
-              static_cast<unsigned char>(160 * fade));
+    if (!style.drawFrame(gui->uiContext(), "panel", box, static_cast<unsigned char>(255 * fade)))
+        style.box(renderer, box, abgui::Tone::Black, static_cast<unsigned char>(200 * fade), abgui::Tone::Edge,
+                  static_cast<unsigned char>(160 * fade));
     gui->text().renderText_WithColor(
         big, letterShown, box.x + (box.w - textWidth) / 2, box.y + (box.h - big.lineHeight()) / 2,
         ableem::Color(style.text.r, style.text.g, style.text.b, static_cast<unsigned char>(255 * fade)), XALIGN_LEFT);
@@ -557,10 +577,13 @@ void GuiStore::draw() {
                                          XALIGN_LEFT);
     }
     const bool withPictures = tab != Tab::Sources;
+    // the list panel: the rows' area - what the letter-jump box is centred on
+    const ableem::Rect listArea(panel.x, y, listWidth, visible * RowHeight);
     for (int i = firstVisible; i < firstVisible + visible && i < static_cast<int>(rows.size()); i++) {
         const ableem::Rect row(panel.x + 1, y, listWidth - 2, RowHeight);
+        // the selection first, under the row's text: the theme's `selection` frame, else the band and bar
         if (i == selected)
-            style.selection(renderer, row);
+            style.selection(gui->uiContext(), row);
         int textX = panel.x + RowInset + 8;
         const StoreEntry *entry = entryFor(rows[i].key);
         if (withPictures) {
@@ -575,7 +598,22 @@ void GuiStore::draw() {
             drawSourceIcon(rows[i], ableem::Rect(textX, y + (RowHeight - Thumb) / 2, Thumb, Thumb));
             textX += ThumbSpace;
         }
-        const int textWidth = listWidth - (textX - panel.x) - RowInset - 8;
+        // what is installed (and up to date) is a normal row with an "Installed" badge at its right end, vertically
+        // centred, BadgeInset in from the list's inner right edge: the theme's `storeInstalled` icon, else a check
+        const bool installed =
+            entry != nullptr && entry->state == StoreState::Installed && (tab == Tab::Apps || tab == Tab::Games);
+        ableem::Texture badgeIcon;
+        ableem::Rect badge;
+        if (installed) {
+            badgeIcon = gui->uiContext().icon("storeInstalled");
+            const int badgeW = badgeIcon.valid() ? badgeIcon.size().w : CheckMark;
+            const int badgeH = badgeIcon.valid() ? badgeIcon.size().h : CheckMark;
+            badge = abgui::trailingBadgeRect(row.x + row.w, y, RowHeight, badgeW, badgeH);
+        }
+        // the text stops short of the badge
+        int textWidth = listWidth - (textX - panel.x) - RowInset - 8;
+        if (installed)
+            textWidth = min(textWidth, badge.x - 12 - textX);
         gui->text().renderText_WithColor(fonts[FONT_22_MED],
                                          gui->text().elide(fonts[FONT_22_MED], rows[i].title, textWidth), textX, y + 6,
                                          style.rowColor(i == selected), XALIGN_LEFT);
@@ -590,10 +628,8 @@ void GuiStore::draw() {
             style.progress(renderer, ableem::Rect(textX, y + RowHeight - 6, barWidth, 3), progress.done, progress.total,
                            abgui::Tone::Edge, abgui::Style::OwnAlpha);
         }
-        // what is installed already (and up to date) steps back, as a locked row does in the launcher's menus -
-        // still selectable: its details, and Triangle to remove it
-        if (entry != nullptr && entry->state == StoreState::Installed && (tab == Tab::Apps || tab == Tab::Games))
-            style.disabled(renderer, row);
+        if (installed)
+            drawInstalledBadge(renderer, style, badgeIcon, badge);
         y += RowHeight;
     }
     const int markerX = panel.x + listWidth - RowInset;
@@ -650,7 +686,7 @@ void GuiStore::draw() {
     }
     style.footer(*gui, ableem::Rect(panel.x, panel.y + panel.h - FooterHeight, panel.w, FooterHeight), hints,
                  rows.empty() ? "" : to_string(selected + 1) + "/" + to_string(rows.size()), true);
-    renderLetterJump();
+    renderLetterJump(listArea);
 
     gui->text().setShadow(classicShadow);
 }
@@ -659,7 +695,7 @@ void GuiStore::draw() {
 // GuiStore::drawDetails
 //*******************************
 void GuiStore::drawDetails(const ableem::Rect &pane) {
-    style.vrule(renderer, pane.x, pane.y + 16, pane.h - 32, style.edge.a);
+    style.vrule(gui->uiContext(), pane.x, pane.y + 16, pane.h - 32, style.edge.a);
     const StoreEntry *e = selectedEntry();
     if (e == nullptr)
         return;
