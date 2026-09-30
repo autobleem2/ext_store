@@ -417,8 +417,7 @@ void GuiStore::drawPicture(const StoreEntry &entry, const ableem::Rect &box, boo
     } else if (entry.item.kind == "ps1" && discTexture().valid()) {
         drawFitted(discTexture(), box); // a game none of the sources has a cover for
     } else if (frame) {
-        renderer.setDrawColor(style.edge);
-        renderer.drawRect(box);
+        style.box(renderer, box);
     }
 }
 
@@ -430,23 +429,8 @@ ableem::Texture GuiStore::discTexture() {
 
 void GuiStore::drawSpinner(const ableem::Rect &box) {
     // twelve dots on a ring, the brightest leading, turning a dot every 70 ms - the launcher's busy spinner,
-    // at the box's size
-    const int size = min(box.w, box.h);
-    const int dot = min(8, max(3, size / 10)); // never bigger than the launcher's own (8 px dots, radius 30)
-    const int radius = min(30, max(6, size / 2 - dot - 2));
-    const int cx = box.x + box.w / 2, cy = box.y + box.h / 2;
-    const int lead = static_cast<int>(gui->platform().ticks() / 70) % 12;
-    renderer.setBlendMode(ableem::BlendMode::Blend);
-    for (int i = 0; i < 12; i++) {
-        const int behind = (lead - i + 12) % 12;
-        const int alpha = 255 - behind * 19;
-        const double a = i * 3.14159265 / 6.0;
-        const int x = cx + static_cast<int>(radius * cos(a)) - dot / 2;
-        const int y = cy + static_cast<int>(radius * sin(a)) - dot / 2;
-        renderer.setDrawColor(
-            ableem::Color(style.text.r, style.text.g, style.text.b, static_cast<unsigned char>(alpha)));
-        renderer.fillRect(ableem::Rect(x, y, dot, dot));
-    }
+    // at the box's size (never bigger than the launcher's own: 8 px dots, radius 30)
+    style.spinner(renderer, box, static_cast<int>(gui->platform().ticks() / 70) % 12);
 }
 
 void GuiStore::drawFitted(const ableem::Texture &texture, const ableem::Rect &box) {
@@ -482,12 +466,8 @@ void GuiStore::renderLetterJump() {
     const int boxSize = max(88, textWidth + 40);
     const ableem::Rect box(SCREEN_WIDTH - LetterBoxMargin - boxSize, LetterBoxMargin, boxSize, boxSize);
 
-    renderer.setBlendMode(ableem::BlendMode::Blend);
-    renderer.setDrawColor(ableem::Color(0, 0, 0, static_cast<unsigned char>(200 * fade)));
-    renderer.fillRect(box);
-    renderer.setDrawColor(
-        ableem::Color(style.edge.r, style.edge.g, style.edge.b, static_cast<unsigned char>(160 * fade)));
-    renderer.drawRect(box);
+    style.box(renderer, box, abgui::Tone::Black, static_cast<unsigned char>(200 * fade), abgui::Tone::Edge,
+              static_cast<unsigned char>(160 * fade));
     gui->text().renderText_WithColor(
         big, letterShown, box.x + (box.w - textWidth) / 2, box.y + (box.h - big.lineHeight()) / 2,
         ableem::Color(style.text.r, style.text.g, style.text.b, static_cast<unsigned char>(255 * fade)), XALIGN_LEFT);
@@ -522,8 +502,7 @@ void GuiStore::render() {
             gui->text().renderText_WithColor(fonts[FONT_20_BOLD], it->second, x, panel.y + 26,
                                              style.rowColor(it->first == tab), XALIGN_LEFT);
             if (it->first == tab) {
-                renderer.setDrawColor(style.selectionBand);
-                renderer.fillRect(ableem::Rect(x, panel.y + 56, w, 3));
+                style.tab(renderer, x, panel.y + 56, w);
             }
             x -= 28;
         }
@@ -588,8 +567,7 @@ void GuiStore::render() {
             if (entry != nullptr) {
                 drawPicture(*entry, box, true);
             } else {
-                renderer.setDrawColor(style.edge);
-                renderer.drawRect(box);
+                style.box(renderer, box);
             }
             textX += ThumbSpace;
         } else {
@@ -608,11 +586,8 @@ void GuiStore::render() {
         // the one downloading: how far, as a bar along the row's foot
         if (entry != nullptr && entry->state == StoreState::Downloading && progress.busy && progress.total > 0) {
             const int barWidth = textWidth;
-            const int done = static_cast<int>(barWidth * min<uint64_t>(progress.done, progress.total) / progress.total);
-            renderer.setDrawColor(style.edge);
-            renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, barWidth, 3));
-            renderer.setDrawColor(style.text);
-            renderer.fillRect(ableem::Rect(textX, y + RowHeight - 6, done, 3));
+            style.progress(renderer, ableem::Rect(textX, y + RowHeight - 6, barWidth, 3), progress.done, progress.total,
+                           abgui::Tone::Edge, abgui::Style::OwnAlpha);
         }
         // what is installed already (and up to date) steps back, as a locked row does in the launcher's menus -
         // still selectable: its details, and Triangle to remove it
@@ -684,8 +659,7 @@ void GuiStore::render() {
 // GuiStore::drawDetails
 //*******************************
 void GuiStore::drawDetails(const ableem::Rect &pane) {
-    renderer.setDrawColor(style.edge);
-    renderer.fillRect(ableem::Rect(pane.x, pane.y + 16, 1, pane.h - 32));
+    style.vrule(renderer, pane.x, pane.y + 16, pane.h - 32, style.edge.a);
     const StoreEntry *e = selectedEntry();
     if (e == nullptr)
         return;
