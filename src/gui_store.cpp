@@ -447,8 +447,9 @@ ableem::Texture GuiStore::discTexture() {
 
 void GuiStore::drawSpinner(const ableem::Rect &box) {
     // twelve dots on a ring, the brightest leading, turning a dot every 70 ms - the launcher's busy spinner,
-    // at the box's size (never bigger than the launcher's own: 8 px dots, radius 30)
-    style.spinner(renderer, box, static_cast<int>(gui->platform().ticks() / 70) % 12);
+    // at the box's size (never bigger than the launcher's own: 8 px dots, radius 30) - or, through the Context, the
+    // theme's own frame strip when it has one
+    style.spinner(gui->uiContext(), box, static_cast<int>(gui->platform().ticks() / 70) % 12);
 }
 
 void GuiStore::drawFitted(const ableem::Texture &texture, const ableem::Rect &box) {
@@ -523,7 +524,7 @@ void GuiStore::draw() {
             gui->text().renderText_WithColor(fonts[FONT_20_BOLD], it->second, x, panel.y + 26,
                                              style.rowColor(it->first == tab), XALIGN_LEFT);
             if (it->first == tab) {
-                style.tab(renderer, x, panel.y + 56, w);
+                style.tab(gui->uiContext(), x, panel.y + 56, w);
             }
             x -= 28;
         }
@@ -625,8 +626,8 @@ void GuiStore::draw() {
         // the one downloading: how far, as a bar along the row's foot
         if (entry != nullptr && entry->state == StoreState::Downloading && progress.busy && progress.total > 0) {
             const int barWidth = textWidth;
-            style.progress(renderer, ableem::Rect(textX, y + RowHeight - 6, barWidth, 3), progress.done, progress.total,
-                           abgui::Tone::Edge, abgui::Style::OwnAlpha);
+            style.progress(gui->uiContext(), ableem::Rect(textX, y + RowHeight - 6, barWidth, 3), progress.done,
+                           progress.total, abgui::Tone::Edge, abgui::Style::OwnAlpha);
         }
         if (installed)
             drawInstalledBadge(renderer, style, badgeIcon, badge);
