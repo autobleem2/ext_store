@@ -499,7 +499,7 @@ void GuiStore::renderLetterJump(const ableem::Rect &list) {
 // the frame's picture: the screen stack clears before it and presents after it (render() is abgui::Screen's)
 void GuiStore::draw() {
     gui->renderBackground();
-    style.dim(renderer);
+    style.dim(gui->uiContext());
     const ableem::Rect panel{Margin, Margin, SCREEN_WIDTH - 2 * Margin, SCREEN_HEIGHT - 2 * Margin};
     style.sheet(gui->uiContext(), panel);
 
@@ -634,9 +634,9 @@ void GuiStore::draw() {
     }
     const int markerX = panel.x + listWidth - RowInset;
     if (firstVisible > 0)
-        style.scrollMarker(renderer, markerX, panel.y + HeaderHeight + 26, -1);
+        style.scrollMarker(gui->uiContext(), markerX, panel.y + HeaderHeight + 26, -1);
     if (firstVisible + visible < static_cast<int>(rows.size()))
-        style.scrollMarker(renderer, markerX, panel.y + HeaderHeight + 30 + visible * RowHeight + 2, 1);
+        style.scrollMarker(gui->uiContext(), markerX, panel.y + HeaderHeight + 30 + visible * RowHeight + 2, 1);
     if (pane)
         drawDetails(ableem::Rect(panel.x + listWidth, panel.y + HeaderHeight, PaneWidth,
                                  panel.h - HeaderHeight - FooterHeight));
