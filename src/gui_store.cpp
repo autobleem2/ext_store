@@ -481,7 +481,7 @@ void GuiStore::draw() {
     gui->renderBackground();
     style.dim(renderer);
     const ableem::Rect panel{Margin, Margin, SCREEN_WIDTH - 2 * Margin, SCREEN_HEIGHT - 2 * Margin};
-    style.sheet(renderer, panel);
+    style.sheet(gui->uiContext(), panel);
 
     const TextRenderer::Shadow classicShadow = gui->text().shadow();
     TextRenderer::Shadow shadow;
