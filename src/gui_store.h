@@ -32,7 +32,7 @@ public:
     std::string discPicture;
 
     void init() override;
-    void render() override;
+    void draw() override; // the frame's picture; the screen stack clears and presents
     void loop() override;
 
     enum class Tab { Apps, Games, Downloads, Sources };

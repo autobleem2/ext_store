@@ -72,6 +72,11 @@ repository names `ext_<name>`).
 
 - Built with the launcher: `-DAB_EXTENSION_DIRS=<this checkout>`. `ab_add_extension` builds `store` and
   stages it in `<build>/extensions/store/`; `test_store_service` and `test_store_pictures` are added when the build has tests.
+- **Its SDK ABI is the launcher's it was built against** (`AB_SDK_ABI` in autobleem-core's `gui/extension.h`, now 7):
+  a launcher of another ABI refuses to load it, so every ABI bump in core means a rebuild here. Since ABI 7 (the
+  ab_gui step G3z) `GuiStore` is an `abgui::Screen` through the classic `GuiScreen`: it has `draw()` only - the
+  screen stack clears before it and presents after it (`render()` is the stack's) - and `PanelStyle` is an
+  `abgui::Style`.
 - Format with the launcher's `.clang-format` (copied here), lint with its `.clang-tidy`
   (`tools/lint.sh <files>` from the launcher).
 - To try it on the Windows dev build:

@@ -474,9 +474,10 @@ void GuiStore::renderLetterJump() {
 }
 
 //*******************************
-// GuiStore::render
+// GuiStore::draw
 //*******************************
-void GuiStore::render() {
+// the frame's picture: the screen stack clears before it and presents after it (render() is abgui::Screen's)
+void GuiStore::draw() {
     gui->renderBackground();
     style.dim(renderer);
     const ableem::Rect panel{Margin, Margin, SCREEN_WIDTH - 2 * Margin, SCREEN_HEIGHT - 2 * Margin};
@@ -652,7 +653,6 @@ void GuiStore::render() {
     renderLetterJump();
 
     gui->text().setShadow(classicShadow);
-    renderer.present();
 }
 
 //*******************************
