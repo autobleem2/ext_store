@@ -87,6 +87,12 @@ public:
     // to call every frame. A request that settled empty (nothing found, or the fetch failed) stays that way
     // until retryFailed() asks again - want() alone never repeats an unchanged request.
     void want(const Request &request);
+    // how many requests wait for the worker at most: a list of thousands scrolled fast asks for every row it passes,
+    // and each answered request costs a database lookup and a cover file. Past this the oldest ask - the row that
+    // scrolled away - is dropped (and asked afresh by the next want() when the row shows again).
+    static constexpr size_t MaxQueued = 48;
+    // requests waiting for the worker
+    size_t queued() const;
     // the picture's file, "" while it is being looked for or when there is none
     std::string path(const std::string &key) const;
     // being looked for right now (asked for, not answered yet) - the screen shows a spinner meanwhile
