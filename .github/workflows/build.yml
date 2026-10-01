@@ -80,10 +80,19 @@ jobs:
         with:
           path: ext_store
           fetch-depth: 0
+      # a preview (PLATFORM-20) of a branch the launcher has too builds against that branch's launcher and core
+      - id: lref
+        run: |
+          r=develop
+          if [ "${{ inputs.channel }}" = preview ] &&
+             git ls-remote --exit-code --heads https://github.com/autobleem2/autobleem "$GITHUB_REF_NAME" >/dev/null; then
+            r="$GITHUB_REF_NAME"
+          fi
+          echo "launcher at $r"; echo "ref=$r" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v7
         with:
           repository: autobleem2/autobleem
-          ref: develop
+          ref: ${{ steps.lref.outputs.ref }}
           path: autobleem
           submodules: recursive
           fetch-depth: 0
