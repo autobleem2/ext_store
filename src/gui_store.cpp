@@ -570,7 +570,8 @@ void GuiStore::draw() {
     const bool pane = tab != Tab::Sources;
     const int listWidth = panel.w - (pane ? PaneWidth : 0);
     const int visible = visibleRows();
-    if (rows.empty()) {
+    // no empty-state line while the sources are still being read: the spinner above says so
+    if (rows.empty() && (tab == Tab::Downloads || (store.sourcesLoaded() && !reading))) {
         const string empty = tab == Tab::Downloads ? _("Nothing is downloading")
                              : filtered()          ? _("Nothing matches")
                                                    : _("Nothing here yet");
@@ -642,8 +643,8 @@ void GuiStore::draw() {
         drawDetails(ableem::Rect(panel.x + listWidth, panel.y + HeaderHeight, PaneWidth,
                                  panel.h - HeaderHeight - FooterHeight));
     if (tab == Tab::Sources)
-        gui->text().renderText_WithColor(fonts[FONT_15_BOLD], _("You are responsible for what your sources contain"),
-                                         panel.x + RowInset + 8, panel.y + panel.h - FooterHeight - 26,
+        gui->text().renderText_WithColor(fonts[FONT_20_BOLD], _("You are responsible for what your sources contain"),
+                                         panel.x + RowInset + 8, panel.y + panel.h - FooterHeight - 36,
                                          style.description, XALIGN_LEFT);
 
     // the footer: what Cross and Triangle do for this row
