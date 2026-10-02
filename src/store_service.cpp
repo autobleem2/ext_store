@@ -614,36 +614,24 @@ void StoreService::work(const string &key) {
     };
 
     // the files, each resumed from what an earlier attempt left. A network failure is not the download's: the
-    // runner sets the .part aside (the Downloader throws a resume that got nowhere away) and fetchFile() waits
-    // for the network and continues from it
-    int lastStatus = 0;
-    string partNow;
-    Downloader downloader(
-        config_.downloadCommand, config_.downloadCommand,
-        [this, &cancelled, &lastStatus, &partNow](const string &line) {
-            lastStatus =
-                config_.runner(line, [this, &cancelled] { return stop_.load() || paused_.load() || cancelled(); });
-            if (isNetworkFailure(lastStatus, config_.downloadCommand) && !partNow.empty() && partSize(partNow) > 0)
-                DirEntry::renameFile(partNow, partNow + ".keep");
-            return lastStatus;
-        });
+    // request keeps the .part for it (keepPartOnStatus), and fetchFile() waits for the network and continues
+    Downloader downloader(config_.downloadCommand, config_.downloadCommand, [this, &cancelled](const string &line) {
+        return config_.runner(line, [this, &cancelled] { return stop_.load() || paused_.load() || cancelled(); });
+    });
     auto giveUpText = [this](const string &why) {
         return "no network for " + to_string(chrono::duration_cast<chrono::minutes>(config_.retry.giveUp).count()) +
                " minutes (" + why + ")";
     };
     // fetch one file; a network failure waits (state WaitingForNetwork) and goes on, until the policy gives up
     auto fetchFile = [&](const DownloadRequest &request, string &error) {
-        partNow = Downloader::partPath(request.target);
+        const string partNow = Downloader::partPath(request.target);
         NetworkRetry retry(config_.retry);
         for (;;) {
             const long long before = max(0LL, partSize(partNow));
-            lastStatus = 0;
             Downloader::Result r = downloader.fetch(request, error);
-            const long long kept = partSize(partNow + ".keep");
-            if (kept > 0 && !DirEntry::exists(partNow))
-                DirEntry::renameFile(partNow + ".keep", partNow);
             if (r == Downloader::Result::Downloaded || r == Downloader::Result::AlreadyThere || cancelled() || stop_ ||
-                paused_ || r != Downloader::Result::Failed || !isNetworkFailure(lastStatus, config_.downloadCommand))
+                paused_ || r != Downloader::Result::Failed ||
+                !isNetworkFailure(downloader.lastStatus(), config_.downloadCommand))
                 return r;
             const NetworkRetry::Decision d =
                 retry.onFailure(NetworkRetry::Clock::now(), max(0LL, partSize(partNow)) > before);
@@ -685,6 +673,7 @@ void StoreService::work(const string &key) {
         request.size = file.size;
         request.sha256 = file.sha256;
         request.resume = true;
+        request.keepPartOnStatus = [this](int status) { return isNetworkFailure(status, config_.downloadCommand); };
         string error;
         Downloader::Result r = fetchFile(request, error);
         if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere) {

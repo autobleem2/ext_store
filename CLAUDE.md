@@ -64,7 +64,7 @@ repository names `ext_<name>`).
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
   URL, `store_download_command`, the platform keys; `AB_STORE_CATALOG` overrides the catalog), `poll()` →
   the launcher's bubble (the item's title shortened to fit, then the queue count and the speed and time left from `SpeedMeter`, `src/store_speed.*`, tested in `tests/test_store_speed.cpp`), `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
-  pause/stop. A network failure of a download (`isNetworkFailure`, `src/store_retry.*`: abfetch 2/6, curl 6/7/18/28/52/55/56) does not fail the item: it sets the `.part` aside (the Downloader throws away a resume that got nowhere), waits 5/15/30 s then 60 s each time for `networkUp()` (state `WaitingForNetwork`, "Waiting for the network") and continues from the `.part`; no network for `RetryPolicy::giveUp` (30 min, none of it progress) fails it as before ("no network for 30 minutes (...)").
+  pause/stop. A network failure of a download (`isNetworkFailure`, `src/store_retry.*`: abfetch 2/6, curl 6/7/18/28/52/55/56) does not fail the item: it keeps the `.part` (`DownloadRequest::keepPartOnStatus` in core's Downloader), waits 5/15/30 s then 60 s each time for `networkUp()` (state `WaitingForNetwork`, "Waiting for the network") and continues from the `.part`; no network for `RetryPolicy::giveUp` (30 min, none of it progress) fails it as before ("no network for 30 minutes (...)").
 - `lang/` - its strings in the 16 languages (English is the source). It also carries the strings the launcher
   translates already, copied from the launcher's files so the wording is the same. Every string change goes
   into all 16 files in the same commit.
