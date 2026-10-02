@@ -6,7 +6,7 @@ if (NOT COMMAND ab_add_extension)
 endif()
 
 ab_add_extension(store HOST ${AB_EXTENSION_HOST}
-        SOURCES src/store_extension.cpp src/store_service.cpp src/store_pictures.cpp src/gui_store.cpp src/store_speed.cpp
+        SOURCES src/store_extension.cpp src/store_service.cpp src/store_pictures.cpp src/gui_store.cpp src/store_speed.cpp src/store_retry.cpp
         INI ${CMAKE_CURRENT_SOURCE_DIR}/extension.ini
         ICON ${CMAKE_CURRENT_SOURCE_DIR}/icon.png
         LANG ${CMAKE_CURRENT_SOURCE_DIR}/lang)
@@ -32,8 +32,9 @@ endif ()
 
 # the service is tested on its own, against a fake site, on the SDK's test harness
 if (AB_BUILD_TESTS AND COMMAND ab_add_test)
-    ab_add_test(test_store_service tests/test_store_service.cpp src/store_service.cpp)
+    ab_add_test(test_store_service tests/test_store_service.cpp src/store_service.cpp src/store_retry.cpp)
     ab_add_test(test_store_pictures tests/test_store_pictures.cpp src/store_pictures.cpp)
     ab_add_test(test_store_speed tests/test_store_speed.cpp src/store_speed.cpp)
+    ab_add_test(test_store_retry tests/test_store_retry.cpp src/store_retry.cpp)
     # abstored's server is core's ableem_lanserver, tested there (test_lan_server)
 endif()

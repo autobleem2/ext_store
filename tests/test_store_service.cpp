@@ -32,6 +32,9 @@ string fileText(const string &path) {
 struct FakeSite {
     map<string, string> bodies;
     set<string> stalls;
+    map<string, int> netFails; // a URL's next downloads that drop the network after half the body
+    int netCode = 6;
+    function<void()> onNetFail;
     mutex m;
     vector<string> lines;
 
@@ -52,6 +55,28 @@ struct FakeSite {
                     return 22;
                 body = it->second;
                 stall = stalls.count(url) > 0;
+            }
+            if (verb == "dl") {
+                bool drop = false;
+                function<void()> hook;
+                {
+                    lock_guard<mutex> lock(m);
+                    drop = netFails[url] > 0;
+                    if (drop)
+                        netFails[url]--;
+                    hook = onNetFail;
+                }
+                if (drop) {
+                    // the line goes: half of what is left lands in the .part, the command exits with the code
+                    long long have = DirEntry::fileSize(out);
+                    string left = body.substr(min(static_cast<size_t>(max(0LL, have)), body.size()));
+                    ofstream o(out, ios::binary | ios::app);
+                    o << left.substr(0, left.size() / 2);
+                    o.close();
+                    if (hook)
+                        hook();
+                    return netCode;
+                }
             }
             size_t from = 0;
             if (verb == "dl") {
@@ -586,4 +611,98 @@ TEST_CASE("StoreService: source URLs, and file names") {
     CHECK(StoreService::versionDiffers("1.0", "1.1"));
     CHECK_FALSE(StoreService::versionDiffers("1.0", ""));
     CHECK_FALSE(StoreService::versionDiffers(" 1.0", "1.0 "));
+}
+
+TEST_CASE("StoreService: a network failure waits, keeps the .part and continues - it is not a failed item") {
+    Setup s;
+    const string key = "AutoBleem|app/opentyrian";
+    s.site.netFails["https://site/tyrian.zip"] = 2;
+    s.site.netCode = 28;
+    StoreService::Config c = s.config();
+    c.retry.delays = {RetryPolicy::Ms(150)};
+    StoreService store(c);
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::WaitingForNetwork; }));
+    CHECK(store.progress().state == StoreState::WaitingForNetwork);
+    CHECK(store.progress().busy);
+    CHECK(s.tmp.readFile("System/Extensions/store/queue.txt") == key + "\n"); // still the first in the queue
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Installed; }));
+    CHECK(fileText(s.tmp.at("Apps/opentyrian/bin/psc/tyrian")) == "binary"); // the parts joined right
+    CHECK(store.poll().failed.empty());
+    int downloads = 0;
+    {
+        lock_guard<mutex> lock(s.site.m);
+        for (const string &line : s.site.lines)
+            downloads += line.compare(0, 3, "dl ") == 0;
+    }
+    CHECK(downloads == 3);
+}
+
+TEST_CASE("StoreService: a network failure while the network is reported down waits for it to come back") {
+    Setup s;
+    const string key = "AutoBleem|app/opentyrian";
+    atomic<bool> up{true};
+    s.site.netFails["https://site/tyrian.zip"] = 1;
+    s.site.onNetFail = [&up] { up = false; };
+    StoreService::Config c = s.config();
+    c.networkUp = [&up] { return up.load(); };
+    c.retry.delays = {RetryPolicy::Ms(20)};
+    StoreService store(c);
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::WaitingForNetwork; }));
+    this_thread::sleep_for(chrono::milliseconds(300)); // the wait is over long ago; the network is not back
+    CHECK(s.entry(store.entries(), key)->state == StoreState::WaitingForNetwork);
+    up = true;
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Installed; }));
+}
+
+TEST_CASE("StoreService: no network for the whole limit fails the item, saying so") {
+    Setup s;
+    const string key = "AutoBleem|app/opentyrian";
+    s.site.netFails["https://site/tyrian.zip"] = 1000;
+    StoreService::Config c = s.config();
+    c.retry.delays = {RetryPolicy::Ms(20)};
+    c.retry.giveUp = RetryPolicy::Ms(200);
+    StoreService store(c);
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Failed; }));
+    CHECK(s.entry(store.entries(), key)->error.find("no network for") == 0);
+    CHECK(store.poll().failed.size() == 1);
+}
+
+TEST_CASE("StoreService: a failure that is not the network's (a 404) fails at once, without waiting") {
+    Setup s;
+    const string key = "AutoBleem|app/opentyrian";
+    s.site.bodies.erase("https://site/tyrian.zip"); // the fake answers 22
+    StoreService::Config c = s.config();
+    c.retry.delays = {RetryPolicy::Ms(20)};
+    StoreService store(c);
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Failed; }));
+    CHECK(s.entry(store.entries(), key)->error == "the download failed (22)");
+}
+
+TEST_CASE("StoreService: cancel while waiting for the network drops the item") {
+    Setup s;
+    const string key = "AutoBleem|app/opentyrian";
+    s.site.netFails["https://site/tyrian.zip"] = 1000;
+    StoreService::Config c = s.config();
+    c.retry.delays = {RetryPolicy::Ms(50)};
+    StoreService store(c);
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::WaitingForNetwork; }));
+    CHECK(store.cancel(key));
+    REQUIRE(waitFor([&] { return !store.progress().busy; }));
+    CHECK(s.entry(store.entries(), key)->state == StoreState::Available);
+    CHECK_FALSE(DirEntry::exists(store.downloadsDir() + "/tyrian.zip.part"));
 }

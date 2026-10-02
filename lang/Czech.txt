@@ -1,6 +1,6 @@
 # AutoBleem Store - Czech translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=Zabezpečené spojení selhalo - zkuste http://
 A source is an http:// or https:// address=Zdroj je adresa http:// nebo https://
 A TSV list of downloads, on any web server=Seznam stahování ve formátu TSV na libovolném webovém serveru
@@ -64,5 +64,6 @@ Update available=Aktualizace k dispozici
 USA=USA
 Version=Verze
 waiting=čeká
+Waiting for the network=Čekám na síť
 Year=Rok
 You are responsible for what your sources contain=Za obsah svých zdrojů odpovídáte vy

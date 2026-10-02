@@ -95,8 +95,8 @@ package_server() { # package_server <abstored binary> <os-arch> - dist/abstored-
 build_native() {
     banner "native: the Store's tests (build/native)"
     configure build/native -DCMAKE_BUILD_TYPE=Debug -DAB_ENABLE_CHD=ON
-    ninja -C build/native -j "$JOBS" store test_store_service test_store_pictures test_store_speed test_lan_server
-    ctest --test-dir build/native -R '^test_(store_service|store_pictures|store_speed|lan_server)$' --output-on-failure -j "$JOBS"
+    ninja -C build/native -j "$JOBS" store test_store_service test_store_pictures test_store_speed test_store_retry test_lan_server
+    ctest --test-dir build/native -R '^test_(store_service|store_pictures|store_speed|store_retry|lan_server)$' --output-on-failure -j "$JOBS"
 
     banner "native: clang-format"
     local cf

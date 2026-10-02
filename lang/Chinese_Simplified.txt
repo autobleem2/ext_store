@@ -1,6 +1,6 @@
 # AutoBleem Store - Chinese_Simplified translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=安全连接失败 - 请尝试 http://
 A source is an http:// or https:// address=来源必须是 http:// 或 https:// 地址
 A TSV list of downloads, on any web server=任意网站上的 TSV 下载列表
@@ -64,5 +64,6 @@ Update available=有可用更新
 USA=美国
 Version=版本
 waiting=等待中
+Waiting for the network=等待网络
 Year=年份
 You are responsible for what your sources contain=来源中的内容由您自行负责

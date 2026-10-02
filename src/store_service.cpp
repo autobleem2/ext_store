@@ -562,6 +562,16 @@ StoreEntry *StoreService::find(const string &key) {
 }
 
 //*******************************
+// StoreService::setCurrentState
+//*******************************
+void StoreService::setCurrentState(StoreState state) {
+    lock_guard<mutex> lock(mutex_);
+    currentState_ = state;
+    rebuildEntries();
+    events_.listChanged = true;
+}
+
+//*******************************
 // StoreService::work
 //*******************************
 void StoreService::work(const string &key) {
@@ -603,10 +613,65 @@ void StoreService::work(const string &key) {
         return cancelKey_ == key;
     };
 
-    // the files, each resumed from what an earlier attempt left
-    Downloader downloader(config_.downloadCommand, config_.downloadCommand, [this, &cancelled](const string &line) {
-        return config_.runner(line, [this, &cancelled] { return stop_.load() || paused_.load() || cancelled(); });
-    });
+    // the files, each resumed from what an earlier attempt left. A network failure is not the download's: the
+    // runner sets the .part aside (the Downloader throws a resume that got nowhere away) and fetchFile() waits
+    // for the network and continues from it
+    int lastStatus = 0;
+    string partNow;
+    Downloader downloader(
+        config_.downloadCommand, config_.downloadCommand,
+        [this, &cancelled, &lastStatus, &partNow](const string &line) {
+            lastStatus =
+                config_.runner(line, [this, &cancelled] { return stop_.load() || paused_.load() || cancelled(); });
+            if (isNetworkFailure(lastStatus, config_.downloadCommand) && !partNow.empty() && partSize(partNow) > 0)
+                DirEntry::renameFile(partNow, partNow + ".keep");
+            return lastStatus;
+        });
+    auto giveUpText = [this](const string &why) {
+        return "no network for " + to_string(chrono::duration_cast<chrono::minutes>(config_.retry.giveUp).count()) +
+               " minutes (" + why + ")";
+    };
+    // fetch one file; a network failure waits (state WaitingForNetwork) and goes on, until the policy gives up
+    auto fetchFile = [&](const DownloadRequest &request, string &error) {
+        partNow = Downloader::partPath(request.target);
+        NetworkRetry retry(config_.retry);
+        for (;;) {
+            const long long before = max(0LL, partSize(partNow));
+            lastStatus = 0;
+            Downloader::Result r = downloader.fetch(request, error);
+            const long long kept = partSize(partNow + ".keep");
+            if (kept > 0 && !DirEntry::exists(partNow))
+                DirEntry::renameFile(partNow + ".keep", partNow);
+            if (r == Downloader::Result::Downloaded || r == Downloader::Result::AlreadyThere || cancelled() || stop_ ||
+                paused_ || r != Downloader::Result::Failed || !isNetworkFailure(lastStatus, config_.downloadCommand))
+                return r;
+            const NetworkRetry::Decision d =
+                retry.onFailure(NetworkRetry::Clock::now(), max(0LL, partSize(partNow)) > before);
+            if (d.giveUp) {
+                error = giveUpText(error);
+                return r;
+            }
+            PLOG_WARNING << item.title << ": " << error << " - the network is down, waiting " << d.delay.count()
+                         << " ms";
+            setCurrentState(StoreState::WaitingForNetwork);
+            const bool wasDown = config_.networkUp && !config_.networkUp();
+            const auto until = NetworkRetry::Clock::now() + d.delay;
+            for (;;) {
+                if (stop_ || paused_ || cancelled())
+                    return Downloader::Result::Failed;
+                const bool up = !config_.networkUp || config_.networkUp();
+                const auto now = NetworkRetry::Clock::now();
+                if (retry.expired(now)) {
+                    error = giveUpText(error);
+                    return Downloader::Result::Failed;
+                }
+                if (up && (now >= until || wasDown))
+                    break;
+                this_thread::sleep_for(chrono::milliseconds(20));
+            }
+            setCurrentState(StoreState::Downloading);
+        }
+    };
     vector<string> local;
     for (const StoreFile &file : item.files) {
         const string target = downloadsDir() + sep + fileNameFor(file);
@@ -621,7 +686,7 @@ void StoreService::work(const string &key) {
         request.sha256 = file.sha256;
         request.resume = true;
         string error;
-        Downloader::Result r = downloader.fetch(request, error);
+        Downloader::Result r = fetchFile(request, error);
         if (r != Downloader::Result::Downloaded && r != Downloader::Result::AlreadyThere) {
             if (cancelled()) {
                 // the whole item goes: the file in flight and the discs already finished

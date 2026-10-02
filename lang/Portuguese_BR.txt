@@ -1,6 +1,6 @@
 # AutoBleem Store - Portuguese_BR translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=A conexão segura falhou - tente http://
 A source is an http:// or https:// address=Uma fonte é um endereço http:// ou https://
 A TSV list of downloads, on any web server=Uma lista TSV de downloads, em qualquer servidor web
@@ -64,5 +64,6 @@ Update available=Atualização disponível
 USA=EUA
 Version=Versão
 waiting=aguardando
+Waiting for the network=Aguardando a rede
 Year=Ano
 You are responsible for what your sources contain=Você é responsável pelo conteúdo das suas fontes

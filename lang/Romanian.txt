@@ -1,6 +1,6 @@
 # AutoBleem Store - Romanian translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=Conexiunea securizată a eșuat - încearcă http://
 A source is an http:// or https:// address=O sursă este o adresă http:// sau https://
 A TSV list of downloads, on any web server=O listă TSV de descărcări, pe orice server web
@@ -64,5 +64,6 @@ Update available=Actualizare disponibilă
 USA=SUA
 Version=Versiune
 waiting=în așteptare
+Waiting for the network=Se așteaptă rețeaua
 Year=An
 You are responsible for what your sources contain=Ești responsabil pentru conținutul surselor tale
