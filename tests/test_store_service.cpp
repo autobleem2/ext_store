@@ -706,3 +706,60 @@ TEST_CASE("StoreService: cancel while waiting for the network drops the item") {
     CHECK(s.entry(store.entries(), key)->state == StoreState::Available);
     CHECK_FALSE(DirEntry::exists(store.downloadsDir() + "/tyrian.zip.part"));
 }
+
+TEST_CASE("StoreService: the network down for the stop time stops the fetch in flight at once, and the first moment "
+          "it is back resumes from the .part - no backoff wait") {
+    Setup s;
+    const string key = "AutoBleem|app/opentyrian";
+    atomic<bool> up{true};
+    s.site.stalls.insert("https://site/tyrian.zip"); // half the body, then it hangs as a download over a dead line
+    StoreService::Config c = s.config();
+    c.networkUp = [&up] { return up.load(); };
+    c.retry.stopAfterDown = RetryPolicy::Ms(150);
+    c.retry.delays = {RetryPolicy::Ms(60000)}; // a backoff the test would never wait out
+    StoreService store(c);
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return store.progress().busy && store.progress().done > 0; }));
+    up = false; // the dongle is pulled
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::WaitingForNetwork; }, 3000));
+    CHECK(DirEntry::fileSize(store.downloadsDir() + "/tyrian.zip.part") == static_cast<long long>(s.tyrian.size() / 2));
+    {
+        lock_guard<mutex> lock(s.site.m);
+        s.site.stalls.clear(); // the line is fine again
+    }
+    up = true;
+    REQUIRE(waitFor([&] { return s.entry(store.entries(), key)->state == StoreState::Installed; }, 3000));
+    CHECK(fileText(s.tmp.at("Apps/opentyrian/bin/psc/tyrian")) == "binary");
+    CHECK(store.poll().failed.empty());
+}
+
+TEST_CASE("StoreService: a blip of the network shorter than the stop time stops nothing") {
+    Setup s;
+    const string key = "AutoBleem|app/opentyrian";
+    atomic<bool> up{true};
+    s.site.stalls.insert("https://site/tyrian.zip");
+    StoreService::Config c = s.config();
+    c.networkUp = [&up] { return up.load(); };
+    c.retry.stopAfterDown = RetryPolicy::Ms(600);
+    StoreService store(c);
+    store.start();
+    REQUIRE(waitFor([&] { return store.sourcesLoaded() && !store.readingSources(); }));
+    REQUIRE(store.enqueue(key));
+    REQUIRE(waitFor([&] { return store.progress().busy && store.progress().done > 0; }));
+    up = false;
+    this_thread::sleep_for(chrono::milliseconds(150));
+    up = true;
+    this_thread::sleep_for(chrono::milliseconds(900)); // well past what the down time would have been, twice over
+    CHECK(s.entry(store.entries(), key)->state == StoreState::Downloading);
+    int downloads = 0;
+    {
+        lock_guard<mutex> lock(s.site.m);
+        for (const string &line : s.site.lines)
+            downloads += line.compare(0, 3, "dl ") == 0;
+    }
+    CHECK(downloads == 1);
+    CHECK(store.cancel(key));
+    REQUIRE(waitFor([&] { return !store.progress().busy; }));
+}

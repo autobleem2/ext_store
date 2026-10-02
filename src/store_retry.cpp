@@ -8,6 +8,8 @@ using namespace std;
 // isNetworkFailure
 //*******************************
 bool isNetworkFailure(int status, const string &command) {
+    if (status == StoppedForNetwork)
+        return true;
     if (command.find("abfetch") != string::npos)
         return status == 2 || status == 6;
     switch (status) {
@@ -46,4 +48,19 @@ NetworkRetry::Decision NetworkRetry::onFailure(Clock::time_point now, bool progr
 
 bool NetworkRetry::expired(Clock::time_point now) const {
     return inOutage && now - since >= policy.giveUp;
+}
+
+//*******************************
+// NetworkWatch::update
+//*******************************
+bool NetworkWatch::update(bool up, Clock::time_point now) {
+    if (up) {
+        down = false;
+        return false;
+    }
+    if (!down) {
+        down = true;
+        since = now;
+    }
+    return now - since >= after;
 }

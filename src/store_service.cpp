@@ -615,9 +615,23 @@ void StoreService::work(const string &key) {
 
     // the files, each resumed from what an earlier attempt left. A network failure is not the download's: the
     // request keeps the .part for it (keepPartOnStatus), and fetchFile() waits for the network and continues
-    Downloader downloader(config_.downloadCommand, config_.downloadCommand, [this, &cancelled](const string &line) {
-        return config_.runner(line, [this, &cancelled] { return stop_.load() || paused_.load() || cancelled(); });
-    });
+    // the network down for config_.retry.stopAfterDown while a fetch runs stops it (it would wait for its own stall
+    // timeout otherwise) - with StoppedForNetwork as its status, so the .part stays and the item waits
+    bool stoppedForNetwork = false;
+    Downloader downloader(config_.downloadCommand, config_.downloadCommand,
+                          [this, &cancelled, &stoppedForNetwork](const string &line) {
+                              NetworkWatch watch(config_.retry.stopAfterDown);
+                              stoppedForNetwork = false;
+                              const int status = config_.runner(line, [this, &cancelled, &watch, &stoppedForNetwork] {
+                                  if (stop_.load() || paused_.load() || cancelled())
+                                      return true;
+                                  const bool up = !config_.networkUp || config_.networkUp();
+                                  if (watch.update(up, NetworkRetry::Clock::now()))
+                                      stoppedForNetwork = true;
+                                  return stoppedForNetwork;
+                              });
+                              return stoppedForNetwork && status != 0 ? StoppedForNetwork : status;
+                          });
     auto giveUpText = [this](const string &why) {
         return "no network for " + to_string(chrono::duration_cast<chrono::minutes>(config_.retry.giveUp).count()) +
                " minutes (" + why + ")";
@@ -642,7 +656,9 @@ void StoreService::work(const string &key) {
             PLOG_WARNING << item.title << ": " << error << " - the network is down, waiting " << d.delay.count()
                          << " ms";
             setCurrentState(StoreState::WaitingForNetwork);
-            const bool wasDown = config_.networkUp && !config_.networkUp();
+            // (stopped because it was down: the first moment it is up again is the retry, whatever the wait)
+            const bool wasDown =
+                downloader.lastStatus() == StoppedForNetwork || (config_.networkUp && !config_.networkUp());
             const auto until = NetworkRetry::Clock::now() + d.delay;
             for (;;) {
                 if (stop_ || paused_ || cancelled())

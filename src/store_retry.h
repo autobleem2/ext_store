@@ -17,10 +17,15 @@
 // abfetch's 3 (TLS), 4 (HTTP status), 5 (cannot write) and 7 (too many redirects) are not the network's.
 bool isNetworkFailure(int status, const std::string &command);
 
+// the status a fetch gets when the Store itself stopped it because the network was down for NetworkWatch's time
+// (no real command exits with it): a network failure, so the .part stays and the item waits for the network
+constexpr int StoppedForNetwork = 9999;
+
 struct RetryPolicy {
     using Ms = std::chrono::milliseconds;
     std::vector<Ms> delays{Ms(5000), Ms(15000), Ms(30000), Ms(60000)}; // then the last one again
     Ms giveUp{30 * 60 * 1000}; // no network this long (without a byte more) and the item fails
+    Ms stopAfterDown{3000}; // the network down this long stops the fetch in flight (no waiting for its stall timeout)
 };
 
 // One item's outage: onFailure() at each network failure says how long to wait, or that it is over.
@@ -46,4 +51,18 @@ private:
     bool inOutage = false;
     Clock::time_point since;
     int attempt = 0;
+};
+
+// Watches the network while a fetch runs: update() once a poll with whether it is up; true once it has been down
+// without a break for the time given (a blip shorter than that never stops anything).
+class NetworkWatch {
+public:
+    using Clock = std::chrono::steady_clock;
+    explicit NetworkWatch(RetryPolicy::Ms after) : after(after) {}
+    bool update(bool up, Clock::time_point now);
+
+private:
+    RetryPolicy::Ms after;
+    bool down = false;
+    Clock::time_point since;
 };

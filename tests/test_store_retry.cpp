@@ -82,3 +82,26 @@ TEST_CASE("NetworkRetry: a policy of its own (short waits, short limit)") {
     CHECK(retry.onFailure(t0 + chrono::milliseconds(30), false).delay == chrono::milliseconds(20));
     CHECK(retry.onFailure(t0 + chrono::milliseconds(100), false).giveUp);
 }
+
+TEST_CASE("isNetworkFailure: the status of a fetch the Store stopped for a down network is the network's") {
+    CHECK(isNetworkFailure(StoppedForNetwork, "curl -sfL -C - -o %o %u"));
+    CHECK(isNetworkFailure(StoppedForNetwork, "\"%r/abfetch\" --continue -o \"%o\" \"%u\""));
+}
+
+TEST_CASE("NetworkWatch: down for 3 s without a break says stop; a blip, or a network that is up, does not") {
+    NetworkWatch watch{chrono::seconds(3)};
+    CHECK_FALSE(watch.update(true, at(0)));
+    CHECK_FALSE(watch.update(false, at(1))); // down from here
+    CHECK_FALSE(watch.update(false, at(3)));
+    CHECK(watch.update(false, at(4))); // 3 s since second 1
+    CHECK(watch.update(false, at(10)));
+    CHECK_FALSE(watch.update(true, at(11))); // back
+
+    // a blip: down 2 s, up, down again - the clock starts over each time it goes down
+    CHECK_FALSE(watch.update(false, at(20)));
+    CHECK_FALSE(watch.update(false, at(22)));
+    CHECK_FALSE(watch.update(true, at(22)));
+    CHECK_FALSE(watch.update(false, at(23)));
+    CHECK_FALSE(watch.update(false, at(25)));
+    CHECK(watch.update(false, at(26)));
+}
