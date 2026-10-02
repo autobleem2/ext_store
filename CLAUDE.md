@@ -63,8 +63,8 @@ repository names `ext_<name>`).
   favicon (a list drawn in the theme's colours until it arrives, or without one). Removing a source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
   URL, `store_download_command`, the platform keys; `AB_STORE_CATALOG` overrides the catalog), `poll()` →
-  the launcher's bubble, `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
-  pause/stop.
+  the launcher's bubble (the item's title shortened to fit, then the queue count and the speed and time left from `SpeedMeter`, `src/store_speed.*`, tested in `tests/test_store_speed.cpp`), `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
+  pause/stop. A network failure of a download (`isNetworkFailure`, `src/store_retry.*`: abfetch 2/6, curl 6/7/18/28/52/55/56) does not fail the item: it keeps the `.part` (`DownloadRequest::keepPartOnStatus` in core's Downloader), waits 5/15/30 s then 60 s each time for `networkUp()` (state `WaitingForNetwork`, "Waiting for the network") and continues from the `.part`; no network for `RetryPolicy::giveUp` (30 min, none of it progress) fails it as before ("no network for 30 minutes (...)"). `networkUp()` (a default route in /proc/net/route) down for `RetryPolicy::stopAfterDown` (3 s) while a fetch runs stops it at once (`NetworkWatch`, status `StoppedForNetwork`) and the first moment it is back resumes with no backoff.
 - `lang/` - its strings in the 16 languages (English is the source). It also carries the strings the launcher
   translates already, copied from the launcher's files so the wording is the same. Every string change goes
   into all 16 files in the same commit.
@@ -75,7 +75,7 @@ repository names `ext_<name>`).
 ## Building and testing
 
 - Built with the launcher: `-DAB_EXTENSION_DIRS=<this checkout>`. `ab_add_extension` builds `store` and
-  stages it in `<build>/extensions/store/`; `test_store_service` and `test_store_pictures` are added when the build has tests.
+  stages it in `<build>/extensions/store/`; `test_store_service`, `test_store_pictures` and `test_store_speed` and `test_store_retry` are added when the build has tests.
 - **Its SDK ABI is the launcher's it was built against** (`AB_SDK_ABI` in autobleem-core's `gui/extension.h`, now 7):
   a launcher of another ABI refuses to load it, so every ABI bump in core means a rebuild here. Since ABI 7 (the
   ab_gui step G3z) `GuiStore` is an `abgui::Screen` through the classic `GuiScreen`: it has `draw()` only - the

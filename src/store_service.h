@@ -16,6 +16,8 @@
 //
 #pragma once
 
+#include "store_retry.h"
+
 #include <ableem/engine/store_catalog.h>
 
 #include <atomic>
@@ -43,7 +45,8 @@ enum class StoreState {
     UpdateAvailable,
     Failed,
     Unsupported,
-    NotInstallable
+    NotInstallable,
+    WaitingForNetwork // the download in flight lost the network: it continues from its .part when it is back
 };
 
 //******************
@@ -91,6 +94,7 @@ public:
         std::string downloadCommand;           // %u %o, continuing a partial %o: the items' files
         std::vector<std::string> platformKeys; // Env::appPlatformKeys(), for an App's check
         Runner runner;
+        RetryPolicy retry;               // the waits after a network failure, and when to give up
         std::function<bool()> networkUp; // always up when not given
     };
 
@@ -208,7 +212,8 @@ private:
     std::string cachedSourceFile(const std::string &url) const;
     void assembleSources(); // items_ and sources_ from loadedSources_ (mutex_ held)
     void rebuildEntries();
-    void work(const std::string &key); // one queued item, on the worker
+    void work(const std::string &key);      // one queued item, on the worker
+    void setCurrentState(StoreState state); // the worker's item changes state (under the lock, the list rebuilt)
     bool fetchTo(const std::string &url, const std::string &target, std::string &error);
     void readInstalled();
     void writeInstalled() const;

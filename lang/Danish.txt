@@ -1,6 +1,6 @@
 # AutoBleem Store - Danish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=En sikker forbindelse mislykkedes - prøv http://
 A source is an http:// or https:// address=En kilde er en http://- eller https://-adresse
 A TSV list of downloads, on any web server=En TSV-liste med downloads på en hvilken som helst webserver
@@ -64,5 +64,6 @@ Update available=Opdatering tilgængelig
 USA=USA
 Version=Version
 waiting=venter
+Waiting for the network=Venter på netværket
 Year=År
 You are responsible for what your sources contain=Du er ansvarlig for indholdet af dine kilder

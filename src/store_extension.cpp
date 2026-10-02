@@ -6,6 +6,7 @@
 #include "gui_store.h"
 #include "store_pictures.h"
 #include "store_service.h"
+#include "store_speed.h"
 
 #include "core/main.h"
 #include "core/services/environment.h"
@@ -101,9 +102,24 @@ public:
             holdUntil = now + chrono::seconds(8);
         }
         const StoreService::Progress p = store.progress();
+        // the speed and the time left: only while downloading, of one item, in one stretch (see SpeedMeter)
+        if (p.busy && p.state == StoreState::Downloading) {
+            if (meterTitle != p.title || meterState != p.state)
+                speed.reset();
+            meterTitle = p.title;
+            meterState = p.state;
+            speed.sample(p.done, now);
+        } else {
+            speed.reset();
+            meterTitle.clear();
+        }
         if (p.busy && now >= holdUntil) {
             const string title = GuiStore::stateText(p.state);
-            host.notify(title, p.title + (p.waiting > 0 ? "  (+" + to_string(p.waiting) + ")" : ""), p.done, p.total);
+            const string queued = p.waiting > 0 ? "  (+" + to_string(p.waiting) + ")" : "";
+            const string stats = formatSpeedEta(speed, p.done, p.total);
+            const string tail = stats.empty() ? "" : "  " + stats;
+            const string detail = fitTitle(p.title, queued, stats, p.total > 0) + queued + tail;
+            host.notify(title, detail, p.done, p.total);
             shown = true;
         } else if (!p.busy && shown && now >= holdUntil) {
             host.clearNotification();
@@ -111,15 +127,36 @@ public:
         }
     }
 
-    void suspend() override { store.pause(); } // a game gets the machine: the download in flight stops
-    void resume() override { store.resume(); }
+    void suspend() override {
+        store.pause(); // a game gets the machine: the download in flight stops
+        speed.reset();
+    }
+    void resume() override {
+        store.resume();
+        speed.reset();
+    }
     void shutdown() override {
         store.stop(); // first: its worker asks the pictures for an installed game's cover
         pictures.stop();
     }
 
 private:
+    // The item's title, shortened (with "...") so that the queue count, the speed and time left, and the launcher's
+    // own "  100%" after the detail fit its bubble - the stats are never the part that is cut. The bubble's text
+    // is 440 px less its 2 x 12 px padding wide (evoui_notification_bubble.cpp), in the 15 px bold font.
+    static string fitTitle(const string &title, const string &queued, const string &stats, bool percent) {
+        const int textWidth = 440 - 2 * 12 - 4; // a few pixels of margin
+        const auto gui = Gui::getInstance();
+        Fonts &fonts = gui->assets().themeFonts;
+        const string tail = queued + (stats.empty() ? "" : "  " + stats) + (percent ? "  100%" : "");
+        const int room = max(60, textWidth - gui->text().textWidth(fonts[FONT_15_BOLD], tail));
+        return gui->text().elide(fonts[FONT_15_BOLD], title, room);
+    }
+
     ExtensionHost &host;
+    SpeedMeter speed;
+    string meterTitle;
+    StoreState meterState = StoreState::Available;
     StorePictures pictures; // before the store: built first, gone last - the store's worker reads it
     StoreService store;
     bool shown = false;

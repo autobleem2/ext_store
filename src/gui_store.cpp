@@ -78,6 +78,8 @@ string GuiStore::stateText(StoreState state) {
         return _("Downloading");
     case StoreState::Installing:
         return _("Installing");
+    case StoreState::WaitingForNetwork:
+        return _("Waiting for the network");
     case StoreState::Failed:
         return _("Failed");
     case StoreState::NotInstallable:
@@ -169,7 +171,8 @@ void GuiStore::reload() {
         break;
     case Tab::Downloads:
         for (const StoreEntry &e : entries)
-            if (e.state == StoreState::Downloading || e.state == StoreState::Installing)
+            if (e.state == StoreState::Downloading || e.state == StoreState::Installing ||
+                e.state == StoreState::WaitingForNetwork)
                 rows.push_back(entryRow(e));
         for (const StoreEntry &e : entries)
             if (e.state == StoreState::Queued || e.state == StoreState::Failed) {
@@ -625,7 +628,9 @@ void GuiStore::draw() {
         if (rows[i].loading)
             drawSpinner(ableem::Rect(panel.x + listWidth - RowInset - 36, y + (RowHeight - 32) / 2, 32, 32));
         // the one downloading: how far, as a bar along the row's foot
-        if (entry != nullptr && entry->state == StoreState::Downloading && progress.busy && progress.total > 0) {
+        if (entry != nullptr &&
+            (entry->state == StoreState::Downloading || entry->state == StoreState::WaitingForNetwork) &&
+            progress.busy && progress.total > 0) {
             const int barWidth = textWidth;
             style.progress(gui->uiContext(), ableem::Rect(textX, y + RowHeight - 6, barWidth, 3), progress.done,
                            progress.total, abgui::Tone::Edge, abgui::Style::OwnAlpha);
@@ -663,6 +668,7 @@ void GuiStore::draw() {
             break;
         case StoreState::Queued:
         case StoreState::Downloading:
+        case StoreState::WaitingForNetwork:
             hints.push_back({{"X"}, _("Cancel")});
             break;
         default:
@@ -675,7 +681,8 @@ void GuiStore::draw() {
     }
     hints.push_back({{"O"}, _("Back")});
     if (entry != nullptr && !entry->installedPath.empty() && entry->state != StoreState::Queued &&
-        entry->state != StoreState::Downloading && entry->state != StoreState::Installing)
+        entry->state != StoreState::Downloading && entry->state != StoreState::Installing &&
+        entry->state != StoreState::WaitingForNetwork)
         hints.push_back({{"T"}, _("Remove")});
     if (!rows.empty() && rows[selected].remoteSource)
         hints.push_back({{"T"}, _("Remove this source")});
@@ -823,6 +830,7 @@ void GuiStore::cross() {
         break;
     case StoreState::Queued:
     case StoreState::Downloading:
+    case StoreState::WaitingForNetwork:
         app.audio().cancel.play();
         store.cancel(e->key);
         break;
@@ -904,7 +912,8 @@ void GuiStore::triangle() {
     }
     const StoreEntry *e = selectedEntry();
     if (e == nullptr || e->installedPath.empty() || e->state == StoreState::Queued ||
-        e->state == StoreState::Downloading || e->state == StoreState::Installing)
+        e->state == StoreState::Downloading || e->state == StoreState::Installing ||
+        e->state == StoreState::WaitingForNetwork)
         return;
     GuiConfirm confirm(*gui);
     confirm.title = e->item.title;

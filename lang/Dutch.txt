@@ -1,6 +1,6 @@
 # AutoBleem Store - Dutch translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=Een beveiligde verbinding is mislukt - probeer http://
 A source is an http:// or https:// address=Een bron is een http://- of https://-adres
 A TSV list of downloads, on any web server=Een TSV-lijst met downloads, op elke webserver
@@ -64,5 +64,6 @@ Update available=Update beschikbaar
 USA=VS
 Version=Versie
 waiting=wachtend
+Waiting for the network=Wachten op het netwerk
 Year=Jaar
 You are responsible for what your sources contain=Je bent zelf verantwoordelijk voor de inhoud van je bronnen

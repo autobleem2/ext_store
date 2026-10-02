@@ -1,6 +1,6 @@
 # AutoBleem Store - Occitan translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=La connexion segura a fracassat - ensajatz http://
 A source is an http:// or https:// address=Una font es una adreça http:// o https://
 A TSV list of downloads, on any web server=Una lista TSV de telecargaments, sus quin servidor web que siá
@@ -64,5 +64,6 @@ Update available=Mesa a jorn disponibla
 USA=Estats Units
 Version=Version
 waiting=en espèra
+Waiting for the network=En espèra de la ret
 Year=Annada
 You are responsible for what your sources contain=Sètz responsable del contengut de vòstras fonts
