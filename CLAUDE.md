@@ -63,7 +63,7 @@ repository names `ext_<name>`).
   favicon (a list drawn in the theme's colours until it arrives, or without one). Removing a source asks first.
 - `src/store_extension.cpp` - `StoreExtension`: `AB_EXTENSION`, the service's config from `Env` (the catalog
   URL, `store_download_command`, the platform keys; `AB_STORE_CATALOG` overrides the catalog), `poll()` →
-  the launcher's bubble, `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
+  the launcher's bubble (the item's title shortened to fit, then the queue count and the speed and time left from `SpeedMeter`, `src/store_speed.*`, tested in `tests/test_store_speed.cpp`), `requestRescan`/`reloadApps`, and `suspend`/`resume`/`shutdown` → the service's
   pause/stop.
 - `lang/` - its strings in the 16 languages (English is the source). It also carries the strings the launcher
   translates already, copied from the launcher's files so the wording is the same. Every string change goes
@@ -75,7 +75,7 @@ repository names `ext_<name>`).
 ## Building and testing
 
 - Built with the launcher: `-DAB_EXTENSION_DIRS=<this checkout>`. `ab_add_extension` builds `store` and
-  stages it in `<build>/extensions/store/`; `test_store_service` and `test_store_pictures` are added when the build has tests.
+  stages it in `<build>/extensions/store/`; `test_store_service`, `test_store_pictures` and `test_store_speed` are added when the build has tests.
 - **Its SDK ABI is the launcher's it was built against** (`AB_SDK_ABI` in autobleem-core's `gui/extension.h`, now 7):
   a launcher of another ABI refuses to load it, so every ABI bump in core means a rebuild here. Since ABI 7 (the
   ab_gui step G3z) `GuiStore` is an `abgui::Screen` through the classic `GuiScreen`: it has `draw()` only - the
