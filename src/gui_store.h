@@ -32,7 +32,7 @@ public:
     std::string discPicture;
 
     void init() override;
-    void render() override;
+    void draw() override; // the frame's picture; the screen stack clears and presents
     void loop() override;
 
     enum class Tab { Apps, Games, Downloads, Sources };
@@ -69,10 +69,10 @@ private:
     void step(int steps);
     // what a title is filed under: its first character, a letter in upper case
     static std::string letterOf(const std::string &title);
-    // the big letter jumpLetter() just landed on, shown briefly the way the launcher's carousel shows its
-    // L1/R1 jump (a corner panel, held then fading) - the Store cannot reach NotificationBubble (ab_evoui,
-    // not part of the extension SDK), so this is PanelStyle's own look drawn by hand
-    void renderLetterJump();
+    // the big letter jumpLetter() just landed on, shown briefly (held, then fading) in a box centred on the list
+    // panel `list` - the theme's `panel` frame when it has one, else PanelStyle's own box. The Store cannot reach
+    // NotificationBubble (ab_evoui, not part of the extension SDK), so this is drawn by hand
+    void renderLetterJump(const ableem::Rect &list);
     int visibleRows() const;
     void cross();
     void triangle();
@@ -112,7 +112,15 @@ private:
 
     StoreService &store;
     StorePictures &pictures;
-    std::map<std::string, ableem::Texture> textures; // by file; the screen's own, gone with it
+    // by file; the screen's own, gone with it. At most MaxTextures: a list of thousands scrolled through would
+    // otherwise keep every cover it passed decoded (hundreds of MB), so the least recently drawn one goes
+    struct CachedTexture {
+        ableem::Texture texture;
+        uint64_t used = 0;
+    };
+    static constexpr size_t MaxTextures = 40; // a screenful of rows, the details pane, favicons, the disc
+    std::map<std::string, CachedTexture> textures;
+    uint64_t textureClock = 0;
     Tab tab = Tab::Apps;
     std::vector<StoreEntry> entries;
     std::vector<StoreSourceInfo> sources;

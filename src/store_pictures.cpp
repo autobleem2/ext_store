@@ -263,6 +263,18 @@ void StorePictures::want(const Request &request) {
                    pending_.end());
     pending_.push_back(request);
     inFlight_.insert(request.key);
+    // the rows that scrolled past are not looked for any more: the oldest go, forgotten so a later want() asks again
+    while (pending_.size() > MaxQueued) {
+        const string &dropped = pending_.front().key;
+        asked_.erase(dropped);
+        inFlight_.erase(dropped);
+        pending_.pop_front();
+    }
+}
+
+size_t StorePictures::queued() const {
+    lock_guard<mutex> lock(mutex_);
+    return pending_.size();
 }
 
 //*******************************
@@ -276,6 +288,10 @@ void StorePictures::retryFailed() {
         auto reqIt = lastRequest_.find(kv.first);
         if (reqIt == lastRequest_.end())
             continue;
+        if (pending_.size() >= MaxQueued) {
+            asked_.erase(kv.first); // over the queue's bound: asked afresh by want() when its row shows
+            continue;
+        }
         pending_.erase(remove_if(pending_.begin(), pending_.end(), [&](const Request &r) { return r.key == kv.first; }),
                        pending_.end());
         pending_.push_back(reqIt->second);

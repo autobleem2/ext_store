@@ -1,6 +1,6 @@
 # AutoBleem Store - Slovak translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=Zabezpečené spojenie zlyhalo - skúste http://
 A source is an http:// or https:// address=Zdroj je adresa http:// alebo https://
 A TSV list of downloads, on any web server=Zoznam sťahovaní vo formáte TSV na ľubovoľnom webovom serveri
@@ -64,5 +64,6 @@ Update available=Dostupná aktualizácia
 USA=USA
 Version=Verzia
 waiting=čaká
+Waiting for the network=Čakám na sieť
 Year=Rok
 You are responsible for what your sources contain=Za obsah svojich zdrojov zodpovedáte vy

@@ -603,3 +603,19 @@ TEST_CASE("StorePictures: a pre-existing corrupt cache file - the owner's exact 
     app.imageUrl = url;
     CHECK(fileText(pictures.resolve(app)) == realPng("healed-app"));
 }
+
+TEST_CASE("StorePictures: a long list scrolled fast queues a bounded number of requests") {
+    Setup s;
+    StorePictures pictures(s.config());
+    const size_t bound = StorePictures::MaxQueued;
+    for (int i = 0; i < 1500; i++)
+        pictures.want(s.game("Game " + to_string(i)));
+    CHECK(pictures.queued() == bound);
+    // the rows that scrolled away are forgotten, the last ones are still looked for
+    CHECK_FALSE(pictures.pending("src|ps1/Game 0"));
+    CHECK(pictures.pending("src|ps1/Game 1499"));
+    // and a dropped row that shows again is asked afresh
+    pictures.want(s.game("Game 0"));
+    CHECK(pictures.pending("src|ps1/Game 0"));
+    CHECK(pictures.queued() == bound);
+}

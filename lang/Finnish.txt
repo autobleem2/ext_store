@@ -1,6 +1,6 @@
 # AutoBleem Store - Finnish translation
 # Format: English Text=Translated Text
-# Untranslated: 0 / Total: 65
+# Untranslated: 0 / Total: 66
 A secure connection failed - try http://=Suojattu yhteys epäonnistui - kokeile http://
 A source is an http:// or https:// address=Lähde on http://- tai https://-osoite
 A TSV list of downloads, on any web server=TSV-luettelo latauksista millä tahansa verkkopalvelimella
@@ -64,5 +64,6 @@ Update available=Päivitys saatavilla
 USA=Yhdysvallat
 Version=Versio
 waiting=odottaa
+Waiting for the network=Odotetaan verkkoa
 Year=Vuosi
 You are responsible for what your sources contain=Olet itse vastuussa lähteidesi sisällöstä
